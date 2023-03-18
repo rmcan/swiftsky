@@ -32,6 +32,7 @@
 		36AEF5CC29C4939F00B68B24 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5CB29C4939F00B68B24 /* SidebarView.swift */; };
 		36AEF5CE29C493C600B68B24 /* ThreadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5CD29C493C600B68B24 /* ThreadView.swift */; };
 		36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */; };
+		36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		36AEF5CB29C4939F00B68B24 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		36AEF5CD29C493C600B68B24 /* ThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
 		36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
+		36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetAuthorFeed.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 				36AEF5B429C491AC00B68B24 /* feedpost.swift */,
 				36AEF5B629C491D800B68B24 /* feedsetVote.swift */,
 				36AEF5B829C4920E00B68B24 /* systemdeclRef.swift */,
+				36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */,
 			);
 			path = bsky;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				36AEF5B329C4919100B68B24 /* feedgetTimeline.swift in Sources */,
 				36AEF5A829C490BB00B68B24 /* sessionrefresh.swift in Sources */,
 				36AEF5C229C492EB00B68B24 /* HomeView.swift in Sources */,
+				36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */,
 				36AEF5C029C492C500B68B24 /* AvatarView.swift in Sources */,
 				36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */,
 			);

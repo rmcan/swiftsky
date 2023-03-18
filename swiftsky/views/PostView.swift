@@ -9,6 +9,8 @@ struct PostView: View {
     @State var post: FeedPostView
     @State var reply: FeedFeedViewPostReplyRef?
     @State var lockupvote: Bool = false
+    @State var usernamehover: Bool = false
+    @State var repost: FeedFeedViewPostReason? = nil
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             if let avatar = post.author.avatar {
@@ -22,23 +24,34 @@ struct PostView: View {
             }
             
             VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .firstTextBaseline) {
-                    if let displayname = post.author.displayName {
-                        Text(displayname)
-                            .fontWeight(.semibold)
-                    }
-                    else {
-                        Text(post.author.handle)
-                            .fontWeight(.semibold)
-                    }
-                    
-                    
-                    Text(post.author.handle)
+                if let repost = repost {
+                    Text("\(Image(systemName: "arrow.triangle.2.circlepath")) Reposted by \(repost.by.handle)")
                         .foregroundColor(.secondary)
-                    
+                }
+                HStack(alignment: .firstTextBaseline) {
+                    let displayname = post.author.displayName ?? post.author.handle
+    
+                    NavigationLink(destination: ProfileView(handle: post.author.handle).navigationTitle(post.author.handle)) {
+                        Text("\(displayname) \(Text(post.author.handle).foregroundColor(.secondary))")
+                            .fontWeight(.semibold)
+                            .underline(usernamehover)
+                    }
+                    .onHover{ ishovered in
+                        if ishovered {
+                            usernamehover = true
+                            NSCursor.pointingHand.push()
+                        }
+                        else {
+                            usernamehover = false
+                            NSCursor.pointingHand.pop()
+                        }
+                    }
+                    .buttonStyle(.plain)
+                   
                     Text(dateformatter.localizedString(fromTimeInterval: post.record.createdAt.timeIntervalSinceNow))
                         .font(.body)
                         .foregroundColor(.secondary)
+
                     Spacer()
                     Menu {
                         Button("Share") { }
@@ -53,13 +66,13 @@ struct PostView: View {
                 if let reply = reply {
                     Text("Reply to @\(reply.parent.author.handle)").foregroundColor(.secondary)
                 }
-                Text(post.record.text)
-                    .foregroundColor(.primary)
-                    .textSelection(.enabled)
-                    .padding(.bottom, 8)
-                
+                if !post.record.text.isEmpty {
+                    Text(post.record.text)
+                        .foregroundColor(.primary)
+                        .textSelection(.enabled)
+                        .padding(.bottom, 8)
+                }
             }
-        
         }
     }
 }

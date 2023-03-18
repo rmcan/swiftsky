@@ -4,9 +4,147 @@
 //
 
 import SwiftUI
+import QuickLook
 
 struct ProfileView: View {
+    @State var handle: String
+    @State var profile: ActorProfileView?
+    @State var authorfeed = FeedGetAuthorFeedOutput()
+    @State var previewurl: URL?
     var body: some View {
-        Text("WIP")
+        ScrollView {
+            if let profile = profile {
+                VStack(alignment: .leading)  {
+                    ZStack(alignment: .bottomLeading) {
+                        if let banner = profile.banner {
+                            CachedAsyncImage(url: URL(string: banner)){ image in
+                                image
+                                    .resizable(resizingMode: .stretch)
+                                    .clipped()
+                            } placeholder: {
+                                Color(.controlAccentColor)
+                                    .frame(height: 200)
+                            }
+                            .onTapGesture {
+                                previewurl = URL(string: banner)
+                            }
+                            .frame(height: 200)
+                        }
+                        else {
+                            Color(.controlAccentColor)
+                                .frame(height: 200)
+                        }
+                        if let avatar = profile.avatar {
+                            AvatarView(url: URL(string: avatar)!, size: 80)
+                                .offset(x: 20, y: 40)
+                                .onTapGesture {
+                                    previewurl = URL(string: avatar)
+                                }
+                        }
+                        else {
+                            Image(systemName: "person.crop.circle.fill")
+                                .resizable()
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color.white, lineWidth: 4)
+                                        .frame(width: 80, height: 80)
+                                )
+                                .foregroundStyle(.white, Color.accentColor)
+                                .frame(width: 80, height: 80)
+                                .offset(x: 20, y: 40)
+                               
+                        }
+                    }
+                    HStack {
+                        Spacer()
+                        if api.shared.did != profile.did {
+                            if profile.viewer?.following != nil {
+                                Button("\(Image(systemName: "checkmark")) Following") { }
+                            }
+                            else {
+                                Button("\(Image(systemName: "plus")) Follow") { }
+                                    .buttonStyle(.borderedProminent)
+                                    .tint(.accentColor)
+                            }
+                        }
+                     
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "ellipsis")
+                        }.padding(.trailing, 10)
+                       
+                    }
+                    VStack(alignment: .leading) {
+                        VStack(alignment: .leading) {
+                            Text(profile.displayName ?? profile.handle)
+                                .font(.system(size: 30))
+                            HStack(spacing: 4) {
+                                if profile.viewer?.followedBy != nil {
+                                    Text("Follows you")
+                                }
+                                Text("@\(profile.handle)").foregroundColor(.secondary)
+                            }
+                            .padding(.bottom, -3)
+                            HStack(spacing: 10) {
+                                Text("\(profile.followersCount) \(Text("followers").foregroundColor(.secondary))")
+                                Text("\(profile.followsCount) \(Text("following").foregroundColor(.secondary))")
+                                Text("\(profile.postsCount) \(Text("posts").foregroundColor(.secondary))")
+                            }.padding(.bottom, -5)
+                            if let description = profile.description {
+                                Text(description).textSelection(.enabled)
+                            }
+                        }
+                        .textSelection(.enabled)
+                        .padding(.top, 35)
+                        .padding(.leading, 20)
+                        Divider()
+                        LazyVStack(spacing: 0) {
+                            ForEach(authorfeed.feed, id: \.self) { post in
+                                NavigationLink(destination: ThreadView(viewpost: post.post, reply: post.reply)) {
+                                    PostView(post: post.post, reply: post.reply, repost: post.reason)
+                                        .padding([.top, .horizontal])
+                                        .contentShape(Rectangle())
+                                        .onAppear {
+                                            if post == authorfeed.feed.last {
+                                                if let cursor = authorfeed.cursor {
+                                                    getTimeline(before: cursor) { result in
+                                                        if let result = result {
+                                                            self.authorfeed.feed.append(contentsOf: result.feed)
+                                                            self.authorfeed.cursor = result.cursor
+                                                        }
+                                                    }
+                                                }
+                                                
+                                            }
+                                        }
+                                }
+                                .buttonStyle(.plain)
+                                PostFooterView(post: post.post)
+                                    .padding(.leading, 68)
+                                Divider()
+                            }
+                        }
+                    }.offset(y: -30)
+                    
+                    Spacer()
+                }
+            }
+            
+          
+        }
+        .onAppear {
+            getProfile(actor: handle) { result in
+                if let result = result {
+                    self.profile = result
+                }
+            }
+            getAuthorFeed(author: handle) { result in
+                if let result = result {
+                    self.authorfeed = result
+                }
+            }
+        }
+        .quickLookPreview($previewurl)
     }
 }

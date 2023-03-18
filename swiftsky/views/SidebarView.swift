@@ -11,7 +11,7 @@ struct SidebarView: View {
     var body: some View {
         NavigationView {
             List {
-                NavigationLink(destination: ProfileView()) {
+                NavigationLink(destination: ProfileView(handle: profile.handle, profile: profile)) {
                     HStack (spacing: 5) {
                         if let avatar = self.profile.avatar {
                             AvatarView(url: URL(string: avatar)!, size: 40)
