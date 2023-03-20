@@ -7,34 +7,39 @@ import SwiftUI
 
 struct HomeView: View {
     @State var timeline: FeedGetTimelineOutput = FeedGetTimelineOutput()
-    @State var cursor: String?
     @Binding var path: NavigationPath
     var body: some View {
-        List(timeline.feed) { post in
+        List {
             Group {
-                PostView(post: post.post, reply: post.reply, repost: post.reason, path: $path)
-                    .padding([.top, .horizontal])
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        path.append(post)
-                    }
-                    .onAppear {
-                        if post == timeline.feed.last {
-                            if let cursor = self.cursor {
-                                getTimeline(before: cursor) { result in
-                                    if let result = result {
-                                        self.timeline.feed.append(contentsOf: result.feed)
-                                        self.cursor = result.cursor
+                ForEach(timeline.feed) { post in
+                    PostView(post: post.post, reply: post.reply, repost: post.reason, path: $path)
+                        .padding([.top, .horizontal])
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            path.append(post)
+                        }
+                        .onAppear {
+                            if post == timeline.feed.last {
+                                if let cursor = self.timeline.cursor {
+                                    getTimeline(before: cursor) { result in
+                                        if let result = result {
+                                            self.timeline.feed.append(contentsOf: result.feed)
+                                            self.timeline.cursor = result.cursor
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                PostFooterView(post: post.post)
-                    .padding(.leading, 68)
-                Divider()
+                    PostFooterView(post: post.post)
+                        .padding(.leading, 68)
+                    Divider()
+                }
+                if self.timeline.cursor != nil {
+                    ProgressView().frame(maxWidth: .infinity, alignment: .center)
+                }
             }
             .listRowInsets(EdgeInsets())
+          
         }
         .environment(\.defaultMinListRowHeight, 0.1)
         .scrollContentBackground(.hidden)
@@ -43,9 +48,9 @@ struct HomeView: View {
             getTimeline() { result in
                 if let result = result {
                     self.timeline = result
-                    self.cursor = result.cursor
                 }
             }
         }
+        
     }
 }

@@ -20,16 +20,15 @@ struct ProfileView: View {
                         if let banner = profile.banner {
                             CachedAsyncImage(url: URL(string: banner)){ image in
                                 image
-                                    .resizable(resizingMode: .stretch)
-                                    .clipped()
-                            } placeholder: {
-                                Color(.controlAccentColor)
+                                    .resizable()
                                     .frame(height: 200)
+                            } placeholder: {
+                                ProgressView()
+                                    .frame(maxWidth: .infinity, alignment: .center)
                             }
                             .onTapGesture {
                                 previewurl = URL(string: banner)
                             }
-                            .frame(height: 200)
                         }
                         else {
                             Color(.controlAccentColor)
@@ -104,26 +103,24 @@ struct ProfileView: View {
                 }
                 ForEach(authorfeed.feed) { post in
                     Group {
-                        Button {
-                            path.append(post)
-                        } label: {
-                            PostView(post: post.post, reply: post.reply, repost: post.reason, path: $path)
-                                .padding([.top, .horizontal])
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .onAppear {
-                            if post == authorfeed.feed.last {
-                                if let cursor = self.authorfeed.cursor {
-                                    getAuthorFeed(author: profile.handle, before: cursor) { result in
-                                        if let result = result {
-                                            self.authorfeed.feed.append(contentsOf: result.feed)
-                                            self.authorfeed.cursor = result.cursor
+                        PostView(post: post.post, reply: post.reply, repost: post.reason, path: $path)
+                            .padding([.top, .horizontal])
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                path.append(post)
+                            }
+                            .onAppear {
+                                if post == authorfeed.feed.last {
+                                    if let cursor = self.authorfeed.cursor {
+                                        getAuthorFeed(author: profile.handle, before: cursor) { result in
+                                            if let result = result {
+                                                self.authorfeed.feed.append(contentsOf: result.feed)
+                                                self.authorfeed.cursor = result.cursor
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
                         PostFooterView(post: post.post)
                             .padding(.leading, 68)
                         
@@ -131,7 +128,9 @@ struct ProfileView: View {
                     }
                     .listRowInsets(EdgeInsets())
                 }
-                
+                if self.authorfeed.cursor != nil {
+                    ProgressView().frame(maxWidth: .infinity, alignment: .center)
+                }
             }
         }
         .environment(\.defaultMinListRowHeight, 0.1)

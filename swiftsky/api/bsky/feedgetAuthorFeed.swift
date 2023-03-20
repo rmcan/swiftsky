@@ -9,7 +9,7 @@ public struct FeedGetAuthorFeedOutput: Decodable, Hashable, Identifiable {
     public var id: UUID {
         UUID()
     }
-    var cursor: String? = nil
+    var cursor: String? = ""
     var feed: [FeedFeedViewPost] = []
 }
 

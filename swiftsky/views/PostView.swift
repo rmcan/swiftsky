@@ -9,7 +9,6 @@ import QuickLook
 struct PostView: View {
     @State var post: FeedPostView
     @State var reply: FeedFeedViewPostReplyRef?
-    @State var lockupvote: Bool = false
     @State var usernamehover: Bool = false
     @State var repost: FeedFeedViewPostReason? = nil
     @State var previewurl: URL? = nil
@@ -41,6 +40,7 @@ struct PostView: View {
                             .fontWeight(.semibold)
                             .underline(usernamehover)
                     }
+                    .buttonStyle(.plain)
                     .onHover{ ishovered in
                         if ishovered {
                             usernamehover = true
@@ -51,8 +51,7 @@ struct PostView: View {
                             NSCursor.pointingHand.pop()
                         }
                     }
-                    .buttonStyle(.plain)
-                   
+                    
                     Text(dateformatter.localizedString(fromTimeInterval: post.record.createdAt.timeIntervalSinceNow))
                         .font(.body)
                         .foregroundColor(.secondary)
@@ -89,16 +88,25 @@ struct PostView: View {
                                     previewurl = URL(string: image.fullsize)
 
                                 } label: {
+                                    let imagewidth = 600.0 / Double(images.count)
+                                    let imageheight = 600.0 / Double(images.count)
                                     CachedAsyncImage(url: URL(string: image.thumb)) { image in
                                         image
                                             .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: imagewidth, height: imageheight)
+                                            .contentShape(Rectangle())
+                                            .clipped()
+                                        
                                     } placeholder: {
-                                        Image(systemName: "photo.fill")
+                                        ProgressView()
+                                            .frame(maxWidth: .infinity, alignment: .center)
                                     }
-                                    .frame(width: 600 / CGFloat(images.count), height: 600 / CGFloat(images.count))
+                                    .frame(width: imagewidth, height: imageheight)
                                     .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
                                     .cornerRadius(15)
-                                }.buttonStyle(.plain)
+                                }
+                                .buttonStyle(.plain)
                             }
                         }
                     }
