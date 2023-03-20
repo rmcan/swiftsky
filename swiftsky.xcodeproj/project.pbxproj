@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3631A4D229C8C56C00ED7B27 /* embedexternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D029C8C56C00ED7B27 /* embedexternal.swift */; };
+		3631A4D329C8C56C00ED7B27 /* embedimages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D129C8C56C00ED7B27 /* embedimages.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -36,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3631A4D029C8C56C00ED7B27 /* embedexternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = embedexternal.swift; sourceTree = "<group>"; };
+		3631A4D129C8C56C00ED7B27 /* embedimages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = embedimages.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -139,6 +143,8 @@
 		36AEF5A929C490CC00B68B24 /* bsky */ = {
 			isa = PBXGroup;
 			children = (
+				3631A4D029C8C56C00ED7B27 /* embedexternal.swift */,
+				3631A4D129C8C56C00ED7B27 /* embedimages.swift */,
 				36AEF5AA29C4910500B68B24 /* actorprofile.swift */,
 				36AEF5AC29C4911F00B68B24 /* actorref.swift */,
 				36AEF5AE29C4913D00B68B24 /* feedfeedViewPost.swift */,
@@ -249,6 +255,8 @@
 			files = (
 				36AEF5BE29C492A100B68B24 /* api.swift in Sources */,
 				36AEF5AB29C4910500B68B24 /* actorprofile.swift in Sources */,
+				3631A4D229C8C56C00ED7B27 /* embedexternal.swift in Sources */,
+				3631A4D329C8C56C00ED7B27 /* embedimages.swift in Sources */,
 				36AEF5CC29C4939F00B68B24 /* SidebarView.swift in Sources */,
 				36AEF5B529C491AC00B68B24 /* feedpost.swift in Sources */,
 				36AEF5AD29C4911F00B68B24 /* actorref.swift in Sources */,
