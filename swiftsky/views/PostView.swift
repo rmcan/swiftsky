@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import QuickLook
 
 struct PostView: View {
     @State var post: FeedPostView
@@ -11,6 +12,7 @@ struct PostView: View {
     @State var lockupvote: Bool = false
     @State var usernamehover: Bool = false
     @State var repost: FeedFeedViewPostReason? = nil
+    @State var previewurl: URL? = nil
     @Binding var path: NavigationPath
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -74,9 +76,35 @@ struct PostView: View {
                     Text(post.record.text)
                         .foregroundColor(.primary)
                         .textSelection(.enabled)
-                        .padding(.bottom, 8)
+                        .if(post.embed?.images == nil) { view in
+                            view.padding(.bottom, 6)
+                        }
+                        //.padding(.bottom, 8)
+                }
+                if let embed = post.embed {
+                    if let images = embed.images {
+                        HStack {
+                            ForEach(images, id: \.self) { image in
+                                Button {
+                                    previewurl = URL(string: image.fullsize)
+
+                                } label: {
+                                    CachedAsyncImage(url: URL(string: image.thumb)) { image in
+                                        image
+                                            .resizable()
+                                    } placeholder: {
+                                        Image(systemName: "photo.fill")
+                                    }
+                                    .frame(width: 600 / CGFloat(images.count), height: 600 / CGFloat(images.count))
+                                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
+                                    .cornerRadius(15)
+                                }.buttonStyle(.plain)
+                            }
+                        }
+                    }
                 }
             }
         }
+        .quickLookPreview($previewurl)
     }
 }

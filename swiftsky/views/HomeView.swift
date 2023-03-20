@@ -12,27 +12,24 @@ struct HomeView: View {
     var body: some View {
         List(timeline.feed) { post in
             Group {
-                Button {
-                    path.append(post)
-                } label: {
-                    PostView(post: post.post, reply: post.reply, repost: post.reason, path: $path)
-                        .padding([.top, .horizontal])
-                        .contentShape(Rectangle())
-                    
-                }
-                .buttonStyle(.plain)
-                .onAppear {
-                    if post == timeline.feed.last {
-                        if let cursor = self.cursor {
-                            getTimeline(before: cursor) { result in
-                                if let result = result {
-                                    self.timeline.feed.append(contentsOf: result.feed)
-                                    self.cursor = result.cursor
+                PostView(post: post.post, reply: post.reply, repost: post.reason, path: $path)
+                    .padding([.top, .horizontal])
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        path.append(post)
+                    }
+                    .onAppear {
+                        if post == timeline.feed.last {
+                            if let cursor = self.cursor {
+                                getTimeline(before: cursor) { result in
+                                    if let result = result {
+                                        self.timeline.feed.append(contentsOf: result.feed)
+                                        self.cursor = result.cursor
+                                    }
                                 }
                             }
                         }
                     }
-                }
                 PostFooterView(post: post.post)
                     .padding(.leading, 68)
                 Divider()

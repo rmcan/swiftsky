@@ -90,9 +90,7 @@ struct ReplyView: View {
 
 struct ThreadView: View {
     @State var viewpost: FeedPostView
-    @State var reply: FeedFeedViewPostReplyRef?
-    
-    @State var timeline: FeedGetTimelineOutput = FeedGetTimelineOutput()
+    @State var reply: FeedFeedViewPostReplyRef?    
     @State var replies: [FeedGetPostThreadThreadViewPost]?
     @State var compose: Bool = false
     @Binding var path: NavigationPath
@@ -100,14 +98,12 @@ struct ThreadView: View {
         List {
             VStack(spacing: 0) {
                 if let reply = reply {
-                    Button {
-                        path.append(reply.parent)
-                    } label: {
-                        PostView(post: reply.parent,path: $path)
-                            .padding([.top,.horizontal])
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
+                    PostView(post: reply.parent,path: $path)
+                        .padding([.top,.horizontal])
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            path.append(reply.parent)
+                        }
                     PostFooterView(post: reply.parent)
                         .padding(.leading, 67.0)
                 }
@@ -147,17 +143,14 @@ struct ThreadView: View {
                 Divider()
                 if let replies = replies {
                     ForEach(replies, id: \.self) { post in
-                        Button {
-                            path.append(post.post)
-                        } label: {
-                            HStack {
-                                PostView(post: post.post, path: $path)
-                                    .padding([.top, .horizontal])
-                                    .contentShape(Rectangle())
-                                
-                            }
+                        HStack {
+                            PostView(post: post.post, path: $path)
+                                .padding([.top, .horizontal])
+                                .contentShape(Rectangle())
                         }
-                        .buttonStyle(.plain)
+                        .onTapGesture {
+                            path.append(post.post)
+                        }
                         PostFooterView(post: post.post)
                             .padding(.leading, 67.0)
                         Divider()
