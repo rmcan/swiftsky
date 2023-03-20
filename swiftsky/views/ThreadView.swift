@@ -53,10 +53,23 @@ struct ReplyView: View {
                     .frame(width: 50, height: 50)
                     .cornerRadius(20)
                 
-                TextEditor(text: $reply)
-                    .scrollContentBackground(.hidden)
-                    .font(.system(size: 20))
-                
+                ZStack(alignment: .leading) {
+                    if reply.isEmpty {
+                       VStack {
+                           Text("Reply to @\(viewpost.author.handle)")
+                                .padding(.leading, 6)
+                                .opacity(0.7)
+                            Spacer()
+                        }
+                    }
+                    
+                    VStack {
+                        TextEditor(text: $reply)
+                        Spacer()
+                    }
+                }
+                .scrollContentBackground(.hidden)
+                .font(.system(size: 20))
                 Spacer()
             }
             .padding([.leading], 20)
@@ -74,6 +87,7 @@ struct ReplyView: View {
         }
     }
 }
+
 struct ThreadView: View {
     @State var viewpost: FeedPostView
     @State var reply: FeedFeedViewPostReplyRef?
@@ -81,12 +95,15 @@ struct ThreadView: View {
     @State var timeline: FeedGetTimelineOutput = FeedGetTimelineOutput()
     @State var replies: [FeedGetPostThreadThreadViewPost]?
     @State var compose: Bool = false
+    @Binding var path: NavigationPath
     var body: some View {
-        ScrollView {
+        List {
             VStack(spacing: 0) {
                 if let reply = reply {
-                    NavigationLink(destination: ThreadView(viewpost: reply.parent)) {
-                        PostView(post: reply.parent)
+                    Button {
+                        path.append(reply.parent)
+                    } label: {
+                        PostView(post: reply.parent,path: $path)
                             .padding([.top,.horizontal])
                             .contentShape(Rectangle())
                     }
@@ -96,7 +113,7 @@ struct ThreadView: View {
                 }
                 Divider()
                 
-                PostView(post: viewpost, reply: reply)
+                PostView(post: viewpost, reply: reply, path: $path)
                     .padding([.top, .horizontal])
                 PostFooterView(post: viewpost)
                     .padding(.leading, 67.0)
@@ -130,9 +147,11 @@ struct ThreadView: View {
                 Divider()
                 if let replies = replies {
                     ForEach(replies, id: \.self) { post in
-                        NavigationLink(destination: ThreadView(viewpost: post.post)) {
+                        Button {
+                            path.append(post.post)
+                        } label: {
                             HStack {
-                                PostView(post: post.post)
+                                PostView(post: post.post, path: $path)
                                     .padding([.top, .horizontal])
                                     .contentShape(Rectangle())
                                 
@@ -147,6 +166,9 @@ struct ThreadView: View {
                 
             }
         }
+        .scrollContentBackground(.hidden)
+        .environment(\.defaultMinListRowHeight, 0.1)
+        .listStyle(.plain)
         .navigationTitle("\(viewpost.author.handle)'s post")
         .onAppear {
             getPostThread(uri: viewpost.uri) { result in

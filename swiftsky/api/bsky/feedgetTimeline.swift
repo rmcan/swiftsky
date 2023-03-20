@@ -3,7 +3,15 @@
 //  swiftsky
 //
 
-public struct FeedGetTimelineOutput: Decodable, Hashable {
+import Foundation
+
+public struct FeedGetTimelineOutput: Decodable, Hashable, Identifiable {
+    public static func == (lhs: FeedGetTimelineOutput, rhs: FeedGetTimelineOutput) -> Bool {
+        return lhs.id == rhs.id
+    }
+    public var id: UUID {
+        UUID()
+    }
     var cursor: String? = nil
     var feed: [FeedFeedViewPost] = []
 }

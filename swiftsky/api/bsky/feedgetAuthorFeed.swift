@@ -3,13 +3,14 @@
 //  swiftsky
 //
 
-public struct FeedGetAuthorFeedOutput: Decodable, Hashable {
-    var cursor: String?
-    var feed: [FeedFeedViewPost]
-    init(cursor: String? = nil, feed: [FeedFeedViewPost] = []) {
-        self.cursor = cursor
-        self.feed = feed
+import Foundation
+
+public struct FeedGetAuthorFeedOutput: Decodable, Hashable, Identifiable {
+    public var id: UUID {
+        UUID()
     }
+    var cursor: String? = nil
+    var feed: [FeedFeedViewPost] = []
 }
 
 public func getAuthorFeed(author: String,before: String? = nil, completion: @escaping (FeedGetAuthorFeedOutput?)->()) {

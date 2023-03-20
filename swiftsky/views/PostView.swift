@@ -11,6 +11,7 @@ struct PostView: View {
     @State var lockupvote: Bool = false
     @State var usernamehover: Bool = false
     @State var repost: FeedFeedViewPostReason? = nil
+    @Binding var path: NavigationPath
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             if let avatar = post.author.avatar {
@@ -31,7 +32,9 @@ struct PostView: View {
                 HStack(alignment: .firstTextBaseline) {
                     let displayname = post.author.displayName ?? post.author.handle
     
-                    NavigationLink(destination: ProfileView(handle: post.author.handle).navigationTitle(post.author.handle)) {
+                    Button {
+                        path.append(post.author)
+                    } label: {
                         Text("\(displayname) \(Text(post.author.handle).foregroundColor(.secondary))")
                             .fontWeight(.semibold)
                             .underline(usernamehover)
@@ -53,14 +56,15 @@ struct PostView: View {
                         .foregroundColor(.secondary)
 
                     Spacer()
+                   
                     Menu {
                         Button("Share") { }
                         Button("Report post") { }
                     } label: {
                         Image(systemName: "ellipsis")
                     }
-                    .menuStyle(ButtonMenuStyle())
-                    .buttonStyle(BorderlessButtonStyle())
+                    .menuStyle(.button)
+                    .buttonStyle(.plain)
                     .menuIndicator(.hidden)
                 }
                 if let reply = reply {
