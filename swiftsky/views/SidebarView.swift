@@ -34,7 +34,10 @@ struct SidebarView: View {
                     }
                 }.tag(0)
                 Section {
-                    Label("Home", systemImage: "house").tag(1)
+                    Label("Home", systemImage: "house")
+                        .tag(1)
+                    Label("Popular", systemImage: "arrow.up.right.circle.fill")
+                        .tag(2)
                 }
             }
             .frame(minWidth: 230)
@@ -51,6 +54,10 @@ struct SidebarView: View {
                         HomeView(path: $path)
                             .frame(minWidth: 800)
                             .navigationTitle("Home")
+                    case 2:
+                        PopularView(path: $path)
+                            .frame(minWidth: 800)
+                            .navigationTitle("Popular")
                     default:
                         HomeView(path: $path)
                             .frame(minWidth: 800)

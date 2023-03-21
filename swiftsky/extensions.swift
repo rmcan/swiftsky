@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import NaturalLanguage
 import SwiftUI
 
 extension View {
@@ -38,5 +39,18 @@ extension Date {
 extension Collection {
     subscript (safe index: Index) -> Element? {
         return indices.contains(index) ? self[index] : nil
+    }
+}
+extension Locale {
+    static var preferredLanguageCodes: [String] {
+        return Locale.preferredLanguages.compactMap({Locale(identifier: $0).language.languageCode?.identifier})
+    }
+}
+extension String {
+    var languageCode: String {
+        let recognizer = NLLanguageRecognizer()
+        recognizer.processString(self)
+        guard let languageCode = recognizer.dominantLanguage?.rawValue else { return "en" }
+        return languageCode
     }
 }
