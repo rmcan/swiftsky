@@ -9,7 +9,7 @@ struct ActorProfileMyState: Decodable, Hashable {
 }
 struct ActorProfileViewerState: Decodable, Hashable {
     let followedBy: String?
-    let following: String?
+    var following: String?
     let muted: Bool?
 }
 public struct ActorProfileView: Decodable, Hashable {
@@ -26,7 +26,7 @@ public struct ActorProfileView: Decodable, Hashable {
     let indexedAt: String?
     let myState: ActorProfileMyState?
     let postsCount: Int
-    let viewer: ActorProfileViewerState?
+    var viewer: ActorProfileViewerState?
     
     init(avatar: String? = nil, banner: String? = nil, creator: String = "", declaration: SystemDeclRef = SystemDeclRef() , description: String? = nil, did: String =  "", displayName: String? = nil, followersCount: Int = 0,followsCount: Int =  0, handle: String = "", indexedAt: String? = nil, myState: ActorProfileMyState? = nil, postsCount: Int = 0, viewer: ActorProfileViewerState? = nil)
     {

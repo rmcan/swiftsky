@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		3631A4D229C8C56C00ED7B27 /* embedexternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D029C8C56C00ED7B27 /* embedexternal.swift */; };
 		3631A4D329C8C56C00ED7B27 /* embedimages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D129C8C56C00ED7B27 /* embedimages.swift */; };
+		3631A4D529C8CB9A00ED7B27 /* repocreateRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D429C8CB9A00ED7B27 /* repocreateRecord.swift */; };
+		3631A4D729C9814A00ED7B27 /* uri.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D629C9814A00ED7B27 /* uri.swift */; };
+		3631A4D929C994AD00ED7B27 /* repodeleteRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D829C994AD00ED7B27 /* repodeleteRecord.swift */; };
+		3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DA29C995F000ED7B27 /* extensions.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -40,6 +44,10 @@
 /* Begin PBXFileReference section */
 		3631A4D029C8C56C00ED7B27 /* embedexternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = embedexternal.swift; sourceTree = "<group>"; };
 		3631A4D129C8C56C00ED7B27 /* embedimages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = embedimages.swift; sourceTree = "<group>"; };
+		3631A4D429C8CB9A00ED7B27 /* repocreateRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repocreateRecord.swift; sourceTree = "<group>"; };
+		3631A4D629C9814A00ED7B27 /* uri.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = uri.swift; sourceTree = "<group>"; };
+		3631A4D829C994AD00ED7B27 /* repodeleteRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repodeleteRecord.swift; sourceTree = "<group>"; };
+		3631A4DA29C995F000ED7B27 /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -104,6 +112,7 @@
 				36AEF5BC29C4925200B68B24 /* views */,
 				36AEF5A129C4904D00B68B24 /* api */,
 				36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */,
+				3631A4DA29C995F000ED7B27 /* extensions.swift */,
 				36AEF59229C48F0900B68B24 /* Assets.xcassets */,
 				36AEF59729C48F0900B68B24 /* swiftsky.entitlements */,
 				36AEF59429C48F0900B68B24 /* Preview Content */,
@@ -126,6 +135,7 @@
 				36AEF5A229C4906200B68B24 /* atproto */,
 				36AEF5BA29C4923200B68B24 /* keychain.swift */,
 				36AEF5BD29C492A100B68B24 /* api.swift */,
+				3631A4D629C9814A00ED7B27 /* uri.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -136,6 +146,8 @@
 				36AEF5A329C4907600B68B24 /* sessioncreate.swift */,
 				36AEF5A529C490A000B68B24 /* sessionget.swift */,
 				36AEF5A729C490BB00B68B24 /* sessionrefresh.swift */,
+				3631A4D429C8CB9A00ED7B27 /* repocreateRecord.swift */,
+				3631A4D829C994AD00ED7B27 /* repodeleteRecord.swift */,
 			);
 			path = atproto;
 			sourceTree = "<group>";
@@ -258,6 +270,7 @@
 				3631A4D229C8C56C00ED7B27 /* embedexternal.swift in Sources */,
 				3631A4D329C8C56C00ED7B27 /* embedimages.swift in Sources */,
 				36AEF5CC29C4939F00B68B24 /* SidebarView.swift in Sources */,
+				3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */,
 				36AEF5B529C491AC00B68B24 /* feedpost.swift in Sources */,
 				36AEF5AD29C4911F00B68B24 /* actorref.swift in Sources */,
 				36AEF5BB29C4923200B68B24 /* keychain.swift in Sources */,
@@ -265,10 +278,13 @@
 				36AEF5B729C491D800B68B24 /* feedsetVote.swift in Sources */,
 				36AEF5AF29C4913D00B68B24 /* feedfeedViewPost.swift in Sources */,
 				36AEF5B129C4917300B68B24 /* feedgetPostThread.swift in Sources */,
+				3631A4D729C9814A00ED7B27 /* uri.swift in Sources */,
 				36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */,
 				36AEF5C829C4935E00B68B24 /* PostView.swift in Sources */,
 				36AEF5C629C4934400B68B24 /* PostFooterView.swift in Sources */,
+				3631A4D929C994AD00ED7B27 /* repodeleteRecord.swift in Sources */,
 				36AEF5CE29C493C600B68B24 /* ThreadView.swift in Sources */,
+				3631A4D529C8CB9A00ED7B27 /* repocreateRecord.swift in Sources */,
 				36AEF5A429C4907600B68B24 /* sessioncreate.swift in Sources */,
 				36AEF5CA29C4938200B68B24 /* ProfileView.swift in Sources */,
 				36AEF5C429C4931B00B68B24 /* LoginView.swift in Sources */,

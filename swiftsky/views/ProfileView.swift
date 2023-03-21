@@ -11,6 +11,7 @@ struct ProfileView: View {
     @State var profile: ActorProfileView?
     @State var authorfeed = FeedGetAuthorFeedOutput()
     @State var previewurl: URL?
+    @State private var disablefollowbutton = false
     @Binding var path: NavigationPath
     var body: some View {
         List {
@@ -58,13 +59,32 @@ struct ProfileView: View {
                     HStack {
                         Spacer()
                         if api.shared.did != profile.did {
-                            if profile.viewer?.following != nil {
-                                Button("\(Image(systemName: "checkmark")) Following") { }
+                            if let following = profile.viewer?.following {
+                                Button("\(Image(systemName: "checkmark")) Following") {
+                                    disablefollowbutton = true
+                                    let uri = AtUri(uri: following)
+                                    unfollowUser(did: profile.did, rkey: uri.rkey) { result in
+                                        if result {
+                                            self.profile?.viewer?.following = nil
+                                        }
+                                        disablefollowbutton = false
+                                    }
+                                }
+                                .disabled(disablefollowbutton)
                             }
                             else {
-                                Button("\(Image(systemName: "plus")) Follow") { }
-                                    .buttonStyle(.borderedProminent)
-                                    .tint(.accentColor)
+                                Button("\(Image(systemName: "plus")) Follow") {
+                                    disablefollowbutton = true
+                                    followUser(did: profile.did, declarationCid: profile.declaration.cid) { result in
+                                        if let result = result {
+                                            self.profile?.viewer?.following = result.uri
+                                        }
+                                        disablefollowbutton = false
+                                    }
+                                }
+                                .disabled(disablefollowbutton)
+                                .buttonStyle(.borderedProminent)
+                                .tint(.accentColor)
                             }
                         }
                         

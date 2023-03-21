@@ -83,23 +83,13 @@ class api {
     init() {
         self.decoder = JSONDecoder()
         self.decoder.dateDecodingStrategy = .iso8601
-        let formatter = ISO8601DateFormatter()
-        let formattertimezone = ISO8601DateFormatter()
-        formatter.formatOptions = [
-            .withInternetDateTime,
-            .withFractionalSeconds,
-        ]
-        formattertimezone.formatOptions = [
-            .withInternetDateTime,
-            .withTimeZone,
-        ]
         decoder.dateDecodingStrategy = .custom({ decoder in
             let container = try decoder.singleValueContainer()
             let dateString = try container.decode(String.self)
-            if let date = formatter.date(from: dateString) {
+            if let date = Formatter.iso8601withFractionalSeconds.date(from: dateString) {
                 return date
             }
-            if let date = formattertimezone.date(from: dateString) {
+            if let date = Formatter.iso8601withTimeZone.date(from: dateString) {
                 return date
             }
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(dateString)")
@@ -156,13 +146,17 @@ class api {
                 }
                 if let httpresponse = response as? HTTPURLResponse {
                     if 200 ... 299 ~= httpresponse.statusCode {
-                        do {
-                            //print(String(data: responseData, encoding: .utf8)!)
-                            let decodedObject = try self.decoder.decode(objectType.self, from: responseData)
-                            completion(Result.success(decodedObject))
-                        } catch let er {
-                            completion(Result.failure(NetworkError.parseError(er as! DecodingError)))
-                            print (er)
+                        if objectType == Bool.self {
+                            completion(Result.success(true as! T))
+                        }
+                        else {
+                            do {
+                                let decodedObject = try self.decoder.decode(objectType.self, from: responseData)
+                                completion(Result.success(decodedObject))
+                            } catch let er {
+                                completion(Result.failure(NetworkError.parseError(er as! DecodingError)))
+                                print (er)
+                            }
                         }
                     }
                     else {
