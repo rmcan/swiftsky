@@ -6,12 +6,16 @@
 import SwiftUI
 
 struct PopularView: View {
+    @AppStorage("disablelanguageFilter") private var disablelanguageFilter = false
     @State var timeline: UnspeccedGetPopularOutput = UnspeccedGetPopularOutput()
     @Binding var path: NavigationPath
     var body: some View {
         List {
             Group {
                 let Filteredfeed = timeline.feed.filter {
+                    if disablelanguageFilter {
+                        return true
+                    }
                     let text = $0.post.record.text
                     let langcode = text.isEmpty ? "en" : $0.post.record.text.languageCode
                     return langcode == "en" || Locale.preferredLanguageCodes.contains(langcode)

@@ -17,5 +17,8 @@ struct swiftskyApp: App {
                 LoginView().frame(width: 300, height: 200)
             }
         }
+        Settings {
+            SettingsView()
+        }
     }
 }

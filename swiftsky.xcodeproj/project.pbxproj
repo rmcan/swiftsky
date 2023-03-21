@@ -15,6 +15,8 @@
 		3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DA29C995F000ED7B27 /* extensions.swift */; };
 		3631A4DD29C99DB900ED7B27 /* unspeccedgetPopular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DC29C99DB900ED7B27 /* unspeccedgetPopular.swift */; };
 		3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DE29C99F0700ED7B27 /* PopularView.swift */; };
+		3631A4E129C9B65E00ED7B27 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4E029C9B65E00ED7B27 /* SettingsView.swift */; };
+		3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -52,6 +54,8 @@
 		3631A4DA29C995F000ED7B27 /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		3631A4DC29C99DB900ED7B27 /* unspeccedgetPopular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = unspeccedgetPopular.swift; sourceTree = "<group>"; };
 		3631A4DE29C99F0700ED7B27 /* PopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularView.swift; sourceTree = "<group>"; };
+		3631A4E029C9B65E00ED7B27 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 				36AEF5CB29C4939F00B68B24 /* SidebarView.swift */,
 				36AEF5CD29C493C600B68B24 /* ThreadView.swift */,
 				3631A4DE29C99F0700ED7B27 /* PopularView.swift */,
+				3631A4E029C9B65E00ED7B27 /* SettingsView.swift */,
+				3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -281,6 +287,7 @@
 				36AEF5AD29C4911F00B68B24 /* actorref.swift in Sources */,
 				36AEF5BB29C4923200B68B24 /* keychain.swift in Sources */,
 				36AEF5A629C490A000B68B24 /* sessionget.swift in Sources */,
+				3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */,
 				3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */,
 				36AEF5B729C491D800B68B24 /* feedsetVote.swift in Sources */,
 				36AEF5AF29C4913D00B68B24 /* feedfeedViewPost.swift in Sources */,
@@ -292,6 +299,7 @@
 				3631A4DD29C99DB900ED7B27 /* unspeccedgetPopular.swift in Sources */,
 				3631A4D929C994AD00ED7B27 /* repodeleteRecord.swift in Sources */,
 				36AEF5CE29C493C600B68B24 /* ThreadView.swift in Sources */,
+				3631A4E129C9B65E00ED7B27 /* SettingsView.swift in Sources */,
 				3631A4D529C8CB9A00ED7B27 /* repocreateRecord.swift in Sources */,
 				36AEF5A429C4907600B68B24 /* sessioncreate.swift in Sources */,
 				36AEF5CA29C4938200B68B24 /* ProfileView.swift in Sources */,
