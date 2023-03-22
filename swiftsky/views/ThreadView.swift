@@ -113,7 +113,7 @@ struct ThreadView: View {
                 if let viewpost = threadviewpost?.post {
                     ForEach(parents) { parent in
                         ZStack {
-                            SeperatorShape(yoffset: parent == parents.first ? 55 : 0, lastpost: parent == parents.last)
+                            SeparatorShape(yoffset: parent == parents.first ? 55 : 0, lastpost: parent == parents.last)
                                 .foregroundColor(Color(nsColor: NSColor.quaternaryLabelColor))
                             VStack(spacing: 0) {
                                 PostView(post: parent.post, reply: parent.parent?.post.author.handle, path: $path)
