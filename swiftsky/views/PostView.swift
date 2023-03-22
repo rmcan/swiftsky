@@ -8,7 +8,7 @@ import QuickLook
 
 struct PostView: View {
     @State var post: FeedPostView
-    @State var reply: FeedFeedViewPostReplyRef?
+    @State var reply: String?
     @State var usernamehover: Bool = false
     @State var repost: FeedFeedViewPostReason? = nil
     @State var previewurl: URL? = nil
@@ -69,7 +69,7 @@ struct PostView: View {
                     .menuIndicator(.hidden)
                 }
                 if let reply = reply {
-                    Text("Reply to @\(reply.parent.author.handle)").foregroundColor(.secondary)
+                    Text("Reply to @\(reply)").foregroundColor(.secondary)
                 }
                 if !post.record.text.isEmpty {
                     Text(post.record.text)
@@ -81,6 +81,15 @@ struct PostView: View {
                         //.padding(.bottom, 8)
                 }
                 if let embed = post.embed {
+                    if let record: EmbedRecordPresentedRecord = embed.record {
+                        Button {
+                            path.append(record)
+                        } label: {
+                            EmbedPostView(embedrecord: record, path: $path)
+                        }
+                        .buttonStyle(.plain)
+                        .contentShape(Rectangle())
+                    }
                     if let images = embed.images {
                         HStack {
                             ForEach(images, id: \.self) { image in

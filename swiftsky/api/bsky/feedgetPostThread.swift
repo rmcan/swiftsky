@@ -3,9 +3,15 @@
 //  swiftsky
 //
 
-struct FeedGetPostThreadThreadViewPost: Decodable, Hashable {
+class FeedGetPostThreadThreadViewPost: Decodable, Hashable, Identifiable {
+    static func == (lhs: FeedGetPostThreadThreadViewPost, rhs: FeedGetPostThreadThreadViewPost) -> Bool {
+        lhs.post.cid == rhs.post.cid
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(post.cid)
+    }
     let post: FeedPostView
-    //let parent: FeedGetPostThreadThreadViewPost?
+    let parent: FeedGetPostThreadThreadViewPost?
     let replies: [FeedGetPostThreadThreadViewPost]?
 }
 

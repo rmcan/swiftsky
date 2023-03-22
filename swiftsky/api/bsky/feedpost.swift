@@ -43,10 +43,13 @@ struct FeedPostViewerState: Decodable, Hashable {
 struct FeedPostViewEmbed: Decodable, Hashable {
     let images: [EmbedImagesPresentedImage]?
     let external: EmbedExternalPresentedExternal?
+    let record: EmbedRecordPresentedRecord?
+
 }
 struct FeedPostEmbed: Decodable, Hashable {
     let images: [EmbedImagesImage]?
     let external: EmbedExternalExternal?
+    let record: RepoStrongRef?
 }
 struct FeedPostView: Decodable, Hashable {
     let author: ActorRefWithInfo

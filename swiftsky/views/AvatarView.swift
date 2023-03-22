@@ -14,7 +14,7 @@ struct AvatarView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
         } placeholder: {
-            Image(systemName: "photo.fill")
+            ProgressView()
         }
         .frame(width: size, height: size)
         .cornerRadius(size / 2)

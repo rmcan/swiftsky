@@ -6,6 +6,7 @@
 import SwiftUI
 
 struct PostFooterView: View {
+    var bottompadding = true
     @State var post: FeedPostView
     @State var lockupvote: Bool = false
     
@@ -52,7 +53,7 @@ struct PostFooterView: View {
                 }
             Spacer()
         }
-        .padding(.bottom, 10)
+        .padding(.bottom, bottompadding ? 10 : 0)
         .foregroundColor(.secondary)
         
     }

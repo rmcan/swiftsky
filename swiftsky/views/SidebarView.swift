@@ -65,15 +65,17 @@ struct SidebarView: View {
                     }
                 }
                 .navigationDestination(for: FeedFeedViewPost.self) { post in
-                    ThreadView(viewpost: post.post, reply: post.reply, path: $path)
+                    ThreadView(uri: post.post.uri, path: $path)
                 }
                 .navigationDestination(for: FeedPostView.self) { post in
-                    ThreadView(viewpost: post, path: $path)
+                    ThreadView(uri: post.uri, path: $path)
+                }
+                .navigationDestination(for: EmbedRecordPresentedRecord.self) { post in
+                    ThreadView(uri: post.uri, path: $path)
                 }
                 .navigationDestination(for: ActorRefWithInfo.self) { actorref in
                     ProfileView(handle: actorref.handle, path: $path)
                         .navigationTitle(actorref.handle)
-
                 }
                
             }

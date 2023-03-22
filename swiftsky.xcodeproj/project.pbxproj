@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		360BD5BA29CAE94100C7987B /* ThreadPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360BD5B929CAE94100C7987B /* ThreadPostView.swift */; };
 		3631A4D229C8C56C00ED7B27 /* embedexternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D029C8C56C00ED7B27 /* embedexternal.swift */; };
 		3631A4D329C8C56C00ED7B27 /* embedimages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D129C8C56C00ED7B27 /* embedimages.swift */; };
 		3631A4D529C8CB9A00ED7B27 /* repocreateRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D429C8CB9A00ED7B27 /* repocreateRecord.swift */; };
@@ -42,10 +43,13 @@
 		36AEF5CC29C4939F00B68B24 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5CB29C4939F00B68B24 /* SidebarView.swift */; };
 		36AEF5CE29C493C600B68B24 /* ThreadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5CD29C493C600B68B24 /* ThreadView.swift */; };
 		36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */; };
+		36E07D1329CA2FCD00A315C5 /* EmbedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */; };
+		36E07D1529CA310E00A315C5 /* embedrecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E07D1429CA310E00A315C5 /* embedrecord.swift */; };
 		36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		360BD5B929CAE94100C7987B /* ThreadPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadPostView.swift; sourceTree = "<group>"; };
 		3631A4D029C8C56C00ED7B27 /* embedexternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = embedexternal.swift; sourceTree = "<group>"; };
 		3631A4D129C8C56C00ED7B27 /* embedimages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = embedimages.swift; sourceTree = "<group>"; };
 		3631A4D429C8CB9A00ED7B27 /* repocreateRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repocreateRecord.swift; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 		36AEF5CB29C4939F00B68B24 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		36AEF5CD29C493C600B68B24 /* ThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
 		36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
+		36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbedPostView.swift; sourceTree = "<group>"; };
+		36E07D1429CA310E00A315C5 /* embedrecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = embedrecord.swift; sourceTree = "<group>"; };
 		36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetAuthorFeed.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,6 +171,7 @@
 			children = (
 				3631A4D029C8C56C00ED7B27 /* embedexternal.swift */,
 				3631A4D129C8C56C00ED7B27 /* embedimages.swift */,
+				36E07D1429CA310E00A315C5 /* embedrecord.swift */,
 				36AEF5AA29C4910500B68B24 /* actorprofile.swift */,
 				36AEF5AC29C4911F00B68B24 /* actorref.swift */,
 				36AEF5AE29C4913D00B68B24 /* feedfeedViewPost.swift */,
@@ -193,6 +200,8 @@
 				3631A4DE29C99F0700ED7B27 /* PopularView.swift */,
 				3631A4E029C9B65E00ED7B27 /* SettingsView.swift */,
 				3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */,
+				36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */,
+				360BD5B929CAE94100C7987B /* ThreadPostView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -282,8 +291,10 @@
 				3631A4D229C8C56C00ED7B27 /* embedexternal.swift in Sources */,
 				3631A4D329C8C56C00ED7B27 /* embedimages.swift in Sources */,
 				36AEF5CC29C4939F00B68B24 /* SidebarView.swift in Sources */,
+				360BD5BA29CAE94100C7987B /* ThreadPostView.swift in Sources */,
 				3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */,
 				36AEF5B529C491AC00B68B24 /* feedpost.swift in Sources */,
+				36E07D1329CA2FCD00A315C5 /* EmbedPostView.swift in Sources */,
 				36AEF5AD29C4911F00B68B24 /* actorref.swift in Sources */,
 				36AEF5BB29C4923200B68B24 /* keychain.swift in Sources */,
 				36AEF5A629C490A000B68B24 /* sessionget.swift in Sources */,
@@ -308,6 +319,7 @@
 				36AEF5B329C4919100B68B24 /* feedgetTimeline.swift in Sources */,
 				36AEF5A829C490BB00B68B24 /* sessionrefresh.swift in Sources */,
 				36AEF5C229C492EB00B68B24 /* HomeView.swift in Sources */,
+				36E07D1529CA310E00A315C5 /* embedrecord.swift in Sources */,
 				36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */,
 				36AEF5C029C492C500B68B24 /* AvatarView.swift in Sources */,
 				36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */,

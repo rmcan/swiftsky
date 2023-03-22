@@ -3,8 +3,6 @@
 //  swiftsky
 //
 
-import Foundation
-
 struct blob: Decodable, Hashable {
     let cid: String
     let mimeType: String

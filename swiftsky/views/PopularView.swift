@@ -21,7 +21,7 @@ struct PopularView: View {
                     return langcode == "en" || Locale.preferredLanguageCodes.contains(langcode)
                 }
                 ForEach(Filteredfeed) { post in
-                    PostView(post: post.post, reply: post.reply, repost: post.reason, path: $path)
+                    PostView(post: post.post, reply: post.reply?.parent.author.handle, repost: post.reason, path: $path)
                         .padding([.top, .horizontal])
                         .contentShape(Rectangle())
                         .onTapGesture {

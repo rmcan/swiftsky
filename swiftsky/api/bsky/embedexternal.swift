@@ -3,8 +3,6 @@
 //  swiftsky
 //
 
-import Foundation
-
 struct EmbedExternalExternal: Decodable, Hashable {
     let description: String
     let thumb: blob?
