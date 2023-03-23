@@ -12,7 +12,20 @@ struct ThreadPostview: View {
     @State var usernamehover: Bool = false
     @State var displaynamehover: Bool = false
     @State var previewurl: URL? = nil
+    @State var deletepostfailed = false
+    @State var deletepost = false
     @Binding var path: NavigationPath
+    var load: () -> ()
+    func delete() {
+        deletePost(uri: post.uri) { result in
+            if result {
+                load()
+            }
+            else {
+                deletepostfailed = true
+            }
+        }
+    }
     var body: some View {
         
         VStack(alignment: .leading, spacing: 0) {
@@ -70,15 +83,33 @@ struct ThreadPostview: View {
                     
                     Spacer()
                     
-                    Menu {
-                        Button("Share") { }
-                        Button("Report post") { }
-                    } label: {
-                        Image(systemName: "ellipsis")
+                    Group {
+                        MenuButton {
+                            var items: [MenuItem] = []
+                            items.append(MenuItem(title: "Share") {
+                                print("Share")
+                            })
+                            items.append(MenuItem(title: "Report") {
+                                print("Report")
+                            })
+                            if post.author.did == api.shared.did {
+                                items.append(MenuItem(title: "Delete") {
+                                    deletepost = true
+                                })
+                            }
+                            return items
+                        }
+                        .frame(width: 30, height: 30)
+                        .contentShape(Rectangle())
+                        .onHover{ ishovered in
+                            if ishovered {
+                                NSCursor.pointingHand.push()
+                            }
+                            else {
+                                NSCursor.pointingHand.pop()
+                            }
+                        }
                     }
-                    .menuStyle(.button)
-                    .buttonStyle(.plain)
-                    .menuIndicator(.hidden)
                 }
             }
             
@@ -86,7 +117,7 @@ struct ThreadPostview: View {
                 Text(post.record.text)
                     .foregroundColor(.primary)
                     .textSelection(.enabled)
-                    .padding(.vertical, 2)
+                    .padding(.vertical, 4)
             }
             if let embed = post.embed {
                 if let record: EmbedRecordPresentedRecord = embed.record {
@@ -131,6 +162,14 @@ struct ThreadPostview: View {
             Text("\(Text(post.record.createdAt, style: .time)) · \(Text(post.record.createdAt, style: .date))")
                 .foregroundColor(.secondary)
                 .padding(.bottom, 6)
+        }
+        .quickLookPreview($previewurl)
+        .alert("Failed to delete post, please try again.", isPresented: $deletepostfailed, actions: {})
+        .alert("Are you sure?",isPresented: $deletepost) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                self.delete()
+            }
         }
     }
 }

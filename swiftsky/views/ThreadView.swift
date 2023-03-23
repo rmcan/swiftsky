@@ -5,88 +5,6 @@
 
 import SwiftUI
 
-struct ReplyView: View {
-    @Binding var isPresented: Bool
-    @State var viewpost: FeedPostView
-    @State var reply = ""
-    var body: some View {
-        VStack {
-            HStack() {
-                Button("Cancel") {
-                    isPresented = false
-                }
-                .buttonStyle(.plain)
-                .padding([.leading, .top], 20)
-                .foregroundColor(.accentColor)
-                Spacer()
-                Button("Reply") { }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.accentColor)
-                .disabled(reply.count > 256)
-                .padding([.trailing, .top], 20)
-            }
-            Divider().padding(.vertical, 5)
-            HStack(alignment: .top, spacing: 12) {
-                if let avatar = viewpost.author.avatar {
-                    AvatarView(url: URL(string: avatar)!, size: 50)
-                } else {
-                    Image(systemName: "person.crop.circle.fill")
-                        .resizable()
-                        .foregroundColor(.accentColor)
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(20)
-                }
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(viewpost.author.displayName ?? viewpost.author.handle)
-                        .fontWeight(.semibold)
-                    Text(viewpost.record.text)
-                }
-                Spacer()
-            }
-            .padding(.leading, 20)
-            Divider()
-                .padding(.vertical, 5)
-            HStack(alignment: .top) {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .foregroundColor(.accentColor)
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(20)
-                
-                ZStack(alignment: .leading) {
-                    if reply.isEmpty {
-                       VStack {
-                           Text("Reply to @\(viewpost.author.handle)")
-                                .padding(.leading, 6)
-                                .opacity(0.7)
-                            Spacer()
-                        }
-                    }
-                    
-                    VStack {
-                        TextEditor(text: $reply)
-                        Spacer()
-                    }
-                }
-                .scrollContentBackground(.hidden)
-                .font(.system(size: 20))
-                Spacer()
-            }
-            .padding([.leading], 20)
-            Divider()
-                .padding(.vertical, 5)
-            HStack {
-                Spacer()
-                let replycount = 256 - reply.count
-                Text("\(replycount)")
-                    .padding(.trailing, 20)
-                    .foregroundColor(replycount < 0 ? .red : .primary)
-                    
-            }
-            Spacer()
-        }
-    }
-}
 struct SeparatorShape: Shape {
     var yoffset = 0.0
     var lastpost = false
@@ -103,10 +21,40 @@ struct SeparatorShape: Shape {
 }
 struct ThreadView: View {
     var uri: String
+    @State var error: String?
     @State var threadviewpost: FeedGetPostThreadThreadViewPost? = nil
     @State var parents: [FeedGetPostThreadThreadViewPost] = []
-    @State var compose: Bool = false
+    @Binding var compose: Bool
+    @Binding var post: FeedPostView?
     @Binding var path: NavigationPath
+    func load() {
+        threadviewpost = nil
+        parents = []
+        getPostThread(uri: self.uri) { result in
+            switch result {
+            case .success(let result):
+                if let thread = result.thread {
+                    self.threadviewpost = thread
+                    var currentparent = thread.parent
+                    while let parent = currentparent {
+                        parents.append(parent)
+                        currentparent = parent.parent
+                    }
+                    parents.reverse()
+                    return
+                }
+            case .failure(let fail):
+                switch fail {
+                case .APIError(let err):
+                    error = err.message
+                    return
+                default:
+                    break
+                }
+            }
+            error = "Load post failed"
+        }
+    }
     var body: some View {
         List {
             Group {
@@ -127,7 +75,7 @@ struct ThreadView: View {
                             }
                         }
                     }
-                    ThreadPostview(post: viewpost,reply: threadviewpost?.parent?.post.author.handle, path: $path)
+                    ThreadPostview(post: viewpost,reply: threadviewpost?.parent?.post.author.handle, path: $path, load: load)
                         .padding([.top, .horizontal])
                     PostFooterView(post: viewpost)
                         .padding(.leading, 17.0)
@@ -151,12 +99,10 @@ struct ThreadView: View {
                         else {
                             NSCursor.pointingHand.pop()
                         }
-                    }.onTapGesture {
-                        compose = true
                     }
-                    .sheet(isPresented: $compose) {
-                        ReplyView(isPresented: $compose, viewpost: viewpost)
-                            .frame(minWidth: 600, maxWidth: 600, minHeight: 400, maxHeight: 800)
+                    .onTapGesture {
+                        compose = true
+                        post = viewpost
                     }
                     Divider()
                     if let replies = threadviewpost?.replies {
@@ -175,27 +121,32 @@ struct ThreadView: View {
                         }
                     }
                 } else {
-                    ProgressView().frame(maxWidth: .infinity, alignment: .center)
+                    if error == nil {
+                        ProgressView().frame(maxWidth: .infinity, alignment: .center)
+                    }
                 }
             }.listRowInsets(EdgeInsets())
+        }
+        .alert(error ?? "", isPresented: .constant(error != nil)) {
+            Button("OK" ) {
+                path.removeLast()
+            }
         }
         .scrollContentBackground(.hidden)
         .environment(\.defaultMinListRowHeight, 0.1)
         .listStyle(.plain)
-        .navigationTitle(threadviewpost != nil ? "\(threadviewpost!.post.author.handle)'s post" : "Loading post...")
+        .navigationTitle(threadviewpost != nil ? "\(threadviewpost!.post.author.handle)'s post" : "Post")
         .onAppear {
-            getPostThread(uri: self.uri) { result in
-                if let result = result {
-                    if let thread = result.thread {
-                        self.threadviewpost = thread
-                        var currentparent = thread.parent
-                        while let parent = currentparent {
-                            parents.append(parent)
-                            currentparent = parent.parent
-                        }
-                        parents.reverse()
-                    }
+            load()
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    load()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
                 }
+                
             }
         }
     }

@@ -12,7 +12,19 @@ struct PostView: View {
     @State var usernamehover: Bool = false
     @State var repost: FeedFeedViewPostReason? = nil
     @State var previewurl: URL? = nil
+    @State var deletepostfailed = false
+    @State var deletepost = false
     @Binding var path: NavigationPath
+    func delete() {
+        deletePost(uri: post.uri) { result in
+            if result {
+                
+            }
+            else {
+                deletepostfailed = true
+            }
+        }
+    }
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             if let avatar = post.author.avatar {
@@ -57,16 +69,34 @@ struct PostView: View {
                         .foregroundColor(.secondary)
 
                     Spacer()
-                   
-                    Menu {
-                        Button("Share") { }
-                        Button("Report post") { }
-                    } label: {
-                        Image(systemName: "ellipsis")
+                    Group {
+                        MenuButton {
+                            var items: [MenuItem] = []
+                            items.append(MenuItem(title: "Share") {
+                                print("Share")
+                            })
+                            items.append(MenuItem(title: "Report") {
+                                print("Report")
+                            })
+                            if post.author.did == api.shared.did {
+                                items.append(MenuItem(title: "Delete") {
+                                    deletepost = true
+                                })
+                            }
+                            return items
+                        }
+                        .frame(width: 30, height: 30)
+                        .contentShape(Rectangle())
+                        .onHover{ ishovered in
+                            if ishovered {
+                                NSCursor.pointingHand.push()
+                            }
+                            else {
+                                NSCursor.pointingHand.pop()
+                            }
+                        }
                     }
-                    .menuStyle(.button)
-                    .buttonStyle(.plain)
-                    .menuIndicator(.hidden)
+                    .frame(height: 0)
                 }
                 if let reply = reply {
                     Text("Reply to @\(reply)").foregroundColor(.secondary)
@@ -123,5 +153,12 @@ struct PostView: View {
             }
         }
         .quickLookPreview($previewurl)
+        .alert("Failed to delete post, please try again.", isPresented: $deletepostfailed, actions: {})
+        .alert("Are you sure?",isPresented: $deletepost) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                self.delete()
+            }
+        }
     }
 }

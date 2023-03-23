@@ -10,6 +10,9 @@ struct SidebarView: View {
     @StateObject private var auth = Auth.shared
     @State private var selection: Int = 1
     @State private var path = NavigationPath()
+    @State var compose: Bool = false
+    @State var replypost: Bool = false
+    @State private var post: FeedPostView? = nil
     var body: some View {
         NavigationSplitView {
             List(selection: $selection) {
@@ -65,20 +68,40 @@ struct SidebarView: View {
                     }
                 }
                 .navigationDestination(for: FeedFeedViewPost.self) { post in
-                    ThreadView(uri: post.post.uri, path: $path)
+                    ThreadView(uri: post.post.uri, compose: $replypost, post: $post, path: $path)
+                        .frame(minWidth: 800)
                 }
                 .navigationDestination(for: FeedPostView.self) { post in
-                    ThreadView(uri: post.uri, path: $path)
+                    ThreadView(uri: post.uri, compose: $replypost, post: $post, path: $path)
+                        .frame(minWidth: 800)
                 }
                 .navigationDestination(for: EmbedRecordPresentedRecord.self) { post in
-                    ThreadView(uri: post.uri, path: $path)
+                    ThreadView(uri: post.uri, compose: $replypost, post: $post, path: $path)
+                        .frame(minWidth: 800)
                 }
                 .navigationDestination(for: ActorRefWithInfo.self) { actorref in
                     ProfileView(handle: actorref.handle, path: $path)
+                        .frame(minWidth: 800)
                         .navigationTitle(actorref.handle)
                 }
-               
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button {
+                           compose = true
+                        } label: {
+                            Image(systemName: "square.and.pencil")
+                        }
+                        .sheet(isPresented: $compose) {
+                            NewPostView(isPresented: $compose)
+                                .frame(minWidth: 600, maxWidth: 600, minHeight: 300, maxHeight: 300)
+                        }
+                    }
+                }
             }
+        }
+        .sheet(isPresented: $replypost) {
+            ReplyView(isPresented: $replypost, viewpost: $post)
+                .frame(minWidth: 600, maxWidth: 600, minHeight: 400, maxHeight: 800)
         }
         .onChange(of: auth.needAuthorization) { newValue in
             if !newValue {
@@ -99,8 +122,4 @@ struct SidebarView: View {
             }
         }
     }
-}
-
-func toggleSidebar() {
-    NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
 }

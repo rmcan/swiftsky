@@ -54,3 +54,31 @@ extension String {
         return languageCode
     }
 }
+class NSAction<T>: NSObject {
+    let action: (T) -> Void
+
+    init(_ action: @escaping (T)->()) {
+        self.action = action
+    }
+
+    @objc func invoke(sender: AnyObject) {
+        action(sender as! T)
+    }
+}
+
+extension NSButton {
+    func setAction(_ closure: @escaping(NSButton)->()) {
+        let action = NSAction<NSButton>(closure)
+        self.target = action
+        self.action = #selector(NSAction<NSButton>.invoke)
+        objc_setAssociatedObject(self, "\(self.hashValue)", action, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+    }
+}
+extension NSMenuItem {
+    func setAction(_ closure: @escaping(NSMenuItem)->()) {
+        let action = NSAction<NSMenuItem>(closure)
+        self.target = action
+        self.action = #selector(NSAction<NSMenuItem>.invoke)
+        objc_setAssociatedObject(self, "\(self.hashValue)", action, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+    }
+}
