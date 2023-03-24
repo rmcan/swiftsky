@@ -5,7 +5,12 @@
 
 import Foundation
 
-public struct UnspeccedGetPopularOutput: Decodable, Hashable, Identifiable {
+struct UnspeccedGetPopularInput: Encodable {
+    let limit: Int = 30
+    let before: String?
+}
+
+struct UnspeccedGetPopularOutput: Decodable, Hashable, Identifiable {
     public static func == (lhs: UnspeccedGetPopularOutput, rhs: UnspeccedGetPopularOutput) -> Bool {
         return lhs.id == rhs.id
     }
@@ -16,18 +21,6 @@ public struct UnspeccedGetPopularOutput: Decodable, Hashable, Identifiable {
     var feed: [FeedFeedViewPost] = []
 }
 
-public func getPopular(before: String? = nil, completion: @escaping (UnspeccedGetPopularOutput?)->()) {
-    var params : [String : String] = ["limit": "30"]
-    if let before = before {
-        params["before"] = before
-    }
-    api.shared.GET(endpoint: "app.bsky.unspecced.getPopular",params: params, objectType: UnspeccedGetPopularOutput.self, authorization: api.shared.user.accessJwt) { result in
-        switch result {
-        case .success(let result):
-            completion(result)
-        case .failure(let error):
-            print(error)
-            completion(nil)
-        }
-    }
+func getPopular(before: String? = nil) async throws -> UnspeccedGetPopularOutput {
+    return try await NetworkManager.shared.fetch(endpoint: "app.bsky.unspecced.getPopular", authorization: NetworkManager.shared.user.accessJwt, params: UnspeccedGetPopularInput(before: before))
 }

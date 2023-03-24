@@ -13,11 +13,11 @@ struct ReplyView: View {
     @State var erroralert: Bool = false
     func replyPost() {
         disablebuttons = true
-        makePost(text: reply) { result in
-            if result != nil {
+        Task {
+            do {
+                let _ = try await makePost(text: reply)
                 isPresented = false
-            }
-            else {
+            } catch {
                 erroralert = true
             }
             disablebuttons = false

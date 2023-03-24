@@ -5,27 +5,13 @@
 
 import Foundation
 
-func unfollowUser(did: String, rkey: String, completion: @escaping (Bool)->()) {
-    api.shared.POST(endpoint: "com.atproto.repo.deleteRecord", params: ["collection" : "app.bsky.graph.follow", "did" : api.shared.did, "rkey" : rkey], objectType: Bool.self, authorization: api.shared.user.accessJwt) { result in
-        switch result {
-        case .success(let result):
-            completion(result)
-        case .failure(let error):
-            print(error)
-            completion(false)
-        }
-    }
+struct RepoDeleteRecordInput: Encodable {
+    let did: String
+    let collection: String
+    let rkey: String
 }
 
-func deletePost(uri: String, completion: @escaping (Bool)->()) {
+func RepoDeleteRecord(uri: String, collection: String) async throws -> Bool {
     let aturi = AtUri(uri: uri)
-    api.shared.POST(endpoint: "com.atproto.repo.deleteRecord", params: ["collection" : "app.bsky.feed.post", "did" : api.shared.did, "rkey" : aturi.rkey], objectType: Bool.self, authorization: api.shared.user.accessJwt) { result in
-        switch result {
-        case .success(let result):
-            completion(result)
-        case .failure(let error):
-            print(error)
-            completion(false)
-        }
-    }
+    return try await NetworkManager.shared.fetch(endpoint: "com.atproto.repo.deleteRecord", httpMethod: .POST, authorization: NetworkManager.shared.user.accessJwt, params: RepoDeleteRecordInput(did: NetworkManager.shared.did, collection: collection, rkey: aturi.rkey))
 }

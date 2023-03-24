@@ -12,11 +12,11 @@ struct NewPostView: View {
     @State var erroralert: Bool = false
     func post() {
         disablebuttons = true
-        makePost(text: text) { result in
-            if result != nil {
+        Task {
+            do {
+                let _ = try await makePost(text: text)
                 isPresented = false
-            }
-            else {
+            } catch {
                 erroralert = true
             }
             disablebuttons = false

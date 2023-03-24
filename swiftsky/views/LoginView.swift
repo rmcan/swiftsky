@@ -22,24 +22,25 @@ struct LoginView: View {
                 .padding(.horizontal)
             Button("Sign in") {
                 disablebutton = true
-                XrpcSessionCreate(identifier: username, password: password) { result in
-                    switch result {
-                    case.succsess(let result):
-                        api.shared.user.username = username
-                        api.shared.user.password = password
-                        api.shared.user.refreshJwt = result.refreshJwt
-                        api.shared.user.accessJwt = result.accessJwt
-                        api.shared.handle = result.handle
-                        api.shared.did = result.did
-                        api.shared.user.save()
+                Task {
+                    do {
+                        let result = try await XrpcSessionCreate(identifier: username, password: password)
+                        NetworkManager.shared.user.username = username
+                        NetworkManager.shared.user.password = password
+                        NetworkManager.shared.user.refreshJwt = result.refreshJwt
+                        NetworkManager.shared.user.accessJwt = result.accessJwt
+                        NetworkManager.shared.handle = result.handle
+                        NetworkManager.shared.did = result.did
+                        NetworkManager.shared.user.save()
                         DispatchQueue.main.async {
                             auth.needAuthorization = false
                         }
-                        
-                    case .message(let message):
-                        error = message.message
-                    case .unknown:
-                        error = "Failed to connect to server"
+                    } catch {
+                        if let error = error as? XrpcErrorDescription {
+                            self.error = error.message
+                            return
+                        }
+                        self.error = error.localizedDescription
                     }
                     disablebutton = false
                 }
