@@ -30,9 +30,9 @@ struct ThreadView: View {
     func load() {
         threadviewpost = nil
         parents = []
-        getPostThread(uri: self.uri) { result in
-            switch result {
-            case .success(let result):
+        Task {
+            do {
+                let result = try await getPostThread(uri: self.uri)
                 if let thread = result.thread {
                     self.threadviewpost = thread
                     var currentparent = thread.parent
@@ -41,18 +41,15 @@ struct ThreadView: View {
                         currentparent = parent.parent
                     }
                     parents.reverse()
-                    return
-                }
-            case .failure(let fail):
-                switch fail {
-                case .APIError(let err):
-                    error = err.message
-                    return
-                default:
-                    break
                 }
             }
-            error = "Load post failed"
+            catch {
+                if let error = error as? XrpcErrorDescription {
+                    self.error = error.message!
+                    return
+                }
+                self.error = error.localizedDescription
+            }
         }
     }
     var body: some View {

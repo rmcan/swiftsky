@@ -10,6 +10,35 @@ struct PostFooterView: View {
     @State var post: FeedPostView
     @State var lockupvote: Bool = false
     
+    func upvote() {
+        post.viewer.upvote = ""
+        post.upvoteCount += 1
+        Task {
+            do {
+                let result = try await FeedSetVote(uri: post.uri, cid: post.cid, direction: "up")
+                post.viewer.upvote = result.upvote
+            } catch {
+                post.viewer.upvote = nil
+                post.upvoteCount -= 1
+            }
+            lockupvote = false
+        }
+    }
+    func downvote() {
+        let upvote = post.viewer.upvote
+        post.viewer.upvote = nil
+        post.upvoteCount -= 1
+        Task {
+            do {
+                let result = try await FeedSetVote(uri: post.uri, cid: post.cid, direction: "none")
+                post.viewer.upvote = result.upvote
+            } catch {
+                post.viewer.upvote = upvote
+                post.upvoteCount += 1
+            }
+            lockupvote = false
+        }
+    }
     var body: some View {
         
         HStack (alignment: .firstTextBaseline, spacing: 32) {
@@ -22,32 +51,10 @@ struct PostFooterView: View {
                     if !lockupvote {
                         lockupvote = true
                         if post.viewer.upvote == nil {
-                            post.viewer.upvote = ""
-                            post.upvoteCount += 1
-                            FeedSetVote(uri: post.uri, cid: post.cid, direction: "up") { result in
-                                if let result = result {
-                                    post.viewer.upvote = result.upvote
-                                }
-                                else {
-                                    post.viewer.upvote = nil
-                                    post.upvoteCount -= 1
-                                }
-                                lockupvote = false
-                            }
+                            upvote()
                         }
                         else {
-                            post.viewer.upvote = nil
-                            post.upvoteCount -= 1
-                            FeedSetVote(uri: post.uri, cid: post.cid, direction: "none") { result in
-                                if let result = result {
-                                    post.viewer.upvote = result.upvote
-                                }
-                                else {
-                                    post.viewer.upvote = ""
-                                    post.upvoteCount += 1
-                                }
-                                lockupvote = false
-                            }
+                            downvote()
                         }
                     }
                 }

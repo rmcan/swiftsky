@@ -14,13 +14,13 @@ class FeedGetPostThreadThreadViewPost: Decodable, Hashable, Identifiable {
     let parent: FeedGetPostThreadThreadViewPost?
     let replies: [FeedGetPostThreadThreadViewPost]?
 }
-
+struct FeedGetPostThreadInput: Encodable, Hashable {
+    let uri: String
+}
 struct FeedGetPostThreadOutput: Decodable, Hashable {
     let thread: FeedGetPostThreadThreadViewPost?
 }
 
-func getPostThread(uri: String, completion: @escaping (api.Result<FeedGetPostThreadOutput>)->()) {
-    api.shared.GET(endpoint: "app.bsky.feed.getPostThread",params: ["uri": uri], objectType: FeedGetPostThreadOutput.self, authorization: api.shared.user.accessJwt) { result in
-        completion(result)
-    }
+func getPostThread(uri: String) async throws -> FeedGetPostThreadOutput {
+    return try await NetworkManager.shared.fetch(endpoint: "app.bsky.feed.getPostThread", authorization: NetworkManager.shared.user.accessJwt, params: FeedGetPostThreadInput(uri: uri))
 }

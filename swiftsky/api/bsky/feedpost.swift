@@ -5,12 +5,12 @@
 
 import Foundation
 
-struct RepoStrongRef: Decodable, Hashable {
+struct RepoStrongRef: Codable, Hashable {
     let cid: String
     let uri: String
 }
 
-struct FeedPostReplyRef: Decodable, Hashable {
+struct FeedPostReplyRef: Codable, Hashable {
     let parent: RepoStrongRef
     let root: RepoStrongRef
 }

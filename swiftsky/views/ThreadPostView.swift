@@ -17,11 +17,13 @@ struct ThreadPostview: View {
     @Binding var path: NavigationPath
     var load: () -> ()
     func delete() {
-        deletePost(uri: post.uri) { result in
-            if result {
-                load()
-            }
-            else {
+        Task {
+            do {
+                let result = try await RepoDeleteRecord(uri: post.uri, collection: "app.bsky.feed.post")
+                if result {
+                    load()
+                }
+            } catch {
                 deletepostfailed = true
             }
         }
@@ -92,7 +94,7 @@ struct ThreadPostview: View {
                             items.append(MenuItem(title: "Report") {
                                 print("Report")
                             })
-                            if post.author.did == api.shared.did {
+                            if post.author.did == NetworkManager.shared.did {
                                 items.append(MenuItem(title: "Delete") {
                                     deletepost = true
                                 })

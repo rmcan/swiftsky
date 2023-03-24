@@ -58,14 +58,18 @@ struct ProfileView: View {
                     }
                     HStack {
                         Spacer()
-                        if api.shared.did != profile.did {
+                        if NetworkManager.shared.did != profile.did {
                             if let following = profile.viewer?.following {
                                 Button("\(Image(systemName: "checkmark")) Following") {
                                     disablefollowbutton = true
-                                    let uri = AtUri(uri: following)
-                                    unfollowUser(did: profile.did, rkey: uri.rkey) { result in
-                                        if result {
-                                            self.profile?.viewer?.following = nil
+                                    Task {
+                                        do {
+                                            let result = try await RepoDeleteRecord(uri: following, collection: "app.bsky.graph.follow")
+                                            if result {
+                                                self.profile?.viewer?.following = nil
+                                            }
+                                        } catch {
+                                            
                                         }
                                         disablefollowbutton = false
                                     }
@@ -75,9 +79,12 @@ struct ProfileView: View {
                             else {
                                 Button("\(Image(systemName: "plus")) Follow") {
                                     disablefollowbutton = true
-                                    followUser(did: profile.did, declarationCid: profile.declaration.cid) { result in
-                                        if let result = result {
+                                    Task {
+                                        do {
+                                            let result = try await followUser(did: profile.did, declarationCid: profile.declaration.cid)
                                             self.profile?.viewer?.following = result.uri
+                                        } catch {
+                                            print(error)
                                         }
                                         disablefollowbutton = false
                                     }
@@ -132,10 +139,13 @@ struct ProfileView: View {
                             .onAppear {
                                 if post == authorfeed.feed.last {
                                     if let cursor = self.authorfeed.cursor {
-                                        getAuthorFeed(author: profile.handle, before: cursor) { result in
-                                            if let result = result {
+                                        Task {
+                                            do {
+                                                let result = try await getAuthorFeed(author: profile.handle, before: cursor)
                                                 self.authorfeed.feed.append(contentsOf: result.feed)
                                                 self.authorfeed.cursor = result.cursor
+                                            } catch {
+                                                
                                             }
                                         }
                                     }
@@ -157,14 +167,12 @@ struct ProfileView: View {
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
         .onAppear {
-            getProfile(actor: handle) { result in
-                if let result = result {
-                    self.profile = result
-                }
-            }
-            getAuthorFeed(author: handle) { result in
-                if let result = result {
-                    self.authorfeed = result
+            Task {
+                do {
+                    self.profile = try await getProfile(actor: handle)
+                    self.authorfeed = try await getAuthorFeed(author: handle)
+                } catch {
+                    
                 }
             }
         }

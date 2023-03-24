@@ -10,30 +10,34 @@ struct RepoCreateRecordOutput: Decodable {
     let uri: String
 }
 
-func followUser(did: String,declarationCid: String, completion: @escaping (RepoCreateRecordOutput?)->()) {
-    var params: [String:Any] = ["collection" : "app.bsky.graph.follow", "did" : api.shared.did]
-    params["record"] = ["subject" : ["did" : did, "declarationCid" : declarationCid], "createdAt" : Date().iso8601withFractionalSeconds, "$type" : "app.bsky.graph.follow"]
-    api.shared.POST(endpoint: "com.atproto.repo.createRecord", params: params, objectType: RepoCreateRecordOutput.self, authorization: api.shared.user.accessJwt) { result in
-        switch result {
-        case .success(let result):
-            completion(result)
-        case .failure(let error):
-            print(error)
-            completion(nil)
-        }
+struct FollowUserInput: Encodable {
+    let subject: ActorRef
+    let createdAt: String
+}
+struct CreatePostInput: Encodable {
+    let text: String
+    let createdAt: String
+    let reply: FeedPostReplyRef?
+}
+struct RepoCreateRecordInput<T: Encodable>: Encodable {
+    let type: String
+    let collection: String
+    let did: String
+    let record: T
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case collection
+        case did
+        case record
     }
 }
 
-func makePost(text: String, completion: @escaping (RepoCreateRecordOutput?)->()) {
-    var params: [String:Any] = ["collection" : "app.bsky.feed.post", "did" : api.shared.did]
-    params["record"] = ["text": text, "createdAt" : Date().iso8601withFractionalSeconds, "$type" : "app.bsky.feed.post"]
-    api.shared.POST(endpoint: "com.atproto.repo.createRecord", params: params, objectType: RepoCreateRecordOutput.self, authorization: api.shared.user.accessJwt) { result in
-        switch result {
-        case .success(let result):
-            completion(result)
-        case .failure(let error):
-            print(error)
-            completion(nil)
-        }
-    }
+func RepoCreateRecord<T: Encodable>(input: RepoCreateRecordInput<T>) async throws -> RepoCreateRecordOutput {
+    return try await NetworkManager.shared.fetch(endpoint: "com.atproto.repo.createRecord", httpMethod: .POST, authorization: NetworkManager.shared.user.accessJwt, params: input)
+}
+func followUser(did: String,declarationCid: String) async throws -> RepoCreateRecordOutput {
+    return try await RepoCreateRecord(input: RepoCreateRecordInput(type: "app.bsky.graph.follow", collection: "app.bsky.graph.follow", did: NetworkManager.shared.did, record: FollowUserInput(subject: ActorRef(declarationCid: declarationCid, did: did), createdAt: Date().iso8601withFractionalSeconds)))
+}
+func makePost(text: String, reply: FeedPostReplyRef? = nil) async throws -> RepoCreateRecordOutput {
+    return try await RepoCreateRecord(input: RepoCreateRecordInput(type: "app.bsky.feed.post", collection: "app.bsky.feed.post", did: NetworkManager.shared.did, record: CreatePostInput(text: "test", createdAt: Date().iso8601withFractionalSeconds, reply: reply)))
 }

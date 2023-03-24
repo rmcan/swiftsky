@@ -9,7 +9,7 @@ import SwiftUI
 struct swiftskyApp: App {
     @StateObject private var auth = Auth.shared
     init() {
-        api.shared.postInit()
+        NetworkManager.shared.postInit()
     }
     var body: some Scene {
         WindowGroup {

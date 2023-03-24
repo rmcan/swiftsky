@@ -46,17 +46,11 @@ public struct ActorProfileView: Decodable, Hashable {
         self.viewer = viewer
     }
 }
+struct getProfileInput: Encodable {
+    let actor: String
+}
 
-
-public func getProfile(actor: String, completion: @escaping (ActorProfileView?)->()) {
-    api.shared.GET(endpoint: "app.bsky.actor.getProfile",params: ["actor": actor], objectType: ActorProfileView.self, authorization: api.shared.user.accessJwt) { result in
-        switch result {
-        case .success(let result):
-            completion(result)
-        case .failure(let error):
-            print(error)
-            completion(nil)
-        }
-    }
+public func getProfile(actor: String) async throws -> ActorProfileView {
+    return try await NetworkManager.shared.fetch(endpoint: "app.bsky.actor.getProfile", authorization: NetworkManager.shared.user.accessJwt, params: getProfileInput(actor: actor))
 }
 

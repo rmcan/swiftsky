@@ -5,6 +5,12 @@
 
 import Foundation
 
+struct FeedGetAuthorFeedInput: Encodable {
+    let author: String
+    let limit: Int = 30
+    let before: String?
+}
+
 public struct FeedGetAuthorFeedOutput: Decodable, Hashable, Identifiable {
     public var id: UUID {
         UUID()
@@ -13,18 +19,6 @@ public struct FeedGetAuthorFeedOutput: Decodable, Hashable, Identifiable {
     var feed: [FeedFeedViewPost] = []
 }
 
-public func getAuthorFeed(author: String,before: String? = nil, completion: @escaping (FeedGetAuthorFeedOutput?)->()) {
-    var params : [String : String] = ["author" : author, "limit": "30"]
-    if let before = before {
-        params["before"] = before
-    }
-    api.shared.GET(endpoint: "app.bsky.feed.getAuthorFeed",params: params, objectType: FeedGetAuthorFeedOutput.self, authorization: api.shared.user.accessJwt) { result in
-        switch result {
-        case .success(let result):
-            completion(result)
-        case .failure(let error):
-            print(error)
-            completion(nil)
-        }
-    }
+public func getAuthorFeed(author: String, before: String? = nil) async throws -> FeedGetAuthorFeedOutput {
+    return try await NetworkManager.shared.fetch(endpoint: "app.bsky.feed.getAuthorFeed",authorization: NetworkManager.shared.user.accessJwt, params: FeedGetAuthorFeedInput(author: author, before: before))
 }

@@ -3,7 +3,7 @@
 //  swiftsky
 //
 
-struct ActorRef: Decodable, Hashable{
+struct ActorRef: Codable, Hashable {
     let declarationCid: String
     let did: String
 }

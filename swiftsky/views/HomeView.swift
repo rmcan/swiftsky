@@ -21,10 +21,13 @@ struct HomeView: View {
                         .onAppear {
                             if post == timeline.feed.last {
                                 if let cursor = self.timeline.cursor {
-                                    getTimeline(before: cursor) { result in
-                                        if let result = result {
+                                    Task {
+                                        do {
+                                            let result = try await getTimeline(before: cursor)
                                             self.timeline.feed.append(contentsOf: result.feed)
                                             self.timeline.cursor = result.cursor
+                                        } catch {
+                                            
                                         }
                                     }
                                 }
@@ -45,9 +48,11 @@ struct HomeView: View {
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
         .onAppear {
-            getTimeline() { result in
-                if let result = result {
-                    self.timeline = result
+            Task {
+                do {
+                    self.timeline = try await getTimeline()
+                } catch {
+                    
                 }
             }
         }

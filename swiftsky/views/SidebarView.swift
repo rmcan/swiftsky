@@ -13,6 +13,14 @@ struct SidebarView: View {
     @State var compose: Bool = false
     @State var replypost: Bool = false
     @State private var post: FeedPostView? = nil
+    func loadProfile() {
+        Task {
+            do {
+                self.profile = try await getProfile(actor: NetworkManager.shared.handle)
+            } catch {
+            }
+        }
+    }
     var body: some View {
         NavigationSplitView {
             List(selection: $selection) {
@@ -105,20 +113,12 @@ struct SidebarView: View {
         }
         .onChange(of: auth.needAuthorization) { newValue in
             if !newValue {
-                getProfile(actor: api.shared.handle) { result in
-                    if let result = result {
-                        self.profile = result
-                    }
-                }
+               loadProfile()
             }
         }
         .onAppear {
             if !auth.needAuthorization {
-                getProfile(actor: api.shared.handle) { result in
-                    if let result = result {
-                        self.profile = result
-                    }
-                }
+                loadProfile()
             }
         }
     }

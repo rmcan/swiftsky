@@ -30,10 +30,13 @@ struct PopularView: View {
                         .onAppear {
                             if post == Filteredfeed.last {
                                 if let cursor = self.timeline.cursor {
-                                    getPopular(before: cursor) { result in
-                                        if let result = result {
+                                    Task {
+                                        do {
+                                            let result = try await getPopular(before: cursor)
                                             self.timeline.feed.append(contentsOf: result.feed)
                                             self.timeline.cursor = result.cursor
+                                        } catch {
+                                            
                                         }
                                     }
                                 }
@@ -54,9 +57,11 @@ struct PopularView: View {
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
         .onAppear {
-            getPopular() { result in
-                if let result = result {
-                    self.timeline = result
+            Task {
+                do {
+                    self.timeline = try await getPopular()
+                } catch {
+                    
                 }
             }
         }
