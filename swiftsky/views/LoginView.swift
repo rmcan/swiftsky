@@ -20,7 +20,7 @@ struct LoginView: View {
             SecureField("Password", text: $password)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
-            Button("Sign in") {
+            Button {
                 disablebutton = true
                 Task {
                     do {
@@ -44,12 +44,19 @@ struct LoginView: View {
                     }
                     disablebutton = false
                 }
+            } label: {
+                Text("Sign in").frame(minWidth: 0, maxWidth: 50)
             }
             .disabled(disablebutton)
             .keyboardShortcut(.defaultAction)
             if let error = self.error {
                 Text(error)
                 .foregroundColor(.red)
+            }
+            Button {
+                exit(0)
+            } label: {
+                Text("Quit").frame(minWidth: 0, maxWidth: 50)
             }
         }
     }
