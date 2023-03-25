@@ -12,7 +12,21 @@ struct ProfileView: View {
     @State var authorfeed = FeedGetAuthorFeedOutput()
     @State var previewurl: URL?
     @State private var disablefollowbutton = false
+    @State var error: String? = nil
     @Binding var path: NavigationPath
+    @State var loading: Bool = false
+    func loadProfile() {
+        loading = true
+        Task {
+            do {
+                self.profile = try await getProfile(actor: handle)
+                self.authorfeed = try await getAuthorFeed(author: handle)
+            } catch {
+                self.error = error.localizedDescription
+            }
+            loading = false
+        }
+    }
     var body: some View {
         List {
             if let profile = profile {
@@ -166,15 +180,19 @@ struct ProfileView: View {
         .environment(\.defaultMinListRowHeight, 0.1)
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
-        .onAppear {
-            Task {
-                do {
-                    self.profile = try await getProfile(actor: handle)
-                    self.authorfeed = try await getAuthorFeed(author: handle)
-                } catch {
-                    
+        .alert(error ?? "", isPresented: .constant(error != nil), actions: {})
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    loadProfile()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
                 }
+                .disabled(loading)
             }
+        }
+        .onAppear {
+          loadProfile()
         }
         .quickLookPreview($previewurl)
     }

@@ -9,6 +9,18 @@ struct PopularView: View {
     @AppStorage("disablelanguageFilter") private var disablelanguageFilter = false
     @State var timeline: UnspeccedGetPopularOutput = UnspeccedGetPopularOutput()
     @Binding var path: NavigationPath
+    @State var loading = false
+    func loadContent() {
+        loading = true
+        Task {
+            do {
+                self.timeline = try await getPopular()
+            } catch {
+                
+            }
+            loading = false
+        }
+    }
     var body: some View {
         List {
             Group {
@@ -19,6 +31,9 @@ struct PopularView: View {
                     let text = $0.post.record.text
                     let langcode = text.isEmpty ? "en" : $0.post.record.text.languageCode
                     return langcode == "en" || Locale.preferredLanguageCodes.contains(langcode)
+                }
+                if self.loading && !Filteredfeed.isEmpty {
+                    ProgressView().frame(maxWidth: .infinity, alignment: .center)
                 }
                 ForEach(Filteredfeed) { post in
                     PostView(post: post.post, reply: post.reply?.parent.author.handle, repost: post.reason, path: $path)
@@ -56,14 +71,18 @@ struct PopularView: View {
         .environment(\.defaultMinListRowHeight, 0.1)
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
-        .onAppear {
-            Task {
-                do {
-                    self.timeline = try await getPopular()
-                } catch {
-                    
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    loadContent()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
                 }
+                .disabled(loading)
             }
+        }
+        .onAppear {
+            loadContent()
         }
         
     }

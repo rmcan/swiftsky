@@ -8,9 +8,24 @@ import SwiftUI
 struct HomeView: View {
     @State var timeline: FeedGetTimelineOutput = FeedGetTimelineOutput()
     @Binding var path: NavigationPath
+    @State var loading = false
+    func loadContent() {
+        loading = true
+        Task {
+            do {
+                self.timeline = try await getTimeline()
+            } catch {
+                
+            }
+            loading = false
+        }
+    }
     var body: some View {
         List {
             Group {
+                if self.loading && !timeline.feed.isEmpty {
+                    ProgressView().frame(maxWidth: .infinity, alignment: .center)
+                }
                 ForEach(timeline.feed) { post in
                     PostView(post: post.post, reply: post.reply?.parent.author.handle, repost: post.reason, path: $path)
                         .padding([.top, .horizontal])
@@ -47,14 +62,18 @@ struct HomeView: View {
         .environment(\.defaultMinListRowHeight, 0.1)
         .scrollContentBackground(.hidden)
         .listStyle(.plain)
-        .onAppear {
-            Task {
-                do {
-                    self.timeline = try await getTimeline()
-                } catch {
-                    
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    loadContent()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
                 }
+                .disabled(loading)
             }
+        }
+        .onAppear {
+          loadContent()
         }
         
     }
