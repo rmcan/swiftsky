@@ -9,16 +9,14 @@ struct HomeView: View {
   @State var timeline: FeedGetTimelineOutput = FeedGetTimelineOutput()
   @Binding var path: NavigationPath
   @State var loading = false
-  func loadContent() {
+  func loadContent() async {
     loading = true
-    Task {
-      do {
-        self.timeline = try await getTimeline()
-      } catch {
-        
-      }
-      loading = false
+    do {
+      self.timeline = try await getTimeline()
+    } catch {
+      
     }
+    loading = false
   }
   var body: some View {
     List {
@@ -36,17 +34,15 @@ struct HomeView: View {
           .onTapGesture {
             path.append(post)
           }
-          .onAppear {
+          .task {
             if post == timeline.feed.last {
               if let cursor = self.timeline.cursor {
-                Task {
-                  do {
-                    let result = try await getTimeline(before: cursor)
-                    self.timeline.feed.append(contentsOf: result.feed)
-                    self.timeline.cursor = result.cursor
-                  } catch {
-                    
-                  }
+                do {
+                  let result = try await getTimeline(before: cursor)
+                  self.timeline.feed.append(contentsOf: result.feed)
+                  self.timeline.cursor = result.cursor
+                } catch {
+                  
                 }
               }
             }
@@ -60,7 +56,6 @@ struct HomeView: View {
         }
       }
       .listRowInsets(EdgeInsets())
-
     }
     .environment(\.defaultMinListRowHeight, 0.1)
     .scrollContentBackground(.hidden)
@@ -68,16 +63,17 @@ struct HomeView: View {
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         Button {
-          loadContent()
+          Task {
+            await loadContent()
+          }
         } label: {
           Image(systemName: "arrow.clockwise")
         }
         .disabled(loading)
       }
     }
-    .onAppear {
-      loadContent()
+    .task {
+      await loadContent()
     }
-
   }
 }

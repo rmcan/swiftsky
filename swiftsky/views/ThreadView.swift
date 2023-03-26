@@ -28,28 +28,26 @@ struct ThreadView: View {
   @Binding var compose: Bool
   @Binding var post: FeedPostView?
   @Binding var path: NavigationPath
-  func load() {
+  func load() async {
     threadviewpost = nil
     parents = []
-    Task {
-      do {
-        let result = try await getPostThread(uri: self.uri)
-        if let thread = result.thread {
-          self.threadviewpost = thread
-          var currentparent = thread.parent
-          while let parent = currentparent {
-            parents.append(parent)
-            currentparent = parent.parent
-          }
-          parents.reverse()
+    do {
+      let result = try await getPostThread(uri: self.uri)
+      if let thread = result.thread {
+        self.threadviewpost = thread
+        var currentparent = thread.parent
+        while let parent = currentparent {
+          parents.append(parent)
+          currentparent = parent.parent
         }
-      } catch {
-        if let error = error as? xrpcErrorDescription {
-          self.error = error.message!
-          return
-        }
-        self.error = error.localizedDescription
+        parents.reverse()
       }
+    } catch {
+      if let error = error as? xrpcErrorDescription {
+        self.error = error.message!
+        return
+      }
+      self.error = error.localizedDescription
     }
   }
   var body: some View {
@@ -139,13 +137,15 @@ struct ThreadView: View {
     .navigationTitle(
       threadviewpost != nil ? "\(threadviewpost!.post.author.handle)'s post" : "Post"
     )
-    .onAppear {
-      load()
+    .task {
+      await load()
     }
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         Button {
-          load()
+          Task {
+            await load()
+          }
         } label: {
           Image(systemName: "arrow.clockwise")
         }

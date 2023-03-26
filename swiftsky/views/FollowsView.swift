@@ -104,24 +104,20 @@ struct FollowsView: View {
   let handle: String
   @State var follows: graphGetFollowsOutput? = nil
   @Binding var path: NavigationPath
-  func getFollows() {
-    Task {
-      do {
-        self.follows = try await graphGetFollows(user: handle)
-      } catch {
-        
-      }
+  func getFollows() async {
+    do {
+      self.follows = try await graphGetFollows(user: handle)
+    } catch {
+      
     }
   }
-  func getMoreFollows(cursor: String) {
-    Task {
-      do {
-        let result = try await graphGetFollows(user: handle, before: cursor)
-        self.follows!.cursor = result.cursor
-        self.follows!.follows.append(contentsOf: result.follows)
-      } catch {
-        
-      }
+  func getMoreFollows(cursor: String) async {
+    do {
+      let result = try await graphGetFollows(user: handle, before: cursor)
+      self.follows!.cursor = result.cursor
+      self.follows!.follows.append(contentsOf: result.follows)
+    } catch {
+      
     }
   }
   var body: some View {
@@ -130,10 +126,10 @@ struct FollowsView: View {
         ForEach(follows.follows) { user in
           FollowsRowView(user: user, path: $path)
             .padding(5)
-            .onAppear {
+            .task {
               if user == follows.follows.last {
                 if let cursor = follows.cursor {
-                  getMoreFollows(cursor: cursor)
+                  await getMoreFollows(cursor: cursor)
                 }
               }
             }
@@ -150,8 +146,8 @@ struct FollowsView: View {
     .environment(\.defaultMinListRowHeight, 0.1)
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
-    .onAppear {
-      getFollows()
+    .task {
+      await getFollows()
     }
   }
 }

@@ -20,17 +20,15 @@ struct ProfileView: View {
   @State var error: String? = nil
   @Binding var path: NavigationPath
   @State var loading: Bool = false
-  func loadProfile() {
+  func loadProfile() async {
     loading = true
-    Task {
-      do {
-        self.profile = try await getProfile(actor: handle)
-        self.authorfeed = try await getAuthorFeed(author: handle)
-      } catch {
-        self.error = error.localizedDescription
-      }
-      loading = false
+    do {
+      self.profile = try await getProfile(actor: handle)
+      self.authorfeed = try await getAuthorFeed(author: handle)
+    } catch {
+      self.error = error.localizedDescription
     }
+    loading = false
   }
   var body: some View {
     List {
@@ -177,17 +175,15 @@ struct ProfileView: View {
             .onTapGesture {
               path.append(post)
             }
-            .onAppear {
+            .task {
               if post == authorfeed.feed.last {
                 if let cursor = self.authorfeed.cursor {
-                  Task {
-                    do {
-                      let result = try await getAuthorFeed(author: profile.handle, before: cursor)
-                      self.authorfeed.feed.append(contentsOf: result.feed)
-                      self.authorfeed.cursor = result.cursor
-                    } catch {
-
-                    }
+                  do {
+                    let result = try await getAuthorFeed(author: profile.handle, before: cursor)
+                    self.authorfeed.feed.append(contentsOf: result.feed)
+                    self.authorfeed.cursor = result.cursor
+                  } catch {
+                    
                   }
                 }
               }
@@ -211,15 +207,17 @@ struct ProfileView: View {
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         Button {
-          loadProfile()
+          Task {
+            await loadProfile()
+          }
         } label: {
           Image(systemName: "arrow.clockwise")
         }
         .disabled(loading)
       }
     }
-    .onAppear {
-      loadProfile()
+    .task {
+      await loadProfile()
     }
     .quickLookPreview($previewurl)
   }
