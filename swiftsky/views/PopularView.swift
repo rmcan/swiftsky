@@ -10,16 +10,14 @@ struct PopularView: View {
   @State var timeline: UnspeccedGetPopularOutput = UnspeccedGetPopularOutput()
   @Binding var path: NavigationPath
   @State var loading = false
-  func loadContent() {
+  func loadContent() async {
     loading = true
-    Task {
       do {
         self.timeline = try await getPopular()
       } catch {
 
       }
       loading = false
-    }
   }
   var body: some View {
     List {
@@ -45,17 +43,15 @@ struct PopularView: View {
           .onTapGesture {
             path.append(post)
           }
-          .onAppear {
+          .task {
             if post == filteredfeed.last {
               if let cursor = self.timeline.cursor {
-                Task {
-                  do {
-                    let result = try await getPopular(before: cursor)
-                    self.timeline.feed.append(contentsOf: result.feed)
-                    self.timeline.cursor = result.cursor
-                  } catch {
-
-                  }
+                do {
+                  let result = try await getPopular(before: cursor)
+                  self.timeline.feed.append(contentsOf: result.feed)
+                  self.timeline.cursor = result.cursor
+                } catch {
+                  
                 }
               }
             }
@@ -77,15 +73,17 @@ struct PopularView: View {
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         Button {
-          loadContent()
+          Task {
+            await loadContent()
+          }
         } label: {
           Image(systemName: "arrow.clockwise")
         }
         .disabled(loading)
       }
     }
-    .onAppear {
-      loadContent()
+    .task {
+      await loadContent()
     }
 
   }

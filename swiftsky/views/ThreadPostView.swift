@@ -15,13 +15,13 @@ struct ThreadPostview: View {
   @State var deletepostfailed = false
   @State var deletepost = false
   @Binding var path: NavigationPath
-  var load: () -> Void
+  var load: () async -> ()
   func delete() {
     Task {
       do {
         let result = try await repoDeleteRecord(uri: post.uri, collection: "app.bsky.feed.post")
         if result {
-          load()
+          await load()
         }
       } catch {
         deletepostfailed = true

@@ -104,24 +104,20 @@ struct FollowersView: View {
   let handle: String
   @State var followers: graphGetFollowersOutput? = nil
   @Binding var path: NavigationPath
-  func getFollowers() {
-    Task {
-      do {
-        self.followers = try await graphGetFollowers(user: handle)
-      } catch {
-        
-      }
+  func getFollowers() async {
+    do {
+      self.followers = try await graphGetFollowers(user: handle)
+    } catch {
+      
     }
   }
-  func getMoreFollowers(cursor: String) {
-    Task {
-      do {
-        let result = try await graphGetFollowers(user: handle, before: cursor)
-        self.followers!.cursor = result.cursor
-        self.followers!.followers.append(contentsOf: result.followers)
-      } catch {
-        
-      }
+  func getMoreFollowers(cursor: String) async {
+    do {
+      let result = try await graphGetFollowers(user: handle, before: cursor)
+      self.followers!.cursor = result.cursor
+      self.followers!.followers.append(contentsOf: result.followers)
+    } catch {
+      
     }
   }
   var body: some View {
@@ -130,10 +126,10 @@ struct FollowersView: View {
         ForEach(followers.followers) { user in
           FollowersRowView(user: user, path: $path)
             .padding(5)
-            .onAppear {
+            .task {
               if user == followers.followers.last {
                 if let cursor = followers.cursor {
-                  getMoreFollowers(cursor: cursor)
+                  await getMoreFollowers(cursor: cursor)
                 }
               }
             }
@@ -150,8 +146,8 @@ struct FollowersView: View {
     .environment(\.defaultMinListRowHeight, 0.1)
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
-    .onAppear {
-      getFollowers()
+    .task {
+      await getFollowers()
     }
   }
 }
