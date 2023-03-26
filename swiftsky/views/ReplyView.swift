@@ -15,7 +15,11 @@ struct ReplyView: View {
     disablebuttons = true
     Task {
       do {
-        let _ = try await makePost(text: reply)
+        if let viewpost {
+          let parent = RepoStrongRef(cid: viewpost.cid, uri: viewpost.uri)
+          let root = viewpost.record.reply != nil ? RepoStrongRef(cid: viewpost.record.reply!.root.uri, uri: viewpost.record.reply!.root.uri) : parent
+          let _ = try await makePost(text: reply, reply: FeedPostReplyRef(parent: parent, root: root))
+        }
         isPresented = false
       } catch {
         erroralert = true
