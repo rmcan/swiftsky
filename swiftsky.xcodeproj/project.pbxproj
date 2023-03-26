@@ -48,6 +48,10 @@
 		36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */; };
 		36E07D1329CA2FCD00A315C5 /* EmbedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */; };
 		36E07D1529CA310E00A315C5 /* embedrecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E07D1429CA310E00A315C5 /* embedrecord.swift */; };
+		36EA506529CF4BAC00FFE7DE /* FollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506429CF4BAC00FFE7DE /* FollowersView.swift */; };
+		36EA506729CF5C9E00FFE7DE /* graphgetFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */; };
+		36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506829D02B5200FFE7DE /* FollowsView.swift */; };
+		36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */; };
 		36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +99,10 @@
 		36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbedPostView.swift; sourceTree = "<group>"; };
 		36E07D1429CA310E00A315C5 /* embedrecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = embedrecord.swift; sourceTree = "<group>"; };
+		36EA506429CF4BAC00FFE7DE /* FollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersView.swift; sourceTree = "<group>"; };
+		36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphgetFollowers.swift; sourceTree = "<group>"; };
+		36EA506829D02B5200FFE7DE /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
+		36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphgetFollows.swift; sourceTree = "<group>"; };
 		36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetAuthorFeed.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,6 +196,8 @@
 				36AEF5B829C4920E00B68B24 /* systemdeclRef.swift */,
 				36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */,
 				3631A4DC29C99DB900ED7B27 /* unspeccedgetPopular.swift */,
+				36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */,
+				36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */,
 			);
 			path = bsky;
 			sourceTree = "<group>";
@@ -211,6 +221,8 @@
 				36280D5A29CC7330003A1CE7 /* ReplyView.swift */,
 				36280D5C29CC8F5A003A1CE7 /* MenuButton.swift */,
 				36280D5E29CC9060003A1CE7 /* NewPostView.swift */,
+				36EA506429CF4BAC00FFE7DE /* FollowersView.swift */,
+				36EA506829D02B5200FFE7DE /* FollowsView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -318,9 +330,11 @@
 				36AEF5C829C4935E00B68B24 /* PostView.swift in Sources */,
 				36AEF5C629C4934400B68B24 /* PostFooterView.swift in Sources */,
 				3631A4DD29C99DB900ED7B27 /* unspeccedgetPopular.swift in Sources */,
+				36EA506729CF5C9E00FFE7DE /* graphgetFollowers.swift in Sources */,
 				3631A4D929C994AD00ED7B27 /* repodeleteRecord.swift in Sources */,
 				36AEF5CE29C493C600B68B24 /* ThreadView.swift in Sources */,
 				3631A4E129C9B65E00ED7B27 /* SettingsView.swift in Sources */,
+				36EA506529CF4BAC00FFE7DE /* FollowersView.swift in Sources */,
 				3631A4D529C8CB9A00ED7B27 /* repocreateRecord.swift in Sources */,
 				36AEF5A429C4907600B68B24 /* sessioncreate.swift in Sources */,
 				36AEF5CA29C4938200B68B24 /* ProfileView.swift in Sources */,
@@ -328,6 +342,8 @@
 				36280D5B29CC7330003A1CE7 /* ReplyView.swift in Sources */,
 				36AEF5B929C4920E00B68B24 /* systemdeclRef.swift in Sources */,
 				36AEF5B329C4919100B68B24 /* feedgetTimeline.swift in Sources */,
+				36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */,
+				36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */,
 				36AEF5A829C490BB00B68B24 /* sessionrefresh.swift in Sources */,
 				36AEF5C229C492EB00B68B24 /* HomeView.swift in Sources */,
 				36E07D1529CA310E00A315C5 /* embedrecord.swift in Sources */,
@@ -466,6 +482,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"swiftsky/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -492,6 +509,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"swiftsky/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

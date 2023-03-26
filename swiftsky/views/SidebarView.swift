@@ -91,6 +91,18 @@ struct SidebarView: View {
             .frame(minWidth: 800)
             .navigationTitle(actorref.handle)
         }
+        .navigationDestination(for: ProfileRouter.self) { router in
+          switch router {
+          case let .followers(handle):
+            FollowersView(handle: handle, path: $path)
+              .frame(minWidth: 800)
+              .navigationTitle("People following @\(handle)")
+          case let .following(handle):
+            FollowsView(handle: handle, path: $path)
+              .frame(minWidth: 800)
+              .navigationTitle("People followed by @\(handle)")
+          }
+        }
         .toolbar {
           ToolbarItem(placement: .primaryAction) {
             Button {

@@ -9,16 +9,19 @@ struct ActorRef: Codable, Hashable {
 }
 
 struct ActorRefViewerState: Decodable, Hashable {
-  let followedBy: String?
-  let following: String?
-  let muted: Bool?
+  var followedBy: String?
+  var following: String?
+  var muted: Bool?
 }
 
-struct ActorRefWithInfo: Decodable, Hashable {
+struct ActorRefWithInfo: Decodable, Hashable, Identifiable {
+  var id: String {
+    did
+  }
   let avatar: String?
   let declaration: SystemDeclRef
   let did: String
   let displayName: String?
   let handle: String
-  let viewer: ActorRefViewerState?
+  var viewer: ActorRefViewerState?
 }
