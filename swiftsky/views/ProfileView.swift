@@ -6,6 +6,11 @@
 import QuickLook
 import SwiftUI
 
+enum ProfileRouter: Hashable {
+   case followers(String)
+   case following(String)
+}
+
 struct ProfileView: View {
   var handle: String
   @State var profile: ActorProfileView?
@@ -127,8 +132,28 @@ struct ProfileView: View {
             }
             .padding(.bottom, -3)
             HStack(spacing: 10) {
-              Text("\(profile.followersCount) \(Text("followers").foregroundColor(.secondary))")
-              Text("\(profile.followsCount) \(Text("following").foregroundColor(.secondary))")
+              Group {
+                Button {
+                  path.append(ProfileRouter.followers(profile.handle))
+                } label: {
+                  Text("\(profile.followersCount) \(Text("followers").foregroundColor(.secondary))")
+                }
+                .buttonStyle(.plain)
+                Button {
+                  path.append(ProfileRouter.following(profile.handle))
+                } label: {
+                  Text("\(profile.followsCount) \(Text("following").foregroundColor(.secondary))")
+                }
+                .buttonStyle(.plain)
+              }
+              .onHover { hovered in
+                if hovered {
+                  NSCursor.pointingHand.push()
+                }
+                else {
+                  NSCursor.pointingHand.pop()
+                }
+              }
               Text("\(profile.postsCount) \(Text("posts").foregroundColor(.secondary))")
             }
             .padding(.bottom, -5)
