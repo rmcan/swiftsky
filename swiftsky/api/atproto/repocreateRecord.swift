@@ -9,9 +9,12 @@ struct RepoCreateRecordOutput: Decodable {
   let cid: String
   let uri: String
 }
-
+struct LikePostInput: Encodable {
+  let subject: RepoStrongRef
+  let createdAt: String
+}
 struct FollowUserInput: Encodable {
-  let subject: ActorRef
+  let subject: String
   let createdAt: String
 }
 struct CreatePostInput: Encodable {
@@ -22,12 +25,12 @@ struct CreatePostInput: Encodable {
 struct RepoCreateRecordInput<T: Encodable>: Encodable {
   let type: String
   let collection: String
-  let did: String
+  let repo: String
   let record: T
   enum CodingKeys: String, CodingKey {
     case type = "$type"
     case collection
-    case did
+    case repo
     case record
   }
 }
@@ -39,19 +42,26 @@ func repoCreateRecord<T: Encodable>(input: RepoCreateRecordInput<T>) async throw
     endpoint: "com.atproto.repo.createRecord", httpMethod: .post,
     authorization: NetworkManager.shared.user.accessJwt, params: input)
 }
-func followUser(did: String, declarationCid: String) async throws -> RepoCreateRecordOutput {
+func followUser(did: String) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
       type: "app.bsky.graph.follow", collection: "app.bsky.graph.follow",
-      did: NetworkManager.shared.did,
+      repo: NetworkManager.shared.did,
       record: FollowUserInput(
-        subject: ActorRef(declarationCid: declarationCid, did: did),
+        subject: did,
         createdAt: Date().iso8601withFractionalSeconds)))
 }
 func makePost(text: String, reply: FeedPostReplyRef? = nil) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
-      type: "app.bsky.feed.post", collection: "app.bsky.feed.post", did: NetworkManager.shared.did,
+      type: "app.bsky.feed.post", collection: "app.bsky.feed.post", repo: NetworkManager.shared.did,
       record: CreatePostInput(
         text: "test", createdAt: Date().iso8601withFractionalSeconds, reply: reply)))
+}
+func likePost(uri: String, cid: String) async throws -> RepoCreateRecordOutput {
+  return try await repoCreateRecord(
+    input: RepoCreateRecordInput(
+      type: "app.bsky.feed.like", collection: "app.bsky.feed.like", repo: NetworkManager.shared.did,
+      record: LikePostInput(
+        subject: RepoStrongRef(cid: cid, uri: uri), createdAt: Date().iso8601withFractionalSeconds)))
 }

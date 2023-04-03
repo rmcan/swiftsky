@@ -7,22 +7,24 @@ import Foundation
 
 struct UnspeccedGetPopularInput: Encodable {
   let limit: Int = 30
-  let before: String?
+  let cursor: String?
 }
 
-struct UnspeccedGetPopularOutput: Decodable, Hashable, Identifiable {
-  public static func == (lhs: UnspeccedGetPopularOutput, rhs: UnspeccedGetPopularOutput) -> Bool {
+struct UnspeccedGetPopularOutput: Decodable, Identifiable {
+  static func == (lhs: UnspeccedGetPopularOutput, rhs: UnspeccedGetPopularOutput) -> Bool {
     return lhs.id == rhs.id
   }
-  public var id: UUID {
-    UUID()
-  }
+  let id = UUID()
   var cursor: String? = ""
-  var feed: [FeedFeedViewPost] = []
+  var feed: [FeedDefsFeedViewPost] = []
+  enum CodingKeys: CodingKey {
+    case cursor
+    case feed
+  }
 }
 
-func getPopular(before: String? = nil) async throws -> UnspeccedGetPopularOutput {
+func getPopular(cursor: String? = nil) async throws -> UnspeccedGetPopularOutput {
   return try await NetworkManager.shared.fetch(
     endpoint: "app.bsky.unspecced.getPopular", authorization: NetworkManager.shared.user.accessJwt,
-    params: UnspeccedGetPopularInput(before: before))
+    params: UnspeccedGetPopularInput(cursor: cursor))
 }

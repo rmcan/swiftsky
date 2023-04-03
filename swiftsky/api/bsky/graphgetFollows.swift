@@ -4,19 +4,19 @@
 //
 
 struct graphGetFollowsInput: Encodable {
-  let before: String?
+  let cursor: String?
   let limit: Int
-  let user: String
+  let actor: String
 }
 
 struct graphGetFollowsOutput: Decodable {
   var cursor: String?
-  var follows: [ActorRefWithInfo]
-  let subject: ActorRefWithInfo
+  var follows: [ActorDefsProfileViewBasic]
+  let subject: ActorDefsProfileViewBasic
 }
 
-func graphGetFollows(user: String, limit: Int = 30, before: String? = nil) async throws -> graphGetFollowsOutput {
+func graphGetFollows(actor: String, limit: Int = 30, cursor: String? = nil) async throws -> graphGetFollowsOutput {
   return try await NetworkManager.shared.fetch(
     endpoint: "app.bsky.graph.getFollows", authorization: NetworkManager.shared.user.accessJwt,
-    params: graphGetFollowsInput(before: before, limit: limit, user: user))
+    params: graphGetFollowsInput(cursor: cursor, limit: limit, actor: actor))
 }

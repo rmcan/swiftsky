@@ -38,7 +38,7 @@ struct NewPostView: View {
         }
         .buttonStyle(.borderedProminent)
         .tint(.accentColor)
-        .disabled(text.count > 256 || disablebuttons)
+        .disabled(text.count > 300 || disablebuttons)
         .padding([.trailing, .top], 20)
       }
       Divider()
@@ -74,7 +74,7 @@ struct NewPostView: View {
         .padding(.vertical, 5)
       HStack {
         Spacer()
-        let replycount = 256 - text.count
+        let replycount = 300 - text.count
         Text("\(replycount)")
           .padding(.trailing, 20)
           .foregroundColor(replycount < 0 ? .red : .primary)

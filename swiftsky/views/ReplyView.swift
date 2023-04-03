@@ -7,7 +7,7 @@ import SwiftUI
 
 struct ReplyView: View {
   @Binding var isPresented: Bool
-  @Binding var viewpost: FeedPostView?
+  @Binding var viewpost: FeedDefsPostView?
   @State var reply = ""
   @State var disablebuttons: Bool = false
   @State var erroralert: Bool = false
@@ -43,7 +43,7 @@ struct ReplyView: View {
         }
         .buttonStyle(.borderedProminent)
         .tint(.accentColor)
-        .disabled(reply.count > 256 || disablebuttons)
+        .disabled(reply.count > 300 || disablebuttons)
         .padding([.trailing, .top], 20)
       }
       if let viewpost = viewpost {
@@ -101,7 +101,7 @@ struct ReplyView: View {
         .padding(.vertical, 5)
       HStack {
         Spacer()
-        let replycount = 256 - reply.count
+        let replycount = 300 - reply.count
         Text("\(replycount)")
           .padding(.trailing, 20)
           .foregroundColor(replycount < 0 ? .red : .primary)

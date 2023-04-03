@@ -26,7 +26,7 @@ struct ThreadView: View {
   @State var threadviewpost: FeedGetPostThreadThreadViewPost? = nil
   @State var parents: [FeedGetPostThreadThreadViewPost] = []
   @Binding var compose: Bool
-  @Binding var post: FeedPostView?
+  @Binding var post: FeedDefsPostView?
   @Binding var path: NavigationPath
   func load() async {
     threadviewpost = nil

@@ -29,38 +29,14 @@ struct FeedPostEntity: Decodable, Hashable {
 struct FeedPost: Decodable, Hashable {
   let createdAt: Date
   let embed: FeedPostEmbed?
-  let entities: [FeedPostEntity]?
+  //let entities: [FeedPostEntity]?
   let reply: FeedPostReplyRef?
   let text: String
 }
 
-struct FeedPostViewerState: Decodable, Hashable {
-  let downvote: String?
-  let repost: String?
-  var upvote: String?
-}
-
-struct FeedPostViewEmbed: Decodable, Hashable {
-  let images: [EmbedImagesPresentedImage]?
-  let external: EmbedExternalPresentedExternal?
-  let record: EmbedRecordPresentedRecord?
-
-}
 struct FeedPostEmbed: Decodable, Hashable {
   let images: [EmbedImagesImage]?
   let external: EmbedExternalExternal?
-  let record: RepoStrongRef?
+  //let record: RepoStrongRef?
 }
-struct FeedPostView: Decodable, Hashable {
-  let author: ActorRefWithInfo
-  var cid: String
-  let downvoteCount: Int
-  let embed: FeedPostViewEmbed?
-  let indexedAt: String
-  let record: FeedPost
-  let replyCount: Int
-  let repostCount: Int
-  var upvoteCount: Int
-  let uri: String
-  var viewer: FeedPostViewerState
-}
+

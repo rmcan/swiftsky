@@ -24,7 +24,7 @@ struct LoginView: View {
         disablebutton = true
         Task {
           do {
-            let result = try await xrpcSessionCreate(identifier: username, password: password)
+            let result = try await ServerCreateSession(identifier: username, password: password)
             NetworkManager.shared.user.username = username
             NetworkManager.shared.user.password = password
             NetworkManager.shared.user.refreshJwt = result.refreshJwt

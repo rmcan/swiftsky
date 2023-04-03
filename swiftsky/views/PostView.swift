@@ -7,10 +7,10 @@ import QuickLook
 import SwiftUI
 
 struct PostView: View {
-  @State var post: FeedPostView
+  @State var post: FeedDefsPostView
   @State var reply: String?
   @State var usernamehover: Bool = false
-  @State var repost: FeedFeedViewPostReason? = nil
+  @State var repost: FeedDefsFeedViewPostReason? = nil
   @State var previewurl: URL? = nil
   @State var deletepostfailed = false
   @State var deletepost = false
@@ -118,15 +118,6 @@ struct PostView: View {
           //.padding(.bottom, 8)
         }
         if let embed = post.embed {
-          if let record: EmbedRecordPresentedRecord = embed.record {
-            Button {
-              path.append(record)
-            } label: {
-              EmbedPostView(embedrecord: record, path: $path)
-            }
-            .buttonStyle(.plain)
-            .contentShape(Rectangle())
-          }
           if let images = embed.images {
             HStack {
               ForEach(images, id: \.self) { image in
@@ -155,6 +146,15 @@ struct PostView: View {
                 .buttonStyle(.plain)
               }
             }
+          }
+          if let record: EmbedRecordViewRecord = embed.record {
+            Button {
+              path.append(record)
+            } label: {
+              EmbedPostView(embedrecord: record, path: $path)
+            }
+            .buttonStyle(.plain)
+            .contentShape(Rectangle())
           }
         }
       }

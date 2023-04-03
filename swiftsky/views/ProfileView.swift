@@ -13,7 +13,7 @@ enum ProfileRouter: Hashable {
 
 struct ProfileView: View {
   var handle: String
-  @State var profile: ActorProfileView?
+  @State var profile: ActorDefsProfileViewDetailed?
   @State var authorfeed = FeedGetAuthorFeedOutput()
   @State var previewurl: URL?
   @State private var disablefollowbutton = false
@@ -23,8 +23,8 @@ struct ProfileView: View {
   func loadProfile() async {
     loading = true
     do {
-      self.profile = try await getProfile(actor: handle)
-      self.authorfeed = try await getAuthorFeed(author: handle)
+      self.profile = try await actorgetProfile(actor: handle)
+      self.authorfeed = try await getAuthorFeed(actor: handle)
     } catch {
       self.error = error.localizedDescription
     }
@@ -97,7 +97,7 @@ struct ProfileView: View {
                   Task {
                     do {
                       let result = try await followUser(
-                        did: profile.did, declarationCid: profile.declaration.cid)
+                        did: profile.did)
                       self.profile?.viewer?.following = result.uri
                     } catch {
                       print(error)
@@ -179,7 +179,7 @@ struct ProfileView: View {
               if post == authorfeed.feed.last {
                 if let cursor = self.authorfeed.cursor {
                   do {
-                    let result = try await getAuthorFeed(author: profile.handle, before: cursor)
+                    let result = try await getAuthorFeed(actor: profile.handle, cursor: cursor)
                     self.authorfeed.feed.append(contentsOf: result.feed)
                     self.authorfeed.cursor = result.cursor
                   } catch {

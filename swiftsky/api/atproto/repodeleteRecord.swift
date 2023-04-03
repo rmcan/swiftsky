@@ -6,7 +6,7 @@
 import Foundation
 
 struct RepoDeleteRecordInput: Encodable {
-  let did: String
+  let repo: String
   let collection: String
   let rkey: String
 }
@@ -17,5 +17,5 @@ func repoDeleteRecord(uri: String, collection: String) async throws -> Bool {
     endpoint: "com.atproto.repo.deleteRecord", httpMethod: .post,
     authorization: NetworkManager.shared.user.accessJwt,
     params: RepoDeleteRecordInput(
-      did: NetworkManager.shared.did, collection: collection, rkey: aturi.rkey))
+      repo: NetworkManager.shared.did, collection: collection, rkey: aturi.rkey))
 }

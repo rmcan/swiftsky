@@ -6,7 +6,7 @@
 import SwiftUI
 
 private struct FollowsRowView: View {
-  @State var user: ActorRefWithInfo
+  @State var user: ActorDefsProfileViewBasic
   @State var usernamehover: Bool = false
   @State var followingdisabled: Bool = false
   @Binding var path: NavigationPath
@@ -15,7 +15,7 @@ private struct FollowsRowView: View {
     Task {
       do {
         let result = try await followUser(
-          did: user.did, declarationCid: user.declaration.cid)
+          did: user.did)
         self.user.viewer?.following = result.uri
       } catch {
         print(error)
@@ -106,14 +106,14 @@ struct FollowsView: View {
   @Binding var path: NavigationPath
   func getFollows() async {
     do {
-      self.follows = try await graphGetFollows(user: handle)
+      self.follows = try await graphGetFollows(actor: handle)
     } catch {
       
     }
   }
   func getMoreFollows(cursor: String) async {
     do {
-      let result = try await graphGetFollows(user: handle, before: cursor)
+      let result = try await graphGetFollows(actor: handle, cursor: cursor)
       self.follows!.cursor = result.cursor
       self.follows!.follows.append(contentsOf: result.follows)
     } catch {

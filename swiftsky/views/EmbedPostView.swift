@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct EmbedPostView: View {
-  @State var embedrecord: EmbedRecordPresentedRecord
+  @State var embedrecord: EmbedRecordViewRecord
   @State var usernamehover: Bool = false
   @Binding var path: NavigationPath
 
@@ -43,13 +43,46 @@ struct EmbedPostView: View {
           }
           Text(
             Formatter.relativeDateNamed.localizedString(
-              fromTimeInterval: embedrecord.record.createdAt.timeIntervalSinceNow)
+              fromTimeInterval: embedrecord.value.createdAt.timeIntervalSinceNow)
           )
           .foregroundColor(.secondary)
         }
 
-        Text(embedrecord.record.text)
+        Text(embedrecord.value.text)
           .frame(maxHeight: 100)
+        if let embed = embedrecord.embeds {
+          ForEach(embed) { embed in
+            if let images = embed.images {
+              HStack {
+                ForEach(images, id: \.self) { image in
+                  Button {
+                    //previewurl = URL(string: image.fullsize)
+
+                  } label: {
+                    let imagewidth = 600.0 / Double(images.count)
+                    let imageheight = 600.0 / Double(images.count)
+                    CachedAsyncImage(url: URL(string: image.thumb)) { image in
+                      image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: imagewidth, height: imageheight)
+                        .contentShape(Rectangle())
+                        .clipped()
+
+                    } placeholder: {
+                      ProgressView()
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                    .frame(width: imagewidth, height: imageheight)
+                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
+                    .cornerRadius(15)
+                  }
+                  .buttonStyle(.plain)
+                }
+              }
+            }
+          }
+        }
       }
       .padding(10)
 
