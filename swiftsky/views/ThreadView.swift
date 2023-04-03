@@ -7,10 +7,10 @@ import SwiftUI
 
 struct SeparatorShape: Shape {
   var yoffset = 0.0
-  var lastpost = false
+  var notlastpost = false
   func path(in rect: CGRect) -> Path {
     var path = Path()
-    if lastpost {
+    if !notlastpost {
       path.addRect(
         CGRect(x: rect.minX + 35, y: rect.minY + yoffset, width: 2, height: rect.maxY + 15))
     } else {
@@ -61,22 +61,22 @@ struct ThreadView: View {
               if let parentpost = parent.post {
                 ZStack {
                   SeparatorShape(
-                    yoffset: parent == parents.first ? 55 : 0, lastpost: parent == parents.last
+                    yoffset: parent != parents.first ? 0 : 55, notlastpost: parent != parents.last
                   )
                   .foregroundColor(Color(nsColor: NSColor.quaternaryLabelColor))
                   VStack(spacing: 0) {
-                      PostView(post: parentpost, reply: parent.parent?.post?.author.handle, path: $path)
-                        .padding([.top, .horizontal])
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                          path.append(parentpost)
-                        }
-                      PostFooterView(bottompadding: false, post: parentpost)
-                        .padding(.leading, 67.0)
+                    PostView(post: parentpost, reply: parent.parent?.post?.author.handle, path: $path)
+                      .padding([.top, .horizontal])
+                      .contentShape(Rectangle())
+                      .onTapGesture {
+                        path.append(parentpost)
+                      }
+                    PostFooterView(bottompadding: false, post: parentpost)
+                      .padding(.leading, 67.0)
                   }
                 }
               }
-           
+              
             }
             ThreadPostview(
               post: viewpost, reply: threadviewpost?.parent?.post?.author.handle, path: $path,
@@ -93,7 +93,7 @@ struct ThreadView: View {
                 .frame(width: 40, height: 40)
                 .padding(.leading)
                 .padding([.vertical, .trailing], 5)
-
+              
               Text("Reply to @\(viewpost.author.handle)")
                 .font(.system(size: 15))
                 .opacity(0.9)
@@ -126,7 +126,7 @@ struct ThreadView: View {
                     .padding(.leading, 67.0)
                   Divider()
                 }
-             
+                
               }
             }
           } else {
@@ -161,9 +161,9 @@ struct ThreadView: View {
           } label: {
             Image(systemName: "arrow.clockwise")
           }
-
+          
         }
       }
     }
-    }
+  }
 }
