@@ -125,8 +125,8 @@ struct PostView: View {
                   previewurl = URL(string: image.fullsize)
 
                 } label: {
-                  let imagewidth = 600.0 / Double(images.count)
-                  let imageheight = 600.0 / Double(images.count)
+                  let imagewidth = 500.0 / Double(images.count)
+                  let imageheight = 500.0 / Double(images.count)
                   CachedAsyncImage(url: URL(string: image.thumb)) { image in
                     image
                       .resizable()

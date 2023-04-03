@@ -28,7 +28,7 @@ struct SidebarView: View {
           } else {
             Image(systemName: "person.crop.circle.fill")
               .resizable()
-              .foregroundColor(.accentColor)
+              .foregroundStyle(.white, Color.accentColor)
               .frame(width: 40, height: 40)
               .cornerRadius(20)
           }

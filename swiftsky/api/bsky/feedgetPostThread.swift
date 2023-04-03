@@ -3,18 +3,28 @@
 //  swiftsky
 //
 
+import Foundation
+
 class FeedGetPostThreadThreadViewPost: Decodable, Hashable, Identifiable {
   static func == (lhs: FeedGetPostThreadThreadViewPost, rhs: FeedGetPostThreadThreadViewPost)
     -> Bool
   {
-    lhs.post.cid == rhs.post.cid
+    lhs.id == rhs.id
   }
   func hash(into hasher: inout Hasher) {
-    hasher.combine(post.cid)
+    hasher.combine(id)
   }
-  let post: FeedDefsPostView
+  let id = UUID()
+  let type: String?
+  let post: FeedDefsPostView?
   let parent: FeedGetPostThreadThreadViewPost?
   let replies: [FeedGetPostThreadThreadViewPost]?
+  enum CodingKeys: CodingKey {
+    case type
+    case post
+    case parent
+    case replies
+  }
 }
 struct FeedGetPostThreadInput: Encodable, Hashable {
   let uri: String
