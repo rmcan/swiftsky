@@ -7,36 +7,37 @@ import SwiftUI
 
 struct PostFooterView: View {
   var bottompadding = true
-  @State var post: FeedPostView
-  @State var lockupvote: Bool = false
+  @State var post: FeedDefsPostView
+  @State var locklike: Bool = false
 
-  func upvote() {
-    post.viewer.upvote = ""
-    post.upvoteCount += 1
+  func like() {
+    post.viewer.like = ""
+    post.likeCount += 1
     Task {
       do {
-        let result = try await feedSetVote(uri: post.uri, cid: post.cid, direction: "up")
-        post.viewer.upvote = result.upvote
+        let result = try await likePost(uri: post.uri, cid: post.cid)
+        post.viewer.like = result.uri
       } catch {
-        post.viewer.upvote = nil
-        post.upvoteCount -= 1
+        post.viewer.like = nil
+        post.likeCount -= 1
       }
-      lockupvote = false
+      locklike = false
     }
   }
-  func downvote() {
-    let upvote = post.viewer.upvote
-    post.viewer.upvote = nil
-    post.upvoteCount -= 1
+  func unlike() {
+    let like = post.viewer.like
+    post.viewer.like = nil
+    post.likeCount -= 1
     Task {
       do {
-        let result = try await feedSetVote(uri: post.uri, cid: post.cid, direction: "none")
-        post.viewer.upvote = result.upvote
+        if try await repoDeleteRecord(uri: like!, collection: "app.bsky.feed.like") {
+          post.viewer.like = nil
+        }
       } catch {
-        post.viewer.upvote = upvote
-        post.upvoteCount += 1
+        post.viewer.like = like
+        post.likeCount += 1
       }
-      lockupvote = false
+      locklike = false
     }
   }
   var body: some View {
@@ -44,15 +45,15 @@ struct PostFooterView: View {
       Label(String(post.replyCount), systemImage: "bubble.right")
       Label(String(post.repostCount), systemImage: "arrow.triangle.2.circlepath")
         .foregroundColor(post.viewer.repost != nil ? .cyan : .secondary)
-      Label(String(post.upvoteCount), systemImage: "heart")
-        .foregroundColor(post.viewer.upvote != nil ? .pink : .secondary)
+      Label(String(post.likeCount), systemImage: "heart")
+        .foregroundColor(post.viewer.like != nil ? .pink : .secondary)
         .onTapGesture {
-          if !lockupvote {
-            lockupvote = true
-            if post.viewer.upvote == nil {
-              upvote()
+          if !locklike {
+            locklike = true
+            if post.viewer.like == nil {
+              like()
             } else {
-              downvote()
+              unlike()
             }
           }
         }

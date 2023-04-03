@@ -10,15 +10,17 @@ struct UnspeccedGetPopularInput: Encodable {
   let before: String?
 }
 
-struct UnspeccedGetPopularOutput: Decodable, Hashable, Identifiable {
-  public static func == (lhs: UnspeccedGetPopularOutput, rhs: UnspeccedGetPopularOutput) -> Bool {
+struct UnspeccedGetPopularOutput: Decodable, Identifiable {
+  static func == (lhs: UnspeccedGetPopularOutput, rhs: UnspeccedGetPopularOutput) -> Bool {
     return lhs.id == rhs.id
   }
-  public var id: UUID {
-    UUID()
-  }
+  let id = UUID()
   var cursor: String? = ""
-  var feed: [FeedFeedViewPost] = []
+  var feed: [FeedDefsFeedViewPost] = []
+  enum CodingKeys: CodingKey {
+    case cursor
+    case feed
+  }
 }
 
 func getPopular(before: String? = nil) async throws -> UnspeccedGetPopularOutput {

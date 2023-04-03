@@ -7,6 +7,27 @@ import Combine
 import Foundation
 import SwiftUI
 
+struct AnyKey: CodingKey {
+  var stringValue: String
+  var intValue: Int?
+  
+  init?(stringValue: String) {
+    self.stringValue = stringValue
+    self.intValue = nil
+  }
+  init?(intValue: Int) {
+    self.stringValue = String(intValue)
+    self.intValue = intValue
+  }
+}
+struct xrpcErrorDescription: Error, LocalizedError, Decodable {
+  let error: String?
+  let message: String?
+  var errorDescription: String? {
+    message
+  }
+}
+
 class NetworkManager {
   static let shared = NetworkManager()
   private let baseURL = "https://bsky.social/xrpc/"
@@ -14,16 +35,19 @@ class NetworkManager {
   public var user = AuthData()
   @AppStorage("did") public var did: String = ""
   @AppStorage("handle") public var handle: String = ""
-  enum NetworkError: Error {
-    case serverError(Int)
-    case decodingError(Error)
-  }
   enum httpMethod {
     case get
     case post
   }
   init() {
     self.decoder = JSONDecoder()
+    self.decoder.keyDecodingStrategy = .custom({keys in
+      var last = keys.last!.stringValue
+      if last.first == "$" {
+        last.removeFirst()
+      }
+      return AnyKey(stringValue: last)!
+    })
     self.decoder.dateDecodingStrategy = .custom({ decoder in
       let container = try decoder.singleValueContainer()
       let dateString = try container.decode(String.self)
@@ -60,7 +84,7 @@ class NetworkManager {
   private func refreshSession() async -> Bool {
     do {
       let result: SessionRefreshOutput = try await self.fetch(
-        endpoint: "com.atproto.session.refresh", httpMethod: .post,
+        endpoint: "com.atproto.server.refreshSession", httpMethod: .post,
         authorization: self.user.refreshJwt, params: Optional<Bool>.none, retry: false)
       self.user.accessJwt = result.accessJwt
       self.user.refreshJwt = result.refreshJwt
@@ -111,7 +135,7 @@ class NetworkManager {
     let (data, response) = try await URLSession.shared.data(for: request)
 
     guard let httpResponse = response as? HTTPURLResponse else {
-      throw NetworkError.serverError(0)
+      throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "Server error: 0"])
     }
 
     guard 200...299 ~= httpResponse.statusCode else {
@@ -137,7 +161,7 @@ class NetworkManager {
         if error is xrpcErrorDescription {
           throw error
         }
-        throw NetworkError.serverError(httpResponse.statusCode)
+        throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "Server error: \(httpResponse.statusCode)"])
       }
     }
 
@@ -145,18 +169,8 @@ class NetworkManager {
       return true as! T
     }
 
-    do {
-      return try self.decoder.decode(T.self, from: data)
-    } catch {
-      throw NetworkError.decodingError(error)
-    }
-
+    return try self.decoder.decode(T.self, from: data)
   }
-}
-
-public struct xrpcErrorDescription: Error, Decodable {
-  let error: String?
-  let message: String?
 }
 
 struct AuthData: Codable {
@@ -164,7 +178,7 @@ struct AuthData: Codable {
   var password: String = ""
   var accessJwt: String = ""
   var refreshJwt: String = ""
-  static public func load() -> AuthData? {
+  static func load() -> AuthData? {
     if let userdata = readkeychain(service: "swiftsky.userData", account: "userData"),
       let user = try? JSONDecoder().decode(AuthData.self, from: userdata)
     {
@@ -172,9 +186,11 @@ struct AuthData: Codable {
     }
     return nil
   }
-  public func save() {
-    if let userdata = try? JSONEncoder().encode(self) {
-      savekeychain(userdata, service: "swiftsky.userData", account: "userData")
+  func save() {
+    Task {
+      if let userdata = try? JSONEncoder().encode(self) {
+        savekeychain(userdata, service: "swiftsky.userData", account: "userData")
+      }
     }
   }
 }

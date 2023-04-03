@@ -6,16 +6,16 @@
 import SwiftUI
 
 struct SidebarView: View {
-  @State var profile: ActorProfileView = ActorProfileView()
+  @State var profile: ActorDefsProfileViewDetailed = ActorDefsProfileViewDetailed ()
   @StateObject private var auth = Auth.shared
-  @State private var selection: Int = 1
+  @State private var selection: Int = -1
   @State private var path = NavigationPath()
   @State var compose: Bool = false
   @State var replypost: Bool = false
-  @State private var post: FeedPostView? = nil
+  @State private var post: FeedDefsPostView? = nil
   func loadProfile() async {
     do {
-      self.profile = try await getProfile(actor: NetworkManager.shared.handle)
+      self.profile = try await actorgetProfile(actor: NetworkManager.shared.handle)
     } catch {
     }
   }
@@ -67,24 +67,22 @@ struct SidebarView: View {
               .frame(minWidth: 800)
               .navigationTitle("Popular")
           default:
-            HomeView(path: $path)
-              .frame(minWidth: 800)
-              .navigationTitle("Home")
+            EmptyView()
           }
         }
-        .navigationDestination(for: FeedFeedViewPost.self) { post in
+        .navigationDestination(for: FeedDefsFeedViewPost.self) { post in
           ThreadView(uri: post.post.uri, compose: $replypost, post: $post, path: $path)
             .frame(minWidth: 800)
         }
-        .navigationDestination(for: FeedPostView.self) { post in
+        .navigationDestination(for: FeedDefsPostView.self) { post in
           ThreadView(uri: post.uri, compose: $replypost, post: $post, path: $path)
             .frame(minWidth: 800)
         }
-        .navigationDestination(for: EmbedRecordPresentedRecord.self) { post in
+        .navigationDestination(for: EmbedRecordViewRecord.self) { post in
           ThreadView(uri: post.uri, compose: $replypost, post: $post, path: $path)
             .frame(minWidth: 800)
         }
-        .navigationDestination(for: ActorRefWithInfo.self) { actorref in
+        .navigationDestination(for: ActorDefsProfileViewBasic.self) { actorref in
           ProfileView(handle: actorref.handle, path: $path)
             .frame(minWidth: 800)
             .navigationTitle(actorref.handle)
@@ -128,6 +126,7 @@ struct SidebarView: View {
       }
     }
     .task {
+      selection = 1
       if !auth.needAuthorization {
         await loadProfile()
       }

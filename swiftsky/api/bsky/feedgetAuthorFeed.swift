@@ -6,23 +6,25 @@
 import Foundation
 
 struct FeedGetAuthorFeedInput: Encodable {
-  let author: String
+  let actor: String
   let limit: Int = 30
-  let before: String?
+  let cursor: String?
 }
 
-public struct FeedGetAuthorFeedOutput: Decodable, Hashable, Identifiable {
-  public var id: UUID {
-    UUID()
-  }
+struct FeedGetAuthorFeedOutput: Decodable, Identifiable {
+  let id = UUID()
   var cursor: String? = ""
-  var feed: [FeedFeedViewPost] = []
+  var feed: [FeedDefsFeedViewPost] = []
+  enum CodingKeys: CodingKey {
+    case cursor
+    case feed
+  }
 }
 
-public func getAuthorFeed(author: String, before: String? = nil) async throws
+func getAuthorFeed(actor: String, cursor: String? = nil) async throws
   -> FeedGetAuthorFeedOutput
 {
   return try await NetworkManager.shared.fetch(
     endpoint: "app.bsky.feed.getAuthorFeed", authorization: NetworkManager.shared.user.accessJwt,
-    params: FeedGetAuthorFeedInput(author: author, before: before))
+    params: FeedGetAuthorFeedInput(actor: actor, cursor: cursor))
 }

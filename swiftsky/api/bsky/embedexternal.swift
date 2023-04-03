@@ -9,7 +9,7 @@ struct EmbedExternalExternal: Decodable, Hashable {
   let title: String
   let uri: String
 }
-struct EmbedExternalPresentedExternal: Decodable, Hashable {
+struct EmbedExternalViewExternal: Decodable, Hashable {
   let description: String
   let thumb: String?
   let title: String

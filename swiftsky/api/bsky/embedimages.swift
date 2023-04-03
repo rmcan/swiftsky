@@ -4,14 +4,15 @@
 //
 
 struct blob: Decodable, Hashable {
-  let cid: String
+ // let ref: String
   let mimeType: String
+ // let size: Int
 }
 struct EmbedImagesImage: Decodable, Hashable {
   let alt: String
   let image: blob
 }
-struct EmbedImagesPresentedImage: Decodable, Hashable {
+struct EmbedImagesViewImage: Decodable, Hashable {
   let alt: String
   let fullsize: String
   let thumb: String

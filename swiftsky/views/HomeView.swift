@@ -14,7 +14,7 @@ struct HomeView: View {
     do {
       self.timeline = try await getTimeline()
     } catch {
-      
+      print(error)
     }
     loading = false
   }
@@ -38,7 +38,7 @@ struct HomeView: View {
             if post == timeline.feed.last {
               if let cursor = self.timeline.cursor {
                 do {
-                  let result = try await getTimeline(before: cursor)
+                  let result = try await getTimeline(cursor: cursor)
                   self.timeline.feed.append(contentsOf: result.feed)
                   self.timeline.cursor = result.cursor
                 } catch {

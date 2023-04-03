@@ -12,7 +12,7 @@ class FeedGetPostThreadThreadViewPost: Decodable, Hashable, Identifiable {
   func hash(into hasher: inout Hasher) {
     hasher.combine(post.cid)
   }
-  let post: FeedPostView
+  let post: FeedDefsPostView
   let parent: FeedGetPostThreadThreadViewPost?
   let replies: [FeedGetPostThreadThreadViewPost]?
 }

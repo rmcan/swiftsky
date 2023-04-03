@@ -6,27 +6,27 @@
 import Foundation
 
 func updatekeychain(_ data: Data, service: String, account: String) {
-  let query =
+  let query: [CFString: Any] =
     [
       kSecClass: kSecClassGenericPassword,
       kSecAttrService: service,
       kSecAttrAccount: account,
-    ] as CFDictionary
+    ]
 
   let updatedData = [kSecValueData: data] as CFDictionary
-  SecItemUpdate(query, updatedData)
+  SecItemUpdate(query as CFDictionary, updatedData)
 }
 
 func savekeychain(_ data: Data, service: String, account: String) {
-  let query =
+  let query: [CFString: Any] =
     [
       kSecValueData: data,
       kSecClass: kSecClassGenericPassword,
       kSecAttrService: service,
       kSecAttrAccount: account,
-    ] as CFDictionary
+    ]
 
-  let saveStatus = SecItemAdd(query, nil)
+  let saveStatus = SecItemAdd(query as CFDictionary, nil)
 
   if saveStatus == errSecDuplicateItem {
     updatekeychain(data, service: service, account: account)
@@ -34,15 +34,15 @@ func savekeychain(_ data: Data, service: String, account: String) {
 }
 
 func readkeychain(service: String, account: String) -> Data? {
-  let query =
+  let query: [CFString: Any] =
     [
       kSecClass: kSecClassGenericPassword,
       kSecAttrService: service,
       kSecAttrAccount: account,
       kSecReturnData: true,
-    ] as CFDictionary
+    ]
 
   var result: AnyObject?
-  SecItemCopyMatching(query, &result)
+  SecItemCopyMatching(query as CFDictionary, &result)
   return result as? Data
 }

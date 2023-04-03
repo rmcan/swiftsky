@@ -3,20 +3,20 @@
 //  swiftsky
 //
 
-struct SessionCreateInput: Encodable {
+struct ServerCreateSessionInput: Encodable {
   let identifier: String
   let password: String
 }
 
-struct SessionCreateOutput: Decodable, Hashable {
+struct ServerCreateSessionOutput: Decodable, Hashable {
   let accessJwt: String
   let did: String
   let handle: String
   let refreshJwt: String
 }
 
-func xrpcSessionCreate(identifier: String, password: String) async throws -> SessionCreateOutput {
+func ServerCreateSession(identifier: String, password: String) async throws -> ServerCreateSessionOutput {
   return try await NetworkManager.shared.fetch(
-    endpoint: "com.atproto.session.create", httpMethod: .post,
-    params: SessionCreateInput(identifier: identifier, password: password))
+    endpoint: "com.atproto.server.createSession", httpMethod: .post,
+    params: ServerCreateSessionInput(identifier: identifier, password: password))
 }
