@@ -47,7 +47,7 @@ struct PopularView: View {
             if post == filteredfeed.last {
               if let cursor = self.timeline.cursor {
                 do {
-                  let result = try await getPopular(before: cursor)
+                  let result = try await getPopular(cursor: cursor)
                   self.timeline.feed.append(contentsOf: result.feed)
                   self.timeline.cursor = result.cursor
                 } catch {
