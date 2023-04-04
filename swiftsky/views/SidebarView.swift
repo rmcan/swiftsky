@@ -55,7 +55,7 @@ struct SidebarView: View {
         Group {
           switch selection {
           case 0:
-            ProfileView(handle: profile.handle, profile: profile, path: $path)
+            ProfileView(did: profile.did, profile: profile, path: $path)
               .frame(minWidth: 800)
               .navigationTitle(profile.handle)
           case 1:
@@ -83,9 +83,8 @@ struct SidebarView: View {
             .frame(minWidth: 800)
         }
         .navigationDestination(for: ActorDefsProfileViewBasic.self) { actorref in
-          ProfileView(handle: actorref.handle, path: $path)
+          ProfileView(did: actorref.did, path: $path)
             .frame(minWidth: 800)
-            .navigationTitle(actorref.handle)
         }
         .navigationDestination(for: ProfileRouter.self) { router in
           switch router {
@@ -114,6 +113,16 @@ struct SidebarView: View {
         }
       }
     }
+    .handlesExternalEvents(preferring: ["*"], allowing: ["*"])
+    .onOpenURL(perform: { url in
+      let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+      let did = components?.queryItems?.first { $0.name == "did" }?.value
+      guard let did = did else {
+          return
+      }
+   
+      path.append(ActorDefsProfileViewBasic(avatar: nil, did: did, displayName: "", handle: ""))
+    })
     .sheet(isPresented: $replypost) {
       ReplyView(isPresented: $replypost, viewpost: $post)
         .frame(minWidth: 600, maxWidth: 600, minHeight: 400, maxHeight: 800)

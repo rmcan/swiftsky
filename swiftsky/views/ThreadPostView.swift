@@ -28,6 +28,22 @@ struct ThreadPostview: View {
       }
     }
   }
+  var markdown: String {
+    var markdown = String()
+    let rt = RichText(text: post.record.text, facets: post.record.facets)
+    for segment in rt.segments() {
+      if let link = segment.link() {
+        markdown += "[\(segment.text)](\(link))"
+      }
+      else if let mention = segment.mention() {
+        markdown += "[\(segment.text)](swiftsky://profile?did=\(mention))"
+      }
+      else {
+        markdown += segment.text
+      }
+    }
+    return markdown
+  }
   var body: some View {
 
     VStack(alignment: .leading, spacing: 0) {
@@ -116,7 +132,7 @@ struct ThreadPostview: View {
       }
 
       if !post.record.text.isEmpty {
-        Text(post.record.text)
+        Text(.init(markdown))
           .foregroundColor(.primary)
           .textSelection(.enabled)
           .padding(.vertical, 4)

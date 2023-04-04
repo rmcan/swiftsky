@@ -9,7 +9,22 @@ struct EmbedPostView: View {
   @State var embedrecord: EmbedRecordViewRecord
   @State var usernamehover: Bool = false
   @Binding var path: NavigationPath
-
+  var markdown: String {
+    var markdown = String()
+    let rt = RichText(text: embedrecord.value.text, facets: embedrecord.value.facets)
+    for segment in rt.segments() {
+      if let link = segment.link() {
+        markdown += "[\(segment.text)](\(link))"
+      }
+      else if let mention = segment.mention() {
+        markdown += "[\(segment.text)](swiftsky://profile?did=\(mention))"
+      }
+      else {
+        markdown += segment.text
+      }
+    }
+    return markdown
+  }
   var body: some View {
     ZStack(alignment: .topLeading) {
 
@@ -48,7 +63,7 @@ struct EmbedPostView: View {
           .foregroundColor(.secondary)
         }
 
-        Text(embedrecord.value.text)
+        Text(.init(markdown))
           .frame(maxHeight: 100)
         if let embed = embedrecord.embeds {
           ForEach(embed) { embed in

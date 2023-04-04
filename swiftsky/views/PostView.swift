@@ -26,6 +26,22 @@ struct PostView: View {
       }
     }
   }
+  var markdown: String {
+    var markdown = String()
+    let rt = RichText(text: post.record.text, facets: post.record.facets)
+    for segment in rt.segments() {
+      if let link = segment.link() {
+        markdown += "[\(segment.text)](\(link))"
+      }
+      else if let mention = segment.mention() {
+        markdown += "[\(segment.text)](swiftsky://profile?did=\(mention))"
+      }
+      else {
+        markdown += segment.text
+      }
+    }
+    return markdown
+  }
   var body: some View {
     HStack(alignment: .top, spacing: 12) {
       if let avatar = post.author.avatar {
@@ -109,13 +125,9 @@ struct PostView: View {
           Text("Reply to @\(reply)").foregroundColor(.secondary)
         }
         if !post.record.text.isEmpty {
-          Text(post.record.text)
-            .foregroundColor(.primary)
+          Text(.init(markdown))
             .textSelection(.enabled)
-            .if(post.embed?.images == nil) { view in
-              view.padding(.bottom, 6)
-            }
-          //.padding(.bottom, 8)
+            .padding(.bottom, post.embed?.images == nil ? 6 : 0)
         }
         if let embed = post.embed {
           if let images = embed.images {

@@ -7,17 +7,6 @@ import Foundation
 import NaturalLanguage
 import SwiftUI
 
-extension View {
-  @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content)
-    -> some View
-  {
-    if condition {
-      transform(self)
-    } else {
-      self
-    }
-  }
-}
 extension ISO8601DateFormatter {
   convenience init(_ formatOptions: Options) {
     self.init()
@@ -99,5 +88,19 @@ extension Encodable {
     return (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)).flatMap {
       $0 as? [String: Any]
     }
+  }
+}
+
+extension String {
+  subscript (bounds: CountableClosedRange<Int>) -> String {
+    let start = self.utf8.index(startIndex, offsetBy: bounds.lowerBound)
+    let end = self.utf8.index(startIndex, offsetBy: bounds.upperBound)
+    return String(self.utf8[start...end])!
+  }
+  
+  subscript (bounds: CountableRange<Int>) -> String {
+    let start = self.utf8.index(startIndex, offsetBy: bounds.lowerBound)
+    let end = self.utf8.index(startIndex, offsetBy: bounds.upperBound)
+    return String(self.utf8[start..<end])!
   }
 }

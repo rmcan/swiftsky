@@ -29,7 +29,7 @@ struct FeedPostEntity: Decodable, Hashable {
 struct FeedPost: Decodable, Hashable {
   let createdAt: Date
   let embed: FeedPostEmbed?
-  //let entities: [FeedPostEntity]?
+  let facets: [RichtextFacet]?
   let reply: FeedPostReplyRef?
   let text: String
 }
