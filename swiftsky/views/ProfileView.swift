@@ -12,7 +12,7 @@ enum ProfileRouter: Hashable {
 }
 
 struct ProfileView: View {
-  var handle: String
+  var did: String
   @State var profile: ActorDefsProfileViewDetailed?
   @State var authorfeed = FeedGetAuthorFeedOutput()
   @State var previewurl: URL?
@@ -23,8 +23,8 @@ struct ProfileView: View {
   func loadProfile() async {
     loading = true
     do {
-      self.profile = try await actorgetProfile(actor: handle)
-      self.authorfeed = try await getAuthorFeed(actor: handle)
+      self.profile = try await actorgetProfile(actor: did)
+      self.authorfeed = try await getAuthorFeed(actor: did)
     } catch {
       self.error = error.localizedDescription
     }
@@ -200,10 +200,13 @@ struct ProfileView: View {
         }
       }
     }
+    .navigationTitle(profile?.handle ?? "Profile")
     .environment(\.defaultMinListRowHeight, 0.1)
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
-    .alert(error ?? "", isPresented: .constant(error != nil), actions: {})
+    .alert(error ?? "", isPresented: .constant(error != nil)) {
+      Button("OK") {error = nil}
+    }
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         Button {

@@ -47,6 +47,8 @@
 		36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */; };
 		36E07D1329CA2FCD00A315C5 /* EmbedPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */; };
 		36E07D1529CA310E00A315C5 /* embedrecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E07D1429CA310E00A315C5 /* embedrecord.swift */; };
+		36E1EB3329DB493F00469CFE /* richtextfacet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1EB3229DB493F00469CFE /* richtextfacet.swift */; };
+		36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1EB3429DBFE4A00469CFE /* richtext.swift */; };
 		36EA506529CF4BAC00FFE7DE /* FollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506429CF4BAC00FFE7DE /* FollowersView.swift */; };
 		36EA506729CF5C9E00FFE7DE /* graphgetFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */; };
 		36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506829D02B5200FFE7DE /* FollowsView.swift */; };
@@ -97,6 +99,9 @@
 		36AEF5D029C493FB00B68B24 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbedPostView.swift; sourceTree = "<group>"; };
 		36E07D1429CA310E00A315C5 /* embedrecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = embedrecord.swift; sourceTree = "<group>"; };
+		36E1EB3229DB493F00469CFE /* richtextfacet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = richtextfacet.swift; sourceTree = "<group>"; };
+		36E1EB3429DBFE4A00469CFE /* richtext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = richtext.swift; sourceTree = "<group>"; };
+		36E1EB3629DC328F00469CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		36EA506429CF4BAC00FFE7DE /* FollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersView.swift; sourceTree = "<group>"; };
 		36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphgetFollowers.swift; sourceTree = "<group>"; };
 		36EA506829D02B5200FFE7DE /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
@@ -134,6 +139,7 @@
 		36AEF58D29C48F0800B68B24 /* swiftsky */ = {
 			isa = PBXGroup;
 			children = (
+				36E1EB3629DC328F00469CFE /* Info.plist */,
 				36AEF5CF29C493E700B68B24 /* external */,
 				36AEF5BC29C4925200B68B24 /* views */,
 				36AEF5A129C4904D00B68B24 /* api */,
@@ -162,6 +168,7 @@
 				36AEF5BA29C4923200B68B24 /* keychain.swift */,
 				36AEF5BD29C492A100B68B24 /* api.swift */,
 				3631A4D629C9814A00ED7B27 /* uri.swift */,
+				36E1EB3429DBFE4A00469CFE /* richtext.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -195,6 +202,7 @@
 				36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */,
 				365C57A429D9E67300665E65 /* feeddefs.swift */,
 				365C57A629D9F5FC00665E65 /* actordefs.swift */,
+				36E1EB3229DB493F00469CFE /* richtextfacet.swift */,
 			);
 			path = bsky;
 			sourceTree = "<group>";
@@ -312,6 +320,7 @@
 				360BD5BA29CAE94100C7987B /* ThreadPostView.swift in Sources */,
 				3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */,
 				36AEF5B529C491AC00B68B24 /* feedpost.swift in Sources */,
+				36E1EB3329DB493F00469CFE /* richtextfacet.swift in Sources */,
 				36E07D1329CA2FCD00A315C5 /* EmbedPostView.swift in Sources */,
 				36AEF5BB29C4923200B68B24 /* keychain.swift in Sources */,
 				36280D5D29CC8F5A003A1CE7 /* MenuButton.swift in Sources */,
@@ -319,6 +328,7 @@
 				3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */,
 				3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */,
 				36AEF5B129C4917300B68B24 /* feedgetPostThread.swift in Sources */,
+				36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */,
 				3631A4D729C9814A00ED7B27 /* uri.swift in Sources */,
 				36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */,
 				36AEF5C829C4935E00B68B24 /* PostView.swift in Sources */,
@@ -481,6 +491,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"swiftsky/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = swiftsky/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -509,6 +520,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"swiftsky/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = swiftsky/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
