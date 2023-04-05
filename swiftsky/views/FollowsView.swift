@@ -54,14 +54,7 @@ private struct FollowsRowView: View {
         Group {
           Text(displayname)
             .underline(usernamehover)
-            .onHover { hover in
-              usernamehover = hover
-              if hover {
-                NSCursor.pointingHand.push()
-              } else {
-                NSCursor.pointingHand.pop()
-              }
-            }
+            .hoverHand {usernamehover = $0}
           Text("@\(user.handle)").foregroundColor(.secondary)
         }
         .onTapGesture {

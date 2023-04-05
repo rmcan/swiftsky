@@ -7,6 +7,21 @@ import Foundation
 import NaturalLanguage
 import SwiftUI
 
+extension View {
+  func hoverHand(callback: ((Bool) -> ())? = nil) -> some View {
+    self
+      .onHover {
+        if $0 {
+          NSCursor.pointingHand.push()
+        }
+        else {
+          NSCursor.pop()
+        }
+        callback?($0)
+      }
+  }
+}
+
 extension ISO8601DateFormatter {
   convenience init(_ formatOptions: Options) {
     self.init()
