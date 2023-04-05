@@ -47,15 +47,7 @@ struct EmbedPostView: View {
               .underline(usernamehover)
           }
           .buttonStyle(.plain)
-          .onHover { ishovered in
-            if ishovered {
-              usernamehover = true
-              NSCursor.pointingHand.push()
-            } else {
-              usernamehover = false
-              NSCursor.pointingHand.pop()
-            }
-          }
+          .hoverHand {usernamehover = $0}
           Text(
             Formatter.relativeDateNamed.localizedString(
               fromTimeInterval: embedrecord.value.createdAt.timeIntervalSinceNow)

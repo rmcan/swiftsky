@@ -68,15 +68,7 @@ struct ThreadPostview: View {
                 .underline(usernamehover)
             }
             .buttonStyle(.plain)
-            .onHover { ishovered in
-              if ishovered {
-                usernamehover = true
-                NSCursor.pointingHand.push()
-              } else {
-                usernamehover = false
-                NSCursor.pointingHand.pop()
-              }
-            }
+            .hoverHand {usernamehover = $0}
             Button {
               path.append(post.author)
             } label: {

@@ -12,7 +12,9 @@ enum ProfileRouter: Hashable {
 }
 
 struct ProfileView: View {
-  var did: String
+  let did: String
+  @Namespace var namespace
+  @State var showreplies = false
   @State var profile: ActorDefsProfileViewDetailed?
   @State var authorfeed = FeedGetAuthorFeedOutput()
   @State var previewurl: URL?
@@ -119,6 +121,7 @@ struct ProfileView: View {
             .padding(.trailing, 10)
 
           }
+        
           VStack(alignment: .leading) {
             Text(profile.displayName ?? profile.handle)
               .font(.system(size: 30))
@@ -144,33 +147,79 @@ struct ProfileView: View {
                 }
                 .buttonStyle(.plain)
               }
-              .onHover { hovered in
-                if hovered {
-                  NSCursor.pointingHand.push()
-                }
-                else {
-                  NSCursor.pointingHand.pop()
-                }
-              }
+              .hoverHand()
               Text("\(profile.postsCount) \(Text("posts").foregroundColor(.secondary))")
             }
             .padding(.bottom, -5)
             if let description = profile.description {
-              Text(description).textSelection(.enabled)
+              Text(.init(description)).textSelection(.enabled)
             }
           }
           .textSelection(.enabled)
           .padding(.top, 5)
           .padding(.leading, 20)
+          .padding(.bottom, 20)
+          HStack {
+            Button {
+              if (showreplies) {
+                showreplies = false
+              }
+            } label: {
+              VStack(alignment: .center, spacing: 0) {
+                Text("Posts")
+                  .hoverHand()
+                if !showreplies {
+                  Color.primary
+                    .frame(height: 2)
+                    .matchedGeometryEffect(id: "underline",
+                                             in: namespace,
+                                             properties: .frame)
+                } else {
+                  Color.clear.frame(height: 2)
+                }
+              }
+              .animation(.spring(), value: showreplies)
+            }
+            .buttonStyle(.plain)
+            .frame(maxWidth: 40)
+            Button {
+              showreplies = true
+            } label: {
+              VStack(alignment: .center, spacing: 0) {
+                Text("Posts & Replies")
+                  .hoverHand()
+                if showreplies {
+                  Color.primary
+                    .frame(height: 2)
+                    .matchedGeometryEffect(id: "underline",
+                                             in: namespace,
+                                             properties: .frame)
+                } else {
+                  Color.clear.frame(height: 2)
+                }
+              }
+              .animation(.spring(), value: showreplies)
+            }
+            .buttonStyle(.plain)
+            .frame(maxWidth: 100)
+          }
+          .padding(.leading, 20)
           Divider()
         }
-        ForEach(authorfeed.feed) { post in
+        let filteredfeed = authorfeed.feed.filter {
+          if showreplies {
+            return true
+          }
+          return $0.reply == nil
+        }
+        ForEach(filteredfeed) { post in
           Group {
             PostView(
               post: post.post, reply: post.reply?.parent.author.handle, repost: post.reason,
               path: $path
             )
-            .padding([.top, .horizontal])
+            .padding(.horizontal)
+            .padding(.top, post != filteredfeed.first ? nil : 5)
             .contentShape(Rectangle())
             .onTapGesture {
               path.append(post)

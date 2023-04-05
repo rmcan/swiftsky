@@ -72,15 +72,7 @@ struct PostView: View {
               .underline(usernamehover)
           }
           .buttonStyle(.plain)
-          .onHover { ishovered in
-            if ishovered {
-              usernamehover = true
-              NSCursor.pointingHand.push()
-            } else {
-              usernamehover = false
-              NSCursor.pointingHand.pop()
-            }
-          }
+          .hoverHand {usernamehover = $0}
 
           Text(
             Formatter.relativeDateNamed.localizedString(
@@ -111,13 +103,7 @@ struct PostView: View {
             }
             .frame(width: 30, height: 30)
             .contentShape(Rectangle())
-            .onHover { ishovered in
-              if ishovered {
-                NSCursor.pointingHand.push()
-              } else {
-                NSCursor.pointingHand.pop()
-              }
-            }
+            .hoverHand()
           }
           .frame(height: 0)
         }

@@ -98,13 +98,8 @@ struct ThreadView: View {
                 .font(.system(size: 15))
                 .opacity(0.9)
               Spacer()
-            }.onHover { ishovered in
-              if ishovered {
-                NSCursor.pointingHand.push()
-              } else {
-                NSCursor.pointingHand.pop()
-              }
             }
+            .hoverHand()
             .onTapGesture {
               compose = true
               post = viewpost
