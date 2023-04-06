@@ -6,7 +6,7 @@
 import Foundation
 
 struct UnspeccedGetPopularInput: Encodable {
-  let limit: Int = 30
+  let limit: Int
   let cursor: String?
 }
 
@@ -23,8 +23,8 @@ struct UnspeccedGetPopularOutput: Decodable, Identifiable {
   }
 }
 
-func getPopular(cursor: String? = nil) async throws -> UnspeccedGetPopularOutput {
+func getPopular(cursor: String? = nil, limit: Int = 100) async throws -> UnspeccedGetPopularOutput {
   return try await NetworkManager.shared.fetch(
     endpoint: "app.bsky.unspecced.getPopular", authorization: NetworkManager.shared.user.accessJwt,
-    params: UnspeccedGetPopularInput(cursor: cursor))
+    params: UnspeccedGetPopularInput(limit: limit, cursor: cursor))
 }

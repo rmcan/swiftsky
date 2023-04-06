@@ -10,14 +10,238 @@ enum ProfileRouter: Hashable {
    case followers(String)
    case following(String)
 }
+private struct ProfileViewHeader: View {
+  @State var previewurl: URL? = nil
+  let banner: String?
+  let avatar: String?
+  var body: some View {
+    ZStack(alignment: .bottomLeading) {
+      if let banner = banner {
+        CachedAsyncImage(url: URL(string: banner)) { image in
+          image
+            .resizable()
+            .frame(height: 200)
+        } placeholder: {
+          ProgressView()
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .onTapGesture {
+          previewurl = URL(string: banner)
+        }
+      } else {
+        Color(.controlAccentColor)
+          .frame(height: 200)
+      }
+      if let avatar = avatar {
+        AvatarView(url: URL(string: avatar)!, size: 80)
+          .offset(x: 20, y: 40)
+          .onTapGesture {
+            previewurl = URL(string: avatar)
+          }
+      } else {
+        Image(systemName: "person.crop.circle.fill")
+          .resizable()
+          .overlay(
+            Circle()
+              .stroke(Color.white, lineWidth: 4)
+              .frame(width: 80, height: 80)
+          )
+          .foregroundStyle(.white, Color.accentColor)
+          .frame(width: 80, height: 80)
+          .offset(x: 20, y: 40)
+      }
+    }
+    .quickLookPreview($previewurl)
+  }
+}
+private struct ProfileViewFollow: View {
+  let did: String
+  @State var following: String?
+  @State var disablefollowbutton: Bool = false
+  var body: some View {
+    HStack {
+      Spacer()
+      if NetworkManager.shared.did != did {
+        if let following {
+          Button("\(Image(systemName: "checkmark")) Following") {
+            disablefollowbutton = true
+            Task {
+              do {
+                let result = try await repoDeleteRecord(
+                  uri: following, collection: "app.bsky.graph.follow")
+                if result {
+                  self.following = nil
+                }
+              } catch {
 
+              }
+              disablefollowbutton = false
+            }
+          }
+          .disabled(disablefollowbutton)
+        } else {
+          Button("\(Image(systemName: "plus")) Follow") {
+            disablefollowbutton = true
+            Task {
+              do {
+                let result = try await followUser(
+                  did: did)
+                self.following = result.uri
+              } catch {
+                print(error)
+              }
+              disablefollowbutton = false
+            }
+          }
+          .disabled(disablefollowbutton)
+          .buttonStyle(.borderedProminent)
+          .tint(.accentColor)
+        }
+      }
+
+      Button {
+
+      } label: {
+        Image(systemName: "ellipsis")
+      }
+      .padding(.trailing, 10)
+    }
+  }
+}
+private struct ProfileViewDetails: View {
+  let handle: String
+  let displayName: String?
+  let followedBy: String?
+  let followersCount: Int
+  let followsCount: Int
+  let description: String?
+  let postsCount: Int
+  @Binding var path: NavigationPath
+  var body: some View {
+    VStack(alignment: .leading) {
+      Text(self.displayName ?? self.handle)
+        .font(.system(size: 30))
+      HStack(spacing: 4) {
+        if followedBy != nil {
+          Text("Follows you")
+        }
+        Text("@\(self.handle)").foregroundColor(.secondary)
+      }
+      .padding(.bottom, -3)
+      HStack(spacing: 10) {
+        Group {
+          Button {
+            path.append(ProfileRouter.followers(self.handle))
+          } label: {
+            Text("\(self.followersCount) \(Text("followers").foregroundColor(.secondary))")
+          }
+          .buttonStyle(.plain)
+          Button {
+            path.append(ProfileRouter.following(self.handle))
+          } label: {
+            Text("\(self.followsCount) \(Text("following").foregroundColor(.secondary))")
+          }
+          .buttonStyle(.plain)
+        }
+        .hoverHand()
+        Text("\(self.postsCount) \(Text("posts").foregroundColor(.secondary))")
+      }
+      .padding(.bottom, -5)
+      if let description {
+        Text(.init(description)).textSelection(.enabled)
+      }
+    }
+    .textSelection(.enabled)
+    .padding(.top, 5)
+    .padding(.leading, 20)
+    .padding(.bottom, 20)
+  }
+}
+private struct ProfileViewTabs: View {
+  @Namespace var namespace
+  @Binding var showreplies: Bool
+
+  var body: some View {
+    HStack {
+      Button {
+        if (showreplies) {
+          showreplies = false
+        }
+      } label: {
+        VStack(alignment: .center, spacing: 0) {
+          Text("Posts")
+            .hoverHand()
+          if !showreplies {
+            Color.primary
+              .frame(height: 2)
+              .matchedGeometryEffect(id: "underline",
+                                       in: namespace,
+                                       properties: .frame)
+          }
+        }
+        .animation(.spring(), value: showreplies)
+      }
+      .buttonStyle(.plain)
+      .frame(maxWidth: 40)
+      Button {
+        showreplies = true
+      } label: {
+        VStack(alignment: .center, spacing: 0) {
+          Text("Posts & Replies")
+            .hoverHand()
+          if showreplies {
+            Color.primary
+              .frame(height: 2)
+              .matchedGeometryEffect(id: "underline",
+                                       in: namespace,
+                                       properties: .frame)
+          }
+        }
+        .animation(.spring(), value: showreplies)
+      }
+      .buttonStyle(.plain)
+      .frame(maxWidth: 100)
+    }
+    .padding(.leading, 20)
+  }
+}
+private struct ProfileViewFeed: View {
+  let handle: String
+  let feed: [FeedDefsFeedViewPost]
+  @Binding var path: NavigationPath
+  let loadMorePosts: () async -> ()
+  var body: some View {
+    ForEach(feed) { post in
+      Group {
+        PostView(
+          post: post.post, reply: post.reply?.parent.author.handle, repost: post.reason,
+          path: $path
+        )
+        .padding(.horizontal)
+        .padding(.top, post != feed.first ? nil : 5)
+        .contentShape(Rectangle())
+        .onTapGesture {
+          path.append(post)
+        }
+        .task {
+          if post == feed.last {
+            await loadMorePosts()
+          }
+        }
+        PostFooterView(post: post.post)
+          .padding(.leading, 68)
+
+        Divider()
+      }
+      .listRowInsets(EdgeInsets())
+    }
+  }
+}
 struct ProfileView: View {
   let did: String
-  @Namespace var namespace
   @State var showreplies = false
   @State var profile: ActorDefsProfileViewDetailed?
   @State var authorfeed = FeedGetAuthorFeedOutput()
-  @State var previewurl: URL?
   @State private var disablefollowbutton = false
   @State var error: String? = nil
   @Binding var path: NavigationPath
@@ -32,220 +256,50 @@ struct ProfileView: View {
     }
     loading = false
   }
+  var filteredfeed: [FeedDefsFeedViewPost] {
+    self.authorfeed.feed.filter {
+      if showreplies {
+        return true
+      }
+      return $0.reply == nil
+    }
+  }
   var body: some View {
     List {
-      if let profile = profile {
+      if let profile {
         VStack(alignment: .leading) {
-          ZStack(alignment: .bottomLeading) {
-            if let banner = profile.banner {
-              CachedAsyncImage(url: URL(string: banner)) { image in
-                image
-                  .resizable()
-                  .frame(height: 200)
-              } placeholder: {
-                ProgressView()
-                  .frame(maxWidth: .infinity, alignment: .center)
-              }
-              .onTapGesture {
-                previewurl = URL(string: banner)
-              }
-            } else {
-              Color(.controlAccentColor)
-                .frame(height: 200)
-            }
-            if let avatar = profile.avatar {
-              AvatarView(url: URL(string: avatar)!, size: 80)
-                .offset(x: 20, y: 40)
-                .onTapGesture {
-                  previewurl = URL(string: avatar)
-                }
-            } else {
-              Image(systemName: "person.crop.circle.fill")
-                .resizable()
-                .overlay(
-                  Circle()
-                    .stroke(Color.white, lineWidth: 4)
-                    .frame(width: 80, height: 80)
-                )
-                .foregroundStyle(.white, Color.accentColor)
-                .frame(width: 80, height: 80)
-                .offset(x: 20, y: 40)
-
-            }
-          }
-          HStack {
-            Spacer()
-            if NetworkManager.shared.did != profile.did {
-              if let following = profile.viewer?.following {
-                Button("\(Image(systemName: "checkmark")) Following") {
-                  disablefollowbutton = true
-                  Task {
-                    do {
-                      let result = try await repoDeleteRecord(
-                        uri: following, collection: "app.bsky.graph.follow")
-                      if result {
-                        self.profile?.viewer?.following = nil
-                      }
-                    } catch {
-
-                    }
-                    disablefollowbutton = false
-                  }
-                }
-                .disabled(disablefollowbutton)
-              } else {
-                Button("\(Image(systemName: "plus")) Follow") {
-                  disablefollowbutton = true
-                  Task {
-                    do {
-                      let result = try await followUser(
-                        did: profile.did)
-                      self.profile?.viewer?.following = result.uri
-                    } catch {
-                      print(error)
-                    }
-                    disablefollowbutton = false
-                  }
-                }
-                .disabled(disablefollowbutton)
-                .buttonStyle(.borderedProminent)
-                .tint(.accentColor)
-              }
-            }
-
-            Button {
-
-            } label: {
-              Image(systemName: "ellipsis")
-            }
-            .padding(.trailing, 10)
-
-          }
-        
-          VStack(alignment: .leading) {
-            Text(profile.displayName ?? profile.handle)
-              .font(.system(size: 30))
-            HStack(spacing: 4) {
-              if profile.viewer?.followedBy != nil {
-                Text("Follows you")
-              }
-              Text("@\(profile.handle)").foregroundColor(.secondary)
-            }
-            .padding(.bottom, -3)
-            HStack(spacing: 10) {
-              Group {
-                Button {
-                  path.append(ProfileRouter.followers(profile.handle))
-                } label: {
-                  Text("\(profile.followersCount) \(Text("followers").foregroundColor(.secondary))")
-                }
-                .buttonStyle(.plain)
-                Button {
-                  path.append(ProfileRouter.following(profile.handle))
-                } label: {
-                  Text("\(profile.followsCount) \(Text("following").foregroundColor(.secondary))")
-                }
-                .buttonStyle(.plain)
-              }
-              .hoverHand()
-              Text("\(profile.postsCount) \(Text("posts").foregroundColor(.secondary))")
-            }
-            .padding(.bottom, -5)
-            if let description = profile.description {
-              Text(.init(description)).textSelection(.enabled)
-            }
-          }
-          .textSelection(.enabled)
-          .padding(.top, 5)
-          .padding(.leading, 20)
-          .padding(.bottom, 20)
-          HStack {
-            Button {
-              if (showreplies) {
-                showreplies = false
-              }
-            } label: {
-              VStack(alignment: .center, spacing: 0) {
-                Text("Posts")
-                  .hoverHand()
-                if !showreplies {
-                  Color.primary
-                    .frame(height: 2)
-                    .matchedGeometryEffect(id: "underline",
-                                             in: namespace,
-                                             properties: .frame)
-                } else {
-                  Color.clear.frame(height: 2)
-                }
-              }
-              .animation(.spring(), value: showreplies)
-            }
-            .buttonStyle(.plain)
-            .frame(maxWidth: 40)
-            Button {
-              showreplies = true
-            } label: {
-              VStack(alignment: .center, spacing: 0) {
-                Text("Posts & Replies")
-                  .hoverHand()
-                if showreplies {
-                  Color.primary
-                    .frame(height: 2)
-                    .matchedGeometryEffect(id: "underline",
-                                             in: namespace,
-                                             properties: .frame)
-                } else {
-                  Color.clear.frame(height: 2)
-                }
-              }
-              .animation(.spring(), value: showreplies)
-            }
-            .buttonStyle(.plain)
-            .frame(maxWidth: 100)
-          }
-          .padding(.leading, 20)
+          ProfileViewHeader(banner: profile.banner, avatar: profile.avatar)
+          ProfileViewFollow(did: did, following: self.profile?.viewer?.following)
+          ProfileViewDetails(handle: profile.handle, displayName: profile.displayName, followedBy: profile.viewer?.followedBy, followersCount: profile.followersCount, followsCount: profile.followsCount, description: profile.description, postsCount: profile.postsCount, path: $path)
+          ProfileViewTabs(showreplies: $showreplies)
           Divider()
         }
-        let filteredfeed = authorfeed.feed.filter {
-          if showreplies {
-            return true
-          }
-          return $0.reply == nil
-        }
-        ForEach(filteredfeed) { post in
-          Group {
-            PostView(
-              post: post.post, reply: post.reply?.parent.author.handle, repost: post.reason,
-              path: $path
-            )
-            .padding(.horizontal)
-            .padding(.top, post != filteredfeed.first ? nil : 5)
-            .contentShape(Rectangle())
-            .onTapGesture {
-              path.append(post)
+        ProfileViewFeed(handle: profile.handle, feed: filteredfeed, path: $path) {
+          if let cursor = self.authorfeed.cursor {
+            do {
+              let result = try await getAuthorFeed(actor: profile.handle, cursor: cursor)
+              self.authorfeed.feed.append(contentsOf: result.feed)
+              self.authorfeed.cursor = result.cursor
+            } catch {
+              
             }
-            .task {
-              if post == authorfeed.feed.last {
-                if let cursor = self.authorfeed.cursor {
-                  do {
-                    let result = try await getAuthorFeed(actor: profile.handle, cursor: cursor)
-                    self.authorfeed.feed.append(contentsOf: result.feed)
-                    self.authorfeed.cursor = result.cursor
-                  } catch {
-                    
-                  }
-                }
-              }
-            }
-            PostFooterView(post: post.post)
-              .padding(.leading, 68)
-
-            Divider()
           }
-          .listRowInsets(EdgeInsets())
         }
         if self.authorfeed.cursor != nil {
           ProgressView().frame(maxWidth: .infinity, alignment: .center)
+        } else if filteredfeed.isEmpty {
+          HStack(alignment: .center) {
+            VStack(alignment: .center) {
+              Image(systemName: "bubble.left")
+                .resizable()
+                .frame(width: 64, height: 64)
+                .padding(.top)
+              Text("No posts yet!")
+                .fontWeight(.semibold)
+            }
+          }
+          .foregroundColor(.secondary)
+          .frame(maxWidth: .infinity, alignment: .center)
         }
       }
     }
@@ -271,6 +325,5 @@ struct ProfileView: View {
     .task {
       await loadProfile()
     }
-    .quickLookPreview($previewurl)
   }
 }
