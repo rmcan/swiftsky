@@ -4,6 +4,33 @@
 //
 
 import SwiftUI
+import WebKit
+
+struct YouTubeView: NSViewRepresentable {
+  let video_id: String
+  func makeCoordinator() -> Coordinator {
+    Coordinator()
+  }
+  
+  func makeNSView(context: Context) -> WKWebView {
+    let nsview = WKWebView()
+    let url = URL(string: "https://www.youtube.com/embed/\(video_id)")!
+    nsview.load(URLRequest(url: url))
+    nsview.uiDelegate = context.coordinator
+    return nsview
+  }
+  
+  func updateNSView(_ nsView: WKWebView, context: Context) {
+  }
+  class Coordinator : NSObject, WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+      if navigationAction.targetFrame == nil {
+        NSWorkspace.shared.open(navigationAction.request.url!)
+      }
+      return nil
+    }
+  }
+}
 
 struct EmbedExternalView: View {
   @State var record: EmbedExternalViewExternal
@@ -21,7 +48,10 @@ struct EmbedExternalView: View {
           .opacity(0.02)
 
         VStack(alignment: .leading) {
-          if let thumb = record.thumb {
+          if let youtube = try? /(?:https?:\/\/)?(?:www\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/)(\w+)/.wholeMatch(in: record.uri) {
+            YouTubeView(video_id: String(youtube.1))
+              .frame(width: 400, height: 200)
+          } else if let thumb = record.thumb {
             CachedAsyncImage(url: URL(string: thumb)) {
               $0
                 .resizable()
