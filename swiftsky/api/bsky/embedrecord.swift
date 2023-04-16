@@ -39,7 +39,6 @@ struct EmbedRecordViewRecordEmbeds: Decodable, Identifiable, Hashable {
     case "app.bsky.embed.record#view":
       self.record = try container.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)
     case "app.bsky.embed.recordWithMedia#view":
-      print("eeee")
       let ncontainer = try container.nestedContainer(keyedBy: CodingKeys.recordWithMedia.self, forKey: .record)
       self.record = try ncontainer.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)
     default:

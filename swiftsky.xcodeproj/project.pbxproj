@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		360BD5BA29CAE94100C7987B /* ThreadPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360BD5B929CAE94100C7987B /* ThreadPostView.swift */; };
+		3613731A29EC058000002F3D /* EmbedExternalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3613731929EC058000002F3D /* EmbedExternalView.swift */; };
 		36280D5B29CC7330003A1CE7 /* ReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36280D5A29CC7330003A1CE7 /* ReplyView.swift */; };
 		36280D5D29CC8F5A003A1CE7 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36280D5C29CC8F5A003A1CE7 /* MenuButton.swift */; };
 		36280D5F29CC9060003A1CE7 /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36280D5E29CC9060003A1CE7 /* NewPostView.swift */; };
@@ -58,6 +59,7 @@
 
 /* Begin PBXFileReference section */
 		360BD5B929CAE94100C7987B /* ThreadPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadPostView.swift; sourceTree = "<group>"; };
+		3613731929EC058000002F3D /* EmbedExternalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbedExternalView.swift; sourceTree = "<group>"; };
 		36280D5A29CC7330003A1CE7 /* ReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyView.swift; sourceTree = "<group>"; };
 		36280D5C29CC8F5A003A1CE7 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		36280D5E29CC9060003A1CE7 /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostView.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				36280D5E29CC9060003A1CE7 /* NewPostView.swift */,
 				36EA506429CF4BAC00FFE7DE /* FollowersView.swift */,
 				36EA506829D02B5200FFE7DE /* FollowsView.swift */,
+				3613731929EC058000002F3D /* EmbedExternalView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -329,6 +332,7 @@
 				3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */,
 				36AEF5B129C4917300B68B24 /* feedgetPostThread.swift in Sources */,
 				36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */,
+				3613731A29EC058000002F3D /* EmbedExternalView.swift in Sources */,
 				3631A4D729C9814A00ED7B27 /* uri.swift in Sources */,
 				36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */,
 				36AEF5C829C4935E00B68B24 /* PostView.swift in Sources */,

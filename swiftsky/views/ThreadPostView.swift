@@ -168,6 +168,9 @@ struct ThreadPostview: View {
           .buttonStyle(.plain)
           .contentShape(Rectangle())
         }
+        if let external = embed.external {
+          EmbedExternalView(record: external)
+        }
       }
       Text(
         "\(Text(post.record.createdAt, style: .time)) · \(Text(post.record.createdAt, style: .date))"

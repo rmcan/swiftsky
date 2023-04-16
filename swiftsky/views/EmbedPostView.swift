@@ -59,6 +59,9 @@ struct EmbedPostView: View {
           .frame(maxHeight: 100)
         if let embed = embedrecord.embeds {
           ForEach(embed) { embed in
+            if let external = embed.external {
+              EmbedExternalView(record: external)
+            }
             if let images = embed.images {
               HStack {
                 ForEach(images, id: \.self) { image in

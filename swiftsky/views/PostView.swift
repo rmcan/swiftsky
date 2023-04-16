@@ -154,6 +154,9 @@ struct PostView: View {
             .buttonStyle(.plain)
             .contentShape(Rectangle())
           }
+          if let external = embed.external {
+            EmbedExternalView(record: external)
+          }
         }
       }
     }
