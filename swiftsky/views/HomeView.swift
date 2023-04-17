@@ -42,7 +42,7 @@ struct HomeView: View {
                   self.timeline.feed.append(contentsOf: result.feed)
                   self.timeline.cursor = result.cursor
                 } catch {
-                  
+
                 }
               }
             }

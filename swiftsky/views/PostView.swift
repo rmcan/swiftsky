@@ -76,7 +76,7 @@ struct PostView: View {
 
           Text(
             Formatter.relativeDateNamed.localizedString(
-              fromTimeInterval: post.record.createdAt.timeIntervalSinceNow)
+              fromTimeInterval: post.indexedAt.timeIntervalSinceNow)
           )
           .font(.body)
           .foregroundColor(.secondary)

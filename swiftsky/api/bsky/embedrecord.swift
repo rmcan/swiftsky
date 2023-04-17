@@ -9,7 +9,7 @@ struct EmbedRecordViewRecord: Decodable, Hashable {
   let author: ActorDefsProfileViewBasic
   let cid: String
   let embeds: [EmbedRecordViewRecordEmbeds]?
-  let indexedAt: String
+  let indexedAt: Date
   let uri: String
   let value: FeedPost
 }

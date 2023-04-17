@@ -50,7 +50,7 @@ struct EmbedPostView: View {
           .hoverHand {usernamehover = $0}
           Text(
             Formatter.relativeDateNamed.localizedString(
-              fromTimeInterval: embedrecord.value.createdAt.timeIntervalSinceNow)
+              fromTimeInterval: embedrecord.indexedAt.timeIntervalSinceNow)
           )
           .foregroundColor(.secondary)
         }
