@@ -159,19 +159,16 @@ private struct ProfileViewDetails: View {
 }
 private struct ProfileViewTabs: View {
   @Namespace var namespace
-  @Binding var showreplies: Bool
-
+  @Binding var selectedtab: Int
   var body: some View {
     HStack {
       Button {
-        if (showreplies) {
-          showreplies = false
-        }
+        selectedtab = 0
       } label: {
         VStack(alignment: .center, spacing: 0) {
           Text("Posts")
             .hoverHand()
-          if !showreplies {
+          if selectedtab == 0 {
             Color.primary
               .frame(height: 2)
               .matchedGeometryEffect(id: "underline",
@@ -179,17 +176,17 @@ private struct ProfileViewTabs: View {
                                        properties: .frame)
           }
         }
-        .animation(.spring(), value: showreplies)
+        .animation(.spring(), value: selectedtab)
       }
       .buttonStyle(.plain)
       .frame(maxWidth: 40)
       Button {
-        showreplies = true
+        selectedtab = 1
       } label: {
         VStack(alignment: .center, spacing: 0) {
           Text("Posts & Replies")
             .hoverHand()
-          if showreplies {
+          if selectedtab == 1 {
             Color.primary
               .frame(height: 2)
               .matchedGeometryEffect(id: "underline",
@@ -197,10 +194,28 @@ private struct ProfileViewTabs: View {
                                        properties: .frame)
           }
         }
-        .animation(.spring(), value: showreplies)
+        .animation(.spring(), value: selectedtab)
       }
       .buttonStyle(.plain)
       .frame(maxWidth: 100)
+      Button {
+        selectedtab = 2
+      } label: {
+        VStack(alignment: .center, spacing: 0) {
+          Text("Likes")
+            .hoverHand()
+          if selectedtab == 2 {
+            Color.primary
+              .frame(height: 2)
+              .matchedGeometryEffect(id: "underline",
+                                       in: namespace,
+                                       properties: .frame)
+          }
+        }
+        .animation(.spring(), value: selectedtab)
+      }
+      .buttonStyle(.plain)
+      .frame(maxWidth: 40)
     }
     .padding(.leading, 20)
   }
@@ -239,29 +254,58 @@ private struct ProfileViewFeed: View {
 }
 struct ProfileView: View {
   let did: String
-  @State var showreplies = false
+  @State var selectedtab = 0
   @State var profile: ActorDefsProfileViewDetailed?
   @State var authorfeed = FeedGetAuthorFeedOutput()
+  @State var likedposts = FeedGetAuthorFeedOutput()
   @State private var disablefollowbutton = false
   @State var error: String? = nil
   @Binding var path: NavigationPath
   @State var loading: Bool = false
   func loadProfile() async {
-    loading = true
     do {
       self.profile = try await actorgetProfile(actor: did)
       self.authorfeed = try await getAuthorFeed(actor: did)
     } catch {
       self.error = error.localizedDescription
     }
-    loading = false
   }
-  var filteredfeed: [FeedDefsFeedViewPost] {
-    self.authorfeed.feed.filter {
-      if showreplies {
-        return true
+  var feed: [FeedDefsFeedViewPost] {
+    switch selectedtab {
+    case 1:
+      return self.authorfeed.feed
+    case 2:
+      return likedposts.feed
+    default:
+      return self.authorfeed.feed.filter {
+        return $0.reply == nil
       }
-      return $0.reply == nil
+    }
+  }
+  func getLikes(cursor: String? = nil) async {
+    do {
+      var likedposts: [FeedDefsFeedViewPost] = []
+      let records = try await RepoListRecords(collection: "app.bsky.feed.like", cursor: cursor, limit: 10, repo: self.did)
+      for record in records.records {
+        let postthread = try? await getPostThread(uri: record.value.subject.uri)
+        if let postthread {
+          if let thread = postthread.thread {
+            if let post = thread.post {
+              likedposts.append(FeedDefsFeedViewPost(post: post, reason: nil, reply: nil))
+            }
+          }
+        }
+      }
+      
+      if cursor == nil {
+        self.likedposts.feed = likedposts
+      }
+      else {
+        self.likedposts.feed.append(contentsOf: likedposts)
+      }
+      self.likedposts.cursor = records.cursor
+    } catch {
+      self.error = error.localizedDescription
     }
   }
   var body: some View {
@@ -271,30 +315,33 @@ struct ProfileView: View {
           ProfileViewHeader(banner: profile.banner, avatar: profile.avatar)
           ProfileViewFollow(did: did, following: self.profile?.viewer?.following)
           ProfileViewDetails(handle: profile.handle, displayName: profile.displayName, followedBy: profile.viewer?.followedBy, followersCount: profile.followersCount, followsCount: profile.followsCount, description: profile.description, postsCount: profile.postsCount, path: $path)
-          ProfileViewTabs(showreplies: $showreplies)
+          ProfileViewTabs(selectedtab: $selectedtab)
           Divider()
         }
-        ProfileViewFeed(handle: profile.handle, feed: filteredfeed, path: $path) {
-          if let cursor = self.authorfeed.cursor {
+        ProfileViewFeed(handle: profile.handle, feed: feed, path: $path) {
+          if selectedtab == 2, let cursor = likedposts.cursor {
+             await getLikes(cursor: cursor)
+          }
+          else if let cursor = self.authorfeed.cursor {
             do {
               let result = try await getAuthorFeed(actor: profile.handle, cursor: cursor)
               self.authorfeed.feed.append(contentsOf: result.feed)
               self.authorfeed.cursor = result.cursor
             } catch {
-              
+
             }
           }
         }
-        if self.authorfeed.cursor != nil {
+        if selectedtab == 2 ? self.likedposts.cursor != nil : self.authorfeed.cursor != nil {
           ProgressView().frame(maxWidth: .infinity, alignment: .center)
-        } else if filteredfeed.isEmpty {
+        } else if feed.isEmpty {
           HStack(alignment: .center) {
             VStack(alignment: .center) {
               Image(systemName: "bubble.left")
                 .resizable()
                 .frame(width: 64, height: 64)
                 .padding(.top)
-              Text("No posts yet!")
+              Text(selectedtab == 2 ? "@\(profile.handle) doesn't have any likes yet!" : "No posts yet!")
                 .fontWeight(.semibold)
             }
           }
@@ -314,7 +361,10 @@ struct ProfileView: View {
       ToolbarItem(placement: .primaryAction) {
         Button {
           Task {
+            loading = true
             await loadProfile()
+            await getLikes()
+            loading = false
           }
         } label: {
           Image(systemName: "arrow.clockwise")
@@ -323,7 +373,10 @@ struct ProfileView: View {
       }
     }
     .task {
+      loading = true
       await loadProfile()
+      await getLikes()
+      loading = false
     }
   }
 }

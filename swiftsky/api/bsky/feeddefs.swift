@@ -49,7 +49,7 @@ struct FeedDefsPostView: Decodable, Hashable {
   let author: ActorDefsProfileViewBasic
   var cid: String
   let embed: FeedDefsPostViewEmbed?
-  let indexedAt: String
+  let indexedAt: Date
   var likeCount: Int
   let record: FeedPost
   let replyCount: Int

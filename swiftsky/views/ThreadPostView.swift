@@ -173,7 +173,7 @@ struct ThreadPostview: View {
         }
       }
       Text(
-        "\(Text(post.record.createdAt, style: .time)) · \(Text(post.record.createdAt, style: .date))"
+        "\(Text(post.indexedAt, style: .time)) · \(Text(post.indexedAt, style: .date))"
       )
       .foregroundColor(.secondary)
       .padding(.bottom, 6)

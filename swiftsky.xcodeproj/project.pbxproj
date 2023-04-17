@@ -24,6 +24,8 @@
 		3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */; };
 		365C57A529D9E67300665E65 /* feeddefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A429D9E67300665E65 /* feeddefs.swift */; };
 		365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A629D9F5FC00665E65 /* actordefs.swift */; };
+		36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D1F29ED348C00D9CF8B /* repolistRecords.swift */; };
+		36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D2129ED3B6900D9CF8B /* repogetRecord.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -75,6 +77,8 @@
 		3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		365C57A429D9E67300665E65 /* feeddefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feeddefs.swift; sourceTree = "<group>"; };
 		365C57A629D9F5FC00665E65 /* actordefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actordefs.swift; sourceTree = "<group>"; };
+		36953D1F29ED348C00D9CF8B /* repolistRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repolistRecords.swift; sourceTree = "<group>"; };
+		36953D2129ED3B6900D9CF8B /* repogetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repogetRecord.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -183,6 +187,8 @@
 				36AEF5A729C490BB00B68B24 /* sessionrefresh.swift */,
 				3631A4D429C8CB9A00ED7B27 /* repocreateRecord.swift */,
 				3631A4D829C994AD00ED7B27 /* repodeleteRecord.swift */,
+				36953D1F29ED348C00D9CF8B /* repolistRecords.swift */,
+				36953D2129ED3B6900D9CF8B /* repogetRecord.swift */,
 			);
 			path = atproto;
 			sourceTree = "<group>";
@@ -318,12 +324,14 @@
 				36AEF5BE29C492A100B68B24 /* api.swift in Sources */,
 				36AEF5AB29C4910500B68B24 /* actorgetProfile.swift in Sources */,
 				3631A4D229C8C56C00ED7B27 /* embedexternal.swift in Sources */,
+				36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */,
 				3631A4D329C8C56C00ED7B27 /* embedimages.swift in Sources */,
 				36AEF5CC29C4939F00B68B24 /* SidebarView.swift in Sources */,
 				360BD5BA29CAE94100C7987B /* ThreadPostView.swift in Sources */,
 				3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */,
 				36AEF5B529C491AC00B68B24 /* feedpost.swift in Sources */,
 				36E1EB3329DB493F00469CFE /* richtextfacet.swift in Sources */,
+				36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */,
 				36E07D1329CA2FCD00A315C5 /* EmbedPostView.swift in Sources */,
 				36AEF5BB29C4923200B68B24 /* keychain.swift in Sources */,
 				36280D5D29CC8F5A003A1CE7 /* MenuButton.swift in Sources */,
@@ -503,7 +511,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 0.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = app.swiftsky;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -532,7 +540,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 0.0.2;
+				MARKETING_VERSION = 0.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = app.swiftsky;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
