@@ -7,7 +7,7 @@ An unofficial Bluesky/ATProto client for macOS Ventura built in SwiftUI
 This project is incomplete and not recommended for daily use.
 
 # Download
-Download latest [release](https://github.com/rmcan/swiftsky/releases/tag/v0.0.3)
+Download latest alpha [release](https://github.com/rmcan/swiftsky/releases/latest)
 
 # Requirements
 macOS 13.0+
