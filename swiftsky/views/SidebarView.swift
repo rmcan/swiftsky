@@ -13,6 +13,8 @@ struct SidebarView: View {
   @State var compose: Bool = false
   @State var replypost: Bool = false
   @State private var post: FeedDefsPostView? = nil
+  @State var searchactors = ActorSearchActorsTypeaheadOutput()
+  @State var searchpresented = false
   func loadProfile() async {
     do {
       self.profile = try await actorgetProfile(actor: NetworkManager.shared.handle)
@@ -108,6 +110,27 @@ struct SidebarView: View {
             .sheet(isPresented: $compose) {
               NewPostView(isPresented: $compose)
                 .frame(minWidth: 600, maxWidth: 600, minHeight: 300, maxHeight: 300)
+            }
+          }
+          ToolbarItem {
+            SearchField { search in
+              if !search.isEmpty {
+                do {
+                  self.searchactors = try await ActorSearchActorsTypeahead(term: search)
+                  self.searchpresented = !self.searchactors.actors.isEmpty
+                } catch {
+
+                }
+              }
+              else {
+                self.searchactors = .init()
+                self.searchpresented = false
+              }
+              
+            }
+            .frame(width: 150)
+            .popover(isPresented: $searchpresented, arrowEdge: .bottom) {
+              SearchActorView(actorstypeahead: self.$searchactors, path: self.$path)
             }
           }
         }
