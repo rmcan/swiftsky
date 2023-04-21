@@ -32,24 +32,18 @@ private struct ProfileViewHeader: View {
         Color(.controlAccentColor)
           .frame(height: 200)
       }
-      if let avatar = avatar {
-        AvatarView(url: URL(string: avatar)!, size: 80)
-          .offset(x: 20, y: 40)
-          .onTapGesture {
+      AvatarView(url: avatar, size: 80)
+        .overlay(
+          Circle()
+            .stroke(Color.white, lineWidth: 4)
+            .frame(width: 80, height: 80)
+        )
+        .offset(x: 20, y: 40)
+        .onTapGesture {
+          if let avatar {
             previewurl = URL(string: avatar)
           }
-      } else {
-        Image(systemName: "person.crop.circle.fill")
-          .resizable()
-          .overlay(
-            Circle()
-              .stroke(Color.white, lineWidth: 4)
-              .frame(width: 80, height: 80)
-          )
-          .foregroundStyle(.white, Color.accentColor)
-          .frame(width: 80, height: 80)
-          .offset(x: 20, y: 40)
-      }
+        }
     }
     .quickLookPreview($previewurl)
   }

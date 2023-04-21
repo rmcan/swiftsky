@@ -107,13 +107,10 @@ extension Encodable {
 }
 
 extension String {
-  subscript (bounds: CountableClosedRange<Int>) -> String {
-    let start = self.utf8.index(startIndex, offsetBy: bounds.lowerBound)
-    let end = self.utf8.index(startIndex, offsetBy: bounds.upperBound)
-    return String(self.utf8[start...end])!
-  }
-  
   subscript (bounds: CountableRange<Int>) -> String {
+    if bounds.upperBound > self.utf8.count {
+      return ""
+    }
     let start = self.utf8.index(startIndex, offsetBy: bounds.lowerBound)
     let end = self.utf8.index(startIndex, offsetBy: bounds.upperBound)
     return String(self.utf8[start..<end])!

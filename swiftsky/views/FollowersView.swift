@@ -40,15 +40,7 @@ private struct FollowersRowView: View {
   }
   var body: some View {
     HStack(alignment: .top) {
-      if let avatar = user.avatar {
-        AvatarView(url: URL(string: avatar)!, size: 40)
-      } else {
-        Image(systemName: "person.crop.circle.fill")
-          .resizable()
-          .foregroundColor(.accentColor)
-          .frame(width: 40, height: 40)
-          .cornerRadius(20)
-      }
+      AvatarView(url: user.avatar, size: 40)
       let displayname = user.displayName ?? user.handle
       VStack(alignment: .leading, spacing: 0) {
         Group {

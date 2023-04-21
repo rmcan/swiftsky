@@ -25,9 +25,9 @@ struct ThreadView: View {
   @State var error: String?
   @State var threadviewpost: FeedGetPostThreadThreadViewPost? = nil
   @State var parents: [FeedGetPostThreadThreadViewPost] = []
-  @Binding var compose: Bool
-  @Binding var post: FeedDefsPostView?
+  @State var replypresented: Bool = false
   @Binding var path: NavigationPath
+  @StateObject private var globalmodel = GlobalViewModel.shared
   func load() async {
     threadviewpost = nil
     parents = []
@@ -87,13 +87,10 @@ struct ThreadView: View {
               .padding(.leading, 17.0)
             Divider()
             HStack {
-              Image(systemName: "person.crop.circle.fill")
-                .resizable()
-                .foregroundColor(.accentColor)
-                .frame(width: 40, height: 40)
+              AvatarView(url:globalmodel.profile.avatar,size: 40)
                 .padding(.leading)
                 .padding([.vertical, .trailing], 5)
-              
+  
               Text("Reply to @\(viewpost.author.handle)")
                 .font(.system(size: 15))
                 .opacity(0.9)
@@ -101,8 +98,7 @@ struct ThreadView: View {
             }
             .hoverHand()
             .onTapGesture {
-              compose = true
-              post = viewpost
+              replypresented = true
             }
             Divider()
               .id(1)
@@ -130,6 +126,10 @@ struct ThreadView: View {
             }
           }
         }.listRowInsets(EdgeInsets())
+      }
+      .sheet(isPresented: $replypresented) {
+        NewPostView(replypost: threadviewpost?.post)
+          .frame(minWidth: 600, maxWidth: 600, minHeight: 400, maxHeight: 800)
       }
       .alert(error ?? "", isPresented: .constant(error != nil)) {
         Button("OK") {

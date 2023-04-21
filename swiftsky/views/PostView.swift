@@ -44,16 +44,7 @@ struct PostView: View {
   }
   var body: some View {
     HStack(alignment: .top, spacing: 12) {
-      if let avatar = post.author.avatar {
-        AvatarView(url: URL(string: avatar)!, size: 40)
-      } else {
-        Image(systemName: "person.crop.circle.fill")
-          .resizable()
-          .foregroundColor(.accentColor)
-          .frame(width: 40, height: 40)
-          .cornerRadius(20)
-      }
-
+      AvatarView(url: post.author.avatar, size: 40)
       VStack(alignment: .leading, spacing: 2) {
         if let repost = repost {
           Text(
