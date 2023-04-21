@@ -179,7 +179,7 @@ struct AuthData: Codable {
   var accessJwt: String = ""
   var refreshJwt: String = ""
   static func load() -> AuthData? {
-    if let userdata = readkeychain(service: "swiftsky.userData", account: "userData"),
+    if let userdata = readkeychain(service: "app.swiftsky.userData", account: "userData"),
       let user = try? JSONDecoder().decode(AuthData.self, from: userdata)
     {
       return user
@@ -189,7 +189,7 @@ struct AuthData: Codable {
   func save() {
     Task {
       if let userdata = try? JSONEncoder().encode(self) {
-        savekeychain(userdata, service: "swiftsky.userData", account: "userData")
+        savekeychain(userdata, service: "app.swiftsky.userData", account: "userData")
       }
     }
   }
