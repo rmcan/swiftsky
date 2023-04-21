@@ -21,6 +21,7 @@ struct CreatePostInput: Encodable {
   let text: String
   let createdAt: String
   let reply: FeedPostReplyRef?
+  let facets: [RichtextFacet]?
 }
 struct RepoCreateRecordInput<T: Encodable>: Encodable {
   let type: String
@@ -51,12 +52,12 @@ func followUser(did: String) async throws -> RepoCreateRecordOutput {
         subject: did,
         createdAt: Date().iso8601withFractionalSeconds)))
 }
-func makePost(text: String, reply: FeedPostReplyRef? = nil) async throws -> RepoCreateRecordOutput {
+func makePost(text: String, reply: FeedPostReplyRef? = nil, facets: [RichtextFacet]? = nil) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
       type: "app.bsky.feed.post", collection: "app.bsky.feed.post", repo: NetworkManager.shared.did,
       record: CreatePostInput(
-        text: "test", createdAt: Date().iso8601withFractionalSeconds, reply: reply)))
+        text: text, createdAt: Date().iso8601withFractionalSeconds, reply: reply,facets: facets)))
 }
 func likePost(uri: String, cid: String) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(

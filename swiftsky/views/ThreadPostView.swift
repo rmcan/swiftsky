@@ -48,15 +48,7 @@ struct ThreadPostview: View {
 
     VStack(alignment: .leading, spacing: 0) {
       HStack(alignment: .top) {
-        if let avatar = post.author.avatar {
-          AvatarView(url: URL(string: avatar)!, size: 40)
-        } else {
-          Image(systemName: "person.crop.circle.fill")
-            .resizable()
-            .foregroundColor(.accentColor)
-            .frame(width: 40, height: 40)
-            .cornerRadius(20)
-        }
+        AvatarView(url: post.author.avatar, size: 40)
         HStack(alignment: .firstTextBaseline) {
           let displayname = post.author.displayName ?? post.author.handle
           VStack(alignment: .leading) {

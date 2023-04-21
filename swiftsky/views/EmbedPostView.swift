@@ -34,9 +34,7 @@ struct EmbedPostView: View {
 
       VStack(alignment: .leading, spacing: 0) {
         HStack(alignment: .top) {
-          if let avatar = embedrecord.author.avatar {
-            AvatarView(url: URL(string: avatar)!, size: 16)
-          }
+          AvatarView(url: embedrecord.author.avatar, size: 16)
           let displayname = embedrecord.author.displayName ?? embedrecord.author.handle
 
           Button {

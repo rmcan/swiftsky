@@ -9,15 +9,7 @@ struct SearchActorSubView: View {
   var actor: ActorDefsProfileViewBasic
   var body: some View {
     HStack(alignment: .top) {
-      if let avatar = actor.avatar {
-        AvatarView(url: URL(string: avatar)!, size: 40)
-      } else {
-        Image(systemName: "person.crop.circle.fill")
-          .resizable()
-          .foregroundColor(.accentColor)
-          .frame(width: 40, height: 40)
-          .cornerRadius(20)
-      }
+      AvatarView(url: actor.avatar, size: 40)
       VStack(alignment: .leading) {
         let displayname = actor.displayName ?? actor.handle
         Text(displayname)
@@ -31,7 +23,9 @@ struct SearchActorSubView: View {
 }
 struct SearchActorView: View {
   @Binding var actorstypeahead: ActorSearchActorsTypeaheadOutput
-  @Binding var path: NavigationPath
+  @State private var scrollViewContentSize: CGSize = .zero
+  var callback: ((ActorDefsProfileViewBasic) -> ())?
+  
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       ForEach(actorstypeahead.actors) { user in
@@ -41,12 +35,12 @@ struct SearchActorView: View {
           .contentShape(Rectangle())
           .hoverHand()
           .onTapGesture {
-            path.append(user)
+            callback?(user)
           }
       }
+      .frame(width: 250)
+      .frame(minHeight: 40)
     }
-    .frame(width: 250)
-    .frame(minHeight: 40)
   }
 }
 

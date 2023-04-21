@@ -6,17 +6,27 @@
 import SwiftUI
 
 struct AvatarView: View {
-  let url: URL
+  let url: String?
   let size: CGFloat
   var body: some View {
-    CachedAsyncImage(url: url) { image in
-      image
-        .resizable()
-        .aspectRatio(contentMode: .fill)
-    } placeholder: {
-      ProgressView()
+    if let url {
+      CachedAsyncImage(url: URL(string: url)) { image in
+        image
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+          .clipped()
+      } placeholder: {
+        ProgressView()
+      }
+      .frame(width: size, height: size)
+      .cornerRadius(size / 2)
     }
-    .frame(width: size, height: size)
-    .cornerRadius(size / 2)
+    else {
+      Image(systemName: "person.crop.circle.fill")
+        .resizable()
+        .foregroundStyle(.white, Color.accentColor)
+        .frame(width: size, height: size)
+        .cornerRadius(size / 2)
+    }
   }
 }

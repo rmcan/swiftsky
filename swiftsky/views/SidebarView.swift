@@ -6,8 +6,8 @@
 import SwiftUI
 
 struct SidebarView: View {
-  @State var profile: ActorDefsProfileViewDetailed = ActorDefsProfileViewDetailed ()
   @StateObject private var auth = Auth.shared
+  @StateObject private var globalmodel = GlobalViewModel.shared
   @State private var selection: Int = -1
   @State private var path = NavigationPath()
   @State var compose: Bool = false
@@ -17,28 +17,21 @@ struct SidebarView: View {
   @State var searchpresented = false
   func loadProfile() async {
     do {
-      self.profile = try await actorgetProfile(actor: NetworkManager.shared.handle)
+      self.globalmodel.profile = try await actorgetProfile(actor: NetworkManager.shared.handle)
     } catch {
+      
     }
   }
   var body: some View {
     NavigationSplitView {
       List(selection: $selection) {
         HStack(spacing: 5) {
-          if let avatar = self.profile.avatar {
-            AvatarView(url: URL(string: avatar)!, size: 40)
-          } else {
-            Image(systemName: "person.crop.circle.fill")
-              .resizable()
-              .foregroundStyle(.white, Color.accentColor)
-              .frame(width: 40, height: 40)
-              .cornerRadius(20)
-          }
+          AvatarView(url: self.globalmodel.profile.avatar, size: 40)
           VStack(alignment: .leading, spacing: 0) {
-            if let displayname = self.profile.displayName {
+            if let displayname = self.globalmodel.profile.displayName {
               Text(displayname)
             }
-            Text(self.profile.handle)
+            Text(self.globalmodel.profile.handle)
               .font(.footnote)
               .opacity(0.6)
           }
@@ -57,9 +50,9 @@ struct SidebarView: View {
         Group {
           switch selection {
           case 0:
-            ProfileView(did: profile.did, profile: profile, path: $path)
+            ProfileView(did: self.globalmodel.profile.did, profile: self.globalmodel.profile, path: $path)
               .frame(minWidth: 800)
-              .navigationTitle(profile.handle)
+              .navigationTitle(self.globalmodel.profile.handle)
           case 1:
             HomeView(path: $path)
               .frame(minWidth: 800)
@@ -73,15 +66,15 @@ struct SidebarView: View {
           }
         }
         .navigationDestination(for: FeedDefsFeedViewPost.self) { post in
-          ThreadView(uri: post.post.uri, compose: $replypost, post: $post, path: $path)
+          ThreadView(uri: post.post.uri, path: $path)
             .frame(minWidth: 800)
         }
         .navigationDestination(for: FeedDefsPostView.self) { post in
-          ThreadView(uri: post.uri, compose: $replypost, post: $post, path: $path)
+          ThreadView(uri: post.uri, path: $path)
             .frame(minWidth: 800)
         }
         .navigationDestination(for: EmbedRecordViewRecord.self) { post in
-          ThreadView(uri: post.uri, compose: $replypost, post: $post, path: $path)
+          ThreadView(uri: post.uri, path: $path)
             .frame(minWidth: 800)
         }
         .navigationDestination(for: ActorDefsProfileViewBasic.self) { actorref in
@@ -108,7 +101,7 @@ struct SidebarView: View {
               Image(systemName: "square.and.pencil")
             }
             .sheet(isPresented: $compose) {
-              NewPostView(isPresented: $compose)
+              NewPostView()
                 .frame(minWidth: 600, maxWidth: 600, minHeight: 300, maxHeight: 300)
             }
           }
@@ -130,7 +123,9 @@ struct SidebarView: View {
             }
             .frame(width: 150)
             .popover(isPresented: $searchpresented, arrowEdge: .bottom) {
-              SearchActorView(actorstypeahead: self.$searchactors, path: self.$path)
+              SearchActorView(actorstypeahead: self.$searchactors) { user in
+                path.append(user)
+              }
             }
           }
         }
@@ -146,10 +141,6 @@ struct SidebarView: View {
    
       path.append(ActorDefsProfileViewBasic(avatar: nil, did: did, displayName: "", handle: ""))
     })
-    .sheet(isPresented: $replypost) {
-      ReplyView(isPresented: $replypost, viewpost: $post)
-        .frame(minWidth: 600, maxWidth: 600, minHeight: 400, maxHeight: 800)
-    }
     .onChange(of: auth.needAuthorization) { newValue in
       if !newValue {
         Task {
