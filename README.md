@@ -10,7 +10,7 @@ This project is incomplete and not recommended for daily use.
 Download latest alpha [release](https://github.com/rmcan/swiftsky/releases/latest)
 
 # Requirements
-macOS 13.0+
+macOS 13.3+
 
 # Building
 Xcode 14+
