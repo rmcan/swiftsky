@@ -6,6 +6,75 @@
 import QuickLook
 import SwiftUI
 
+class TranslateViewModel: ObservableObject {
+  var text: String = ""
+  func translatetext() {
+    if translatedtext.isEmpty {
+      Task {
+        do {
+          DispatchQueue.main.async {
+            self.translatestatus = 1
+          }
+          let translatedtext = try await GoogleTranslate.translate(text: self.text, to: GlobalViewModel.shared.systemLanguageCode)
+          DispatchQueue.main.async {
+            self.translatedtext = translatedtext
+            self.translatestatus = 2
+          }
+        } catch {
+          DispatchQueue.main.async {
+            self.translatestatus = 0
+            self.error = error.localizedDescription
+          }
+        }
+      }
+    }
+  }
+  @Published var underline = false
+  @Published var translatedtext = ""
+  @Published var showtranslated = false
+  @Published var translatestatus = 0
+  @Published var error = ""
+}
+struct TranslateView: View {
+  @StateObject var viewmodel: TranslateViewModel
+  var body: some View {
+    if viewmodel.error.isEmpty {
+      if viewmodel.translatestatus == 1 {
+        ProgressView().frame(maxWidth: .infinity, alignment: .center)
+      }
+      else {
+        Button {
+          viewmodel.translatetext()
+          viewmodel.showtranslated.toggle()
+        } label : {
+          Text(viewmodel.showtranslated ? "Translated to \(GlobalViewModel.shared.systemLanguage) by Google Translate" : "Translate to \(GlobalViewModel.shared.systemLanguage)")
+            .underline(viewmodel.underline)
+            .foregroundColor(Color(NSColor.linkColor))
+            .hoverHand {
+              viewmodel.underline = $0
+            }
+        }
+        .disabled(viewmodel.translatestatus == 1)
+        .buttonStyle(.plain)
+        if viewmodel.showtranslated && !viewmodel.translatedtext.isEmpty  {
+          Text(.init(viewmodel.translatedtext))
+        }
+      }
+    }
+    else {
+      Group {
+        Text("Error: \(viewmodel.error)")
+        Button("\(Image(systemName: "arrow.clockwise")) Retry") {
+          viewmodel.error = ""
+          viewmodel.translatetext()
+        }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.large)
+      }
+      .frame(maxWidth: .infinity, alignment: .center)
+    }
+  }
+}
 struct PostView: View {
   @State var post: FeedDefsPostView
   @State var reply: String?
@@ -14,6 +83,8 @@ struct PostView: View {
   @State var previewurl: URL? = nil
   @State var deletepostfailed = false
   @State var deletepost = false
+  @State var translateavailable = false
+  @StateObject var translateviewmodel = TranslateViewModel()
   @Binding var path: NavigationPath
   func delete() {
     Task {
@@ -104,7 +175,10 @@ struct PostView: View {
         if !post.record.text.isEmpty {
           Text(.init(markdown))
             .textSelection(.enabled)
-            .padding(.bottom, post.embed?.images == nil ? 6 : 0)
+            .padding(.bottom, post.embed?.images == nil ? self.translateavailable ? 0 : 6 : 0)
+          if self.translateavailable {
+            TranslateView(viewmodel: translateviewmodel)
+          }
         }
         if let embed = post.embed {
           if let images = embed.images {
@@ -149,6 +223,14 @@ struct PostView: View {
             EmbedExternalView(record: external)
           }
         }
+      }
+    }
+    .onAppear {
+      if translateviewmodel.text.isEmpty {
+        if post.record.text.languageCode != GlobalViewModel.shared.systemLanguageCode {
+          translateavailable = true
+        }
+        translateviewmodel.text = post.record.text
       }
     }
     .quickLookPreview($previewurl)

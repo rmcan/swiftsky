@@ -29,6 +29,7 @@
 		365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A629D9F5FC00665E65 /* actordefs.swift */; };
 		36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D1F29ED348C00D9CF8B /* repolistRecords.swift */; };
 		36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D2129ED3B6900D9CF8B /* repogetRecord.swift */; };
+		3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CE9429F3AF0D00B9288A /* gtranslate.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -87,6 +88,7 @@
 		365C57A629D9F5FC00665E65 /* actordefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actordefs.swift; sourceTree = "<group>"; };
 		36953D1F29ED348C00D9CF8B /* repolistRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repolistRecords.swift; sourceTree = "<group>"; };
 		36953D2129ED3B6900D9CF8B /* repogetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repogetRecord.swift; sourceTree = "<group>"; };
+		3698CE9429F3AF0D00B9288A /* gtranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gtranslate.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				36AEF5BD29C492A100B68B24 /* api.swift */,
 				3631A4D629C9814A00ED7B27 /* uri.swift */,
 				36E1EB3429DBFE4A00469CFE /* richtext.swift */,
+				3698CE9429F3AF0D00B9288A /* gtranslate.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */,
 				36E393CC29ED9F1200005097 /* actorsearchActorsTypeahead.swift in Sources */,
 				36AEF5BE29C492A100B68B24 /* api.swift in Sources */,
 				36AEF5AB29C4910500B68B24 /* actorgetProfile.swift in Sources */,
