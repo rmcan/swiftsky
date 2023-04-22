@@ -10,7 +10,7 @@ struct blob: Decodable, Hashable {
 }
 struct EmbedImagesImage: Decodable, Hashable {
   let alt: String
-  let image: blob
+  let image: blob?
 }
 struct EmbedImagesViewImage: Decodable, Hashable {
   let alt: String
