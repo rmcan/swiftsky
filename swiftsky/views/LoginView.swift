@@ -14,10 +14,10 @@ struct LoginView: View {
   var body: some View {
     VStack {
       Text("Please sign in to continue.")
-      TextField("Username or email address", text: $username)
+      TextField("Handle or email address", text: $username)
         .textFieldStyle(.roundedBorder)
         .padding(.horizontal)
-      SecureField("Password", text: $password)
+      SecureField("App Password", text: $password)
         .textFieldStyle(.roundedBorder)
         .padding(.horizontal)
       Button {
