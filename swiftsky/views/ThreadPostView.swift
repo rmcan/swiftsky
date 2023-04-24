@@ -14,7 +14,9 @@ struct ThreadPostview: View {
   @State var previewurl: URL? = nil
   @State var deletepostfailed = false
   @State var deletepost = false
+  @State var translateavailable = false
   @Binding var path: NavigationPath
+  @StateObject var translateviewmodel = TranslateViewModel()
   var load: () async -> ()
   func delete() {
     Task {
@@ -120,6 +122,9 @@ struct ThreadPostview: View {
           .foregroundColor(.primary)
           .textSelection(.enabled)
           .padding(.vertical, 4)
+        if self.translateavailable {
+          TranslateView(viewmodel: translateviewmodel)
+        }
       }
       if let embed = post.embed {
         if let images = embed.images {
@@ -169,6 +174,14 @@ struct ThreadPostview: View {
       )
       .foregroundColor(.secondary)
       .padding(.bottom, 6)
+    }
+    .onAppear {
+      if translateviewmodel.text.isEmpty && !post.record.text.isEmpty {
+        if post.record.text.languageCode != GlobalViewModel.shared.systemLanguageCode {
+          translateavailable = true
+        }
+        translateviewmodel.text = post.record.text
+      }
     }
     .quickLookPreview($previewurl)
     .alert("Failed to delete post, please try again.", isPresented: $deletepostfailed, actions: {})

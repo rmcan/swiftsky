@@ -58,6 +58,8 @@
 		36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1EB3429DBFE4A00469CFE /* richtext.swift */; };
 		36E393CC29ED9F1200005097 /* actorsearchActorsTypeahead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E393CB29ED9F1200005097 /* actorsearchActorsTypeahead.swift */; };
 		36E393CE29EDA99700005097 /* SearchActorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E393CD29EDA99700005097 /* SearchActorView.swift */; };
+		36E82F4B29F69FA000EAD7B5 /* TranslateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */; };
+		36E82F4D29F6A05200EAD7B5 /* TranslateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */; };
 		36EA506529CF4BAC00FFE7DE /* FollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506429CF4BAC00FFE7DE /* FollowersView.swift */; };
 		36EA506729CF5C9E00FFE7DE /* graphgetFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */; };
 		36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506829D02B5200FFE7DE /* FollowsView.swift */; };
@@ -120,6 +122,8 @@
 		36E1EB3629DC328F00469CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		36E393CB29ED9F1200005097 /* actorsearchActorsTypeahead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actorsearchActorsTypeahead.swift; sourceTree = "<group>"; };
 		36E393CD29EDA99700005097 /* SearchActorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchActorView.swift; sourceTree = "<group>"; };
+		36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateViewModel.swift; sourceTree = "<group>"; };
+		36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateView.swift; sourceTree = "<group>"; };
 		36EA506429CF4BAC00FFE7DE /* FollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersView.swift; sourceTree = "<group>"; };
 		36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphgetFollowers.swift; sourceTree = "<group>"; };
 		36EA506829D02B5200FFE7DE /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				3629C9EC29F2AEFA00352001 /* GlobalViewModel.swift */,
+				36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -263,6 +268,7 @@
 				36E393CD29EDA99700005097 /* SearchActorView.swift */,
 				36314C5929EE777C002AF3F5 /* SearchField.swift */,
 				3629C9E729F2809700352001 /* TextViewWrapper.swift */,
+				36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -368,6 +374,7 @@
 				36AEF5A629C490A000B68B24 /* sessionget.swift in Sources */,
 				3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */,
 				3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */,
+				36E82F4B29F69FA000EAD7B5 /* TranslateViewModel.swift in Sources */,
 				36AEF5B129C4917300B68B24 /* feedgetPostThread.swift in Sources */,
 				36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */,
 				3613731A29EC058000002F3D /* EmbedExternalView.swift in Sources */,
@@ -393,6 +400,7 @@
 				36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */,
 				36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */,
 				365C57A529D9E67300665E65 /* feeddefs.swift in Sources */,
+				36E82F4D29F6A05200EAD7B5 /* TranslateView.swift in Sources */,
 				36AEF5A829C490BB00B68B24 /* sessionrefresh.swift in Sources */,
 				3629C9E829F2809700352001 /* TextViewWrapper.swift in Sources */,
 				36AEF5C229C492EB00B68B24 /* HomeView.swift in Sources */,
