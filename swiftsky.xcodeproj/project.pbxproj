@@ -29,6 +29,7 @@
 		365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A629D9F5FC00665E65 /* actordefs.swift */; };
 		36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D1F29ED348C00D9CF8B /* repolistRecords.swift */; };
 		36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D2129ED3B6900D9CF8B /* repogetRecord.swift */; };
+		3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CE9429F3AF0D00B9288A /* gtranslate.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -57,6 +58,8 @@
 		36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E1EB3429DBFE4A00469CFE /* richtext.swift */; };
 		36E393CC29ED9F1200005097 /* actorsearchActorsTypeahead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E393CB29ED9F1200005097 /* actorsearchActorsTypeahead.swift */; };
 		36E393CE29EDA99700005097 /* SearchActorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E393CD29EDA99700005097 /* SearchActorView.swift */; };
+		36E82F4B29F69FA000EAD7B5 /* TranslateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */; };
+		36E82F4D29F6A05200EAD7B5 /* TranslateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */; };
 		36EA506529CF4BAC00FFE7DE /* FollowersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506429CF4BAC00FFE7DE /* FollowersView.swift */; };
 		36EA506729CF5C9E00FFE7DE /* graphgetFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */; };
 		36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506829D02B5200FFE7DE /* FollowsView.swift */; };
@@ -87,6 +90,7 @@
 		365C57A629D9F5FC00665E65 /* actordefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actordefs.swift; sourceTree = "<group>"; };
 		36953D1F29ED348C00D9CF8B /* repolistRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repolistRecords.swift; sourceTree = "<group>"; };
 		36953D2129ED3B6900D9CF8B /* repogetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repogetRecord.swift; sourceTree = "<group>"; };
+		3698CE9429F3AF0D00B9288A /* gtranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gtranslate.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -118,6 +122,8 @@
 		36E1EB3629DC328F00469CFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		36E393CB29ED9F1200005097 /* actorsearchActorsTypeahead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actorsearchActorsTypeahead.swift; sourceTree = "<group>"; };
 		36E393CD29EDA99700005097 /* SearchActorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchActorView.swift; sourceTree = "<group>"; };
+		36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateViewModel.swift; sourceTree = "<group>"; };
+		36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateView.swift; sourceTree = "<group>"; };
 		36EA506429CF4BAC00FFE7DE /* FollowersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersView.swift; sourceTree = "<group>"; };
 		36EA506629CF5C9E00FFE7DE /* graphgetFollowers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphgetFollowers.swift; sourceTree = "<group>"; };
 		36EA506829D02B5200FFE7DE /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
@@ -140,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				3629C9EC29F2AEFA00352001 /* GlobalViewModel.swift */,
+				36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -194,6 +201,7 @@
 				36AEF5BD29C492A100B68B24 /* api.swift */,
 				3631A4D629C9814A00ED7B27 /* uri.swift */,
 				36E1EB3429DBFE4A00469CFE /* richtext.swift */,
+				3698CE9429F3AF0D00B9288A /* gtranslate.swift */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -260,6 +268,7 @@
 				36E393CD29EDA99700005097 /* SearchActorView.swift */,
 				36314C5929EE777C002AF3F5 /* SearchField.swift */,
 				3629C9E729F2809700352001 /* TextViewWrapper.swift */,
+				36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -344,6 +353,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */,
 				36E393CC29ED9F1200005097 /* actorsearchActorsTypeahead.swift in Sources */,
 				36AEF5BE29C492A100B68B24 /* api.swift in Sources */,
 				36AEF5AB29C4910500B68B24 /* actorgetProfile.swift in Sources */,
@@ -364,6 +374,7 @@
 				36AEF5A629C490A000B68B24 /* sessionget.swift in Sources */,
 				3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */,
 				3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */,
+				36E82F4B29F69FA000EAD7B5 /* TranslateViewModel.swift in Sources */,
 				36AEF5B129C4917300B68B24 /* feedgetPostThread.swift in Sources */,
 				36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */,
 				3613731A29EC058000002F3D /* EmbedExternalView.swift in Sources */,
@@ -389,6 +400,7 @@
 				36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */,
 				36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */,
 				365C57A529D9E67300665E65 /* feeddefs.swift in Sources */,
+				36E82F4D29F6A05200EAD7B5 /* TranslateView.swift in Sources */,
 				36AEF5A829C490BB00B68B24 /* sessionrefresh.swift in Sources */,
 				3629C9E829F2809700352001 /* TextViewWrapper.swift in Sources */,
 				36AEF5C229C492EB00B68B24 /* HomeView.swift in Sources */,

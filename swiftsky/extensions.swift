@@ -62,7 +62,7 @@ extension String {
   var languageCode: String {
     let recognizer = NLLanguageRecognizer()
     recognizer.processString(self)
-    guard let languageCode = recognizer.dominantLanguage?.rawValue else { return "en" }
+    guard let languageCode = recognizer.dominantLanguage?.rawValue else { return "" }
     return languageCode
   }
 }

@@ -14,6 +14,8 @@ struct PostView: View {
   @State var previewurl: URL? = nil
   @State var deletepostfailed = false
   @State var deletepost = false
+  @State var translateavailable = false
+  @StateObject var translateviewmodel = TranslateViewModel()
   @Binding var path: NavigationPath
   func delete() {
     Task {
@@ -104,7 +106,10 @@ struct PostView: View {
         if !post.record.text.isEmpty {
           Text(.init(markdown))
             .textSelection(.enabled)
-            .padding(.bottom, post.embed?.images == nil ? 6 : 0)
+            .padding(.bottom, post.embed?.images == nil ? self.translateavailable ? 0 : 6 : 0)
+          if self.translateavailable {
+            TranslateView(viewmodel: translateviewmodel)
+          }
         }
         if let embed = post.embed {
           if let images = embed.images {
@@ -149,6 +154,14 @@ struct PostView: View {
             EmbedExternalView(record: external)
           }
         }
+      }
+    }
+    .onAppear {
+      if translateviewmodel.text.isEmpty && !post.record.text.isEmpty {
+        if post.record.text.languageCode != GlobalViewModel.shared.systemLanguageCode {
+          translateavailable = true
+        }
+        translateviewmodel.text = post.record.text
       }
     }
     .quickLookPreview($previewurl)

@@ -48,7 +48,6 @@ struct HomeView: View {
             }
           }
           PostFooterView(post: post.post)
-            .padding(.leading, 68)
           Divider()
         }
         if self.timeline.cursor != nil {
