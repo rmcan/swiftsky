@@ -5,21 +5,6 @@
 
 import SwiftUI
 
-struct SeparatorShape: Shape {
-  var yoffset = 0.0
-  var notlastpost = false
-  func path(in rect: CGRect) -> Path {
-    var path = Path()
-    if !notlastpost {
-      path.addRect(
-        CGRect(x: rect.minX + 35, y: rect.minY + yoffset, width: 2, height: rect.maxY + 15))
-    } else {
-      path.addRect(
-        CGRect(x: rect.minX + 35, y: rect.minY + yoffset, width: 2, height: rect.maxY - yoffset))
-    }
-    return path
-  }
-}
 struct ThreadView: View {
   var uri: String
   @State var error: String?
@@ -52,39 +37,45 @@ struct ThreadView: View {
       self.error = error.localizedDescription
     }
   }
+  var parentPosts: some View {
+    ForEach(parents) { parent in
+      if let parentpost = parent.post {
+        PostView(post: parentpost, reply: parent.parent?.post?.author.handle, path: $path)
+          .padding([.top, .horizontal])
+          .contentShape(Rectangle())
+          .onTapGesture {
+            path.append(parentpost)
+          }
+        PostFooterView(bottompadding: false, post: parentpost)
+      }
+    }
+  }
   var body: some View {
     ScrollViewReader { proxy in
       List {
         Group {
           if let viewpost = threadviewpost?.post {
-            ForEach(parents) { parent in
-              if let parentpost = parent.post {
-                ZStack {
-                  SeparatorShape(
-                    yoffset: parent != parents.first ? 0 : 55, notlastpost: parent != parents.last
-                  )
-                  .foregroundColor(Color(nsColor: NSColor.quaternaryLabelColor))
-                  VStack(spacing: 0) {
-                    PostView(post: parentpost, reply: parent.parent?.post?.author.handle, path: $path)
-                      .padding([.top, .horizontal])
-                      .contentShape(Rectangle())
-                      .onTapGesture {
-                        path.append(parentpost)
-                      }
-                    PostFooterView(bottompadding: false, post: parentpost)
-                      .padding(.leading, 67.0)
-                  }
-                }
+            ZStack(alignment: .topLeading) {
+              Color(NSColor.quaternaryLabelColor)
+                .frame(width: 4)
+                .offset(x: 35, y: 55)
+              VStack(spacing: 0) {
+                parentPosts
               }
-              
             }
             ThreadPostview(
               post: viewpost, reply: threadviewpost?.parent?.post?.author.handle, path: $path,
               load: load
             )
             .padding([.top, .horizontal])
-            PostFooterView(post: viewpost)
-              .padding(.leading, 17.0)
+            .background(alignment: .topLeading) {
+              if !parents.isEmpty {
+                Color(NSColor.quaternaryLabelColor)
+                  .frame(width: 4, height: 15)
+                  .padding(.leading, 35)
+              }
+            }
+            PostFooterView(leadingpadding: 0, post: viewpost)
             Divider()
             HStack {
               AvatarView(url:globalmodel.profile.avatar,size: 40)
@@ -105,16 +96,13 @@ struct ThreadView: View {
             if let replies = threadviewpost?.replies {
               ForEach(replies, id: \.self) { post in
                 if let post = post.post {
-                  HStack {
-                    PostView(post: post, reply: viewpost.author.handle, path: $path)
-                      .padding([.top, .horizontal])
-                      .contentShape(Rectangle())
-                  }
-                  .onTapGesture {
-                    path.append(post)
-                  }
+                  PostView(post: post, reply: viewpost.author.handle, path: $path)
+                    .padding([.top, .horizontal])
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                      path.append(post)
+                    }
                   PostFooterView(post: post)
-                    .padding(.leading, 67.0)
                   Divider()
                 }
                 

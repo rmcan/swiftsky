@@ -238,8 +238,6 @@ private struct ProfileViewFeed: View {
           }
         }
         PostFooterView(post: post.post)
-          .padding(.leading, 68)
-
         Divider()
       }
       .listRowInsets(EdgeInsets())
