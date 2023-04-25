@@ -3,6 +3,19 @@
 //  swiftsky
 //
 
+struct ActorDefsProfileView: Decodable, Hashable, Identifiable {
+  var id: String {
+    did
+  }
+  let avatar: String?
+  let description: String?
+  let did: String
+  let displayName: String?
+  let handle: String
+  let indexedAt: String?
+  var viewer: ActorDefsViewerState?
+}
+
 struct ActorDefsProfileViewBasic: Decodable, Hashable, Identifiable {
   var id: String {
     did

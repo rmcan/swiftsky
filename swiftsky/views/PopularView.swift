@@ -56,7 +56,7 @@ struct PopularView: View {
               }
             }
           }
-          PostFooterView(post: post.post)
+          PostFooterView(post: post.post, path: $path)
           Divider()
         }
         if self.timeline.cursor != nil {
