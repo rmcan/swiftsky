@@ -65,6 +65,7 @@
 		36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506829D02B5200FFE7DE /* FollowsView.swift */; };
 		36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */; };
 		36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */; };
+		36EB223629F7A71E007DF9DF /* feedgetPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB223529F7A71E007DF9DF /* feedgetPosts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,6 +130,7 @@
 		36EA506829D02B5200FFE7DE /* FollowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowsView.swift; sourceTree = "<group>"; };
 		36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphgetFollows.swift; sourceTree = "<group>"; };
 		36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetAuthorFeed.swift; sourceTree = "<group>"; };
+		36EB223529F7A71E007DF9DF /* feedgetPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetPosts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,6 +242,7 @@
 				365C57A629D9F5FC00665E65 /* actordefs.swift */,
 				36E1EB3229DB493F00469CFE /* richtextfacet.swift */,
 				36E393CB29ED9F1200005097 /* actorsearchActorsTypeahead.swift */,
+				36EB223529F7A71E007DF9DF /* feedgetPosts.swift */,
 			);
 			path = bsky;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */,
 				3613731A29EC058000002F3D /* EmbedExternalView.swift in Sources */,
 				3631A4D729C9814A00ED7B27 /* uri.swift in Sources */,
+				36EB223629F7A71E007DF9DF /* feedgetPosts.swift in Sources */,
 				36AEF5D129C493FB00B68B24 /* CachedAsyncImage.swift in Sources */,
 				36314C5A29EE777C002AF3F5 /* SearchField.swift in Sources */,
 				36AEF5C829C4935E00B68B24 /* PostView.swift in Sources */,

@@ -107,8 +107,14 @@ class NetworkManager {
       throw URLError(.badURL)
     }
     if httpMethod == .get, let params = params?.dictionary {
-      urlComponents.queryItems = params.map {
-        URLQueryItem(name: $0, value: "\($1)")
+      urlComponents.queryItems = params.flatMap {
+        if $0.hasSuffix("[]") {
+          let name = $0
+          return ($1 as! [Any]).map {
+            URLQueryItem(name: name, value: "\($0)")
+          }
+        }
+        return [URLQueryItem(name: $0, value: "\($1)")]
       }
     }
     guard let url = urlComponents.url else {

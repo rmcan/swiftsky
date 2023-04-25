@@ -276,26 +276,25 @@ struct ProfileView: View {
   }
   func getLikes(cursor: String? = nil) async {
     do {
-      var likedposts: [FeedDefsFeedViewPost] = []
-      let records = try await RepoListRecords(collection: "app.bsky.feed.like", cursor: cursor, limit: 10, repo: self.did)
-      for record in records.records {
-        let postthread = try? await getPostThread(uri: record.value.subject.uri)
-        if let postthread {
-          if let thread = postthread.thread {
-            if let post = thread.post {
-              likedposts.append(FeedDefsFeedViewPost(post: post, reason: nil, reply: nil))
-            }
-          }
-        }
+      let records = try await RepoListRecords(collection: "app.bsky.feed.like", cursor: cursor, limit: 25, repo: self.did)
+      self.likedposts.cursor = records.cursor
+      let uris = records.records.map {
+        $0.value.subject.uri
       }
-      
+      if uris.isEmpty {
+        return
+      }
+      let posts = try await feedgetPosts(uris: uris)
+        .posts.map {
+          FeedDefsFeedViewPost(post: $0)
+        }
       if cursor == nil {
-        self.likedposts.feed = likedposts
+        self.likedposts.feed = posts
       }
       else {
-        self.likedposts.feed.append(contentsOf: likedposts)
+        self.likedposts.feed.append(contentsOf: posts)
       }
-      self.likedposts.cursor = records.cursor
+      
     } catch {
       self.error = error.localizedDescription
     }

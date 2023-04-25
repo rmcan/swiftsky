@@ -71,6 +71,11 @@ struct FeedDefsFeedViewPost: Decodable, Hashable, Identifiable {
   var post: FeedDefsPostView
   let reason: FeedDefsFeedViewPostReason?
   let reply: FeedFeedViewPostReplyRef?
+  init(post: FeedDefsPostView, reason: FeedDefsFeedViewPostReason? = nil, reply: FeedFeedViewPostReplyRef? = nil) {
+    self.post = post
+    self.reason = reason
+    self.reply = reply
+  }
   enum CodingKeys: CodingKey {
     case post
     case reason
