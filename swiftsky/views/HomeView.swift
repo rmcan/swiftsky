@@ -21,10 +21,16 @@ struct HomeView: View {
   var body: some View {
     List {
       Group {
-        if self.loading && !timeline.feed.isEmpty {
+        let filteredfeed = timeline.feed.filter {
+          let reply = $0.reply?.parent.author
+          let following = reply?.viewer?.following
+          let repost = $0.reason
+          return ((reply == nil || following != nil) || repost != nil)
+        }
+        if self.loading && !filteredfeed.isEmpty {
           ProgressView().frame(maxWidth: .infinity, alignment: .center)
         }
-        ForEach(timeline.feed) { post in
+        ForEach(filteredfeed) { post in
           PostView(
             post: post.post, reply: post.reply?.parent.author.handle, repost: post.reason,
             path: $path
@@ -35,7 +41,7 @@ struct HomeView: View {
             path.append(post)
           }
           .task {
-            if post == timeline.feed.last {
+            if post == filteredfeed.last {
               if let cursor = self.timeline.cursor {
                 do {
                   let result = try await getTimeline(cursor: cursor)
