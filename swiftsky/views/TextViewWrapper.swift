@@ -54,43 +54,55 @@ struct TextViewWrapper: NSViewRepresentable {
         return
       }
       textView.textStorage?.addAttribute(.foregroundColor, value: NSColor.labelColor, range: NSMakeRange(0, self.text.utf16.count))
-      let mentionmatches = self.text.matches(of: /(^|\s|\()(@)([a-zA-Z0-9.-]+)(\b)/)
-      let urlmatches = self.text.matches(of: /(^|\s|\()((https?:\/\/[\S]+)|((?<domain>[a-z][a-z0-9]*(\.[a-z0-9]+)+)[\S]*))/)
+      let mentionmatches = try? NSRegularExpression(pattern: "(^|\\s|\\()(@)([a-zA-Z0-9.-]+)(\\b)", options: [])
+        .matches(in: self.text, range: NSRange(location: 0, length: self.text.utf16.count))
+      let urlmatches = try? NSRegularExpression(pattern: "(^|\\s|\\()((https?:\\/\\/[\\S]+)|((?<domain>[a-z][a-z0-9]*(\\.[a-z0-9]+)+)[\\S]*))", options: [])
+        .matches(in: self.text, range: NSRange(location: 0, length: self.text.utf16.count))
       textView.textStorage?.enumerateAttributes(in: NSRange(self.text.startIndex..., in: self.text)) { (attributes, range, stop) in
         if attributes[.link] != nil {
           textView.textStorage?.removeAttribute(.link, range: range)
         }
       }
-      for match in urlmatches {
-        let nsrange = NSRange(match.2.startIndex..<match.2.endIndex, in: self.text)
-        textView.textStorage?.addAttribute(.link, value: match.2, range: nsrange)
+      if let urlmatches {
+        for match in urlmatches {
+          let nsrange = match.range(at: 2)
+          if let range = Range(nsrange, in: self.text) {
+            textView.textStorage?.addAttribute(.link, value: self.text[range], range: nsrange)
+          }
+        }
       }
+      
       var dismisspopover = true
-      for match in mentionmatches {
-        let nsrange = NSRange(match.3.startIndex..<match.3.endIndex, in: self.text)
-        textView.textStorage?.addAttribute(.foregroundColor, value: NSColor.linkColor, range: NSRange(location: nsrange.location - 1, length: nsrange.length + 1))
-
-        let selectedrange = textView.selectedRange()
-        if selectedrange.location <= (nsrange.location + nsrange.length) && selectedrange.location >= nsrange.location {
-          dismisspopover = false
-          self.searchtask = Task {
-            let searchactors = try? await ActorSearchActorsTypeahead(limit: 5, term: String(match.output.0))
-            if let searchactors {
-              let searchactorview = SearchActorView(actorstypeahead: .constant(searchactors)) { user in
-                self.autocomplete.close()
-                textView.textStorage?.replaceCharacters(in: nsrange, with: "\(user.handle)")
-                self.text = textView.attributedString().string
+      if let mentionmatches {
+        for match in mentionmatches {
+          let nsrange = match.range(at: 3)
+          textView.textStorage?.addAttribute(.foregroundColor, value: NSColor.linkColor, range: match.range(at: 0))
+          let selectedrange = textView.selectedRange()
+          if let range = Range(nsrange, in: self.text) {
+            let handle = self.text[range]
+            if selectedrange.location <= (nsrange.location + nsrange.length) && selectedrange.location >= nsrange.location {
+              dismisspopover = false
+              self.searchtask = Task {
+                let searchactors = try? await ActorSearchActorsTypeahead(limit: 5, term: String(handle))
+                if let searchactors {
+                  let searchactorview = SearchActorView(actorstypeahead: .constant(searchactors)) { user in
+                    self.autocomplete.close()
+                    textView.textStorage?.replaceCharacters(in: nsrange, with: "\(user.handle)")
+                    self.text = textView.attributedString().string
+                  }
+                  self.autocomplete.contentViewController = NSHostingController(rootView: searchactorview)
+                  let screenRect         = textView.firstRect(forCharacterRange: nsrange, actualRange: nil), //from https://github.com/mchakravarty/CodeEditorView/blob/d403292e5100d51300bd27dbdd2c5b13359e772b/Sources/CodeEditorView/CodeActions.swift#L73
+                      nonEmptyScreenRect = NSRect(origin: screenRect.origin, size: CGSize(width: 1, height: 1)),
+                      windowRect         = textView.window!.convertFromScreen(nonEmptyScreenRect)
+                  self.autocomplete.show(relativeTo: textView.enclosingScrollView!.convert(windowRect, from: nil), of: textView.enclosingScrollView!, preferredEdge: .maxY)
+                }
+                else {
+                  self.autocomplete.close()
+                }
               }
-              self.autocomplete.contentViewController = NSHostingController(rootView: searchactorview)
-              let screenRect         = textView.firstRect(forCharacterRange: nsrange, actualRange: nil), //from https://github.com/mchakravarty/CodeEditorView/blob/d403292e5100d51300bd27dbdd2c5b13359e772b/Sources/CodeEditorView/CodeActions.swift#L73
-                  nonEmptyScreenRect = NSRect(origin: screenRect.origin, size: CGSize(width: 1, height: 1)),
-                  windowRect         = textView.window!.convertFromScreen(nonEmptyScreenRect)
-              self.autocomplete.show(relativeTo: textView.enclosingScrollView!.convert(windowRect, from: nil), of: textView.enclosingScrollView!, preferredEdge: .maxY)
-            }
-            else {
-              self.autocomplete.close()
             }
           }
+          
         }
       }
       if dismisspopover {

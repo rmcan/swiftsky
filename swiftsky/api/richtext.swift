@@ -22,22 +22,34 @@ struct RichText {
   let facets: [RichtextFacet]?
   func detectFacets() async -> [RichtextFacet] {
     var facets: [RichtextFacet] = []
-    let mentionmatches = self.text.matches(of: /(^|\s|\()(@)([a-zA-Z0-9.-]+)(\b)/)
-    let urlmatches = self.text.matches(of: /(^|\s|\()((https?:\/\/[\S]+)|((?<domain>[a-z][a-z0-9]*(\.[a-z0-9]+)+)[\S]*))/)
-    for match in urlmatches {
-      var uri = match.2
-      if !uri.starts(with: "http") {
-        uri = "https://\(uri)"
+    let mentionmatches = try? NSRegularExpression(pattern: "(^|\\s|\\()(@)([a-zA-Z0-9.-]+)(\\b)", options: [])
+      .matches(in: self.text, range: NSRange(location: 0, length: self.text.utf16.count))
+    let urlmatches = try? NSRegularExpression(pattern: "(^|\\s|\\()((https?:\\/\\/[\\S]+)|((?<domain>[a-z][a-z0-9]*(\\.[a-z0-9]+)+)[\\S]*))", options: [])
+      .matches(in: self.text, range: NSRange(location: 0, length: self.text.utf16.count))
+    if let urlmatches {
+      for match in urlmatches {
+        if let range = Range(match.range(at: 2), in: self.text) {
+          var url = self.text[range]
+          if !url.starts(with: "http") {
+            url = "https://\(url)"
+          }
+          let facet = RichtextFacet(features: [RichtextFacetFeatures(type: "app.bsky.richtext.facet#link", uri: String(url))], index: RichtextFacetByteSlice(byteEnd: text.utf8.distance(from: text.startIndex, to: range.upperBound), byteStart: text.utf8.distance(from: text.startIndex, to: range.lowerBound)))
+          facets.append(facet)
+        }
       }
-      let facet = RichtextFacet(features: [RichtextFacetFeatures(type: "app.bsky.richtext.facet#link", uri: String(uri))], index: RichtextFacetByteSlice(byteEnd: text.utf8.distance(from: text.startIndex, to: match.2.endIndex), byteStart: text.utf8.distance(from: text.startIndex, to: match.2.startIndex)))
-      facets.append(facet)
     }
-    for match in mentionmatches {
-      guard let did = try? await IdentityResolveHandle(handle: String(match.2)) else {
-        continue
+   
+    if let mentionmatches {
+      for match in mentionmatches{
+        if let range = Range(match.range(at: 3), in: self.text) {
+          let handle = self.text[range]
+          guard let did = try? await IdentityResolveHandle(handle: String(handle)) else {
+            continue
+          }
+          let facet = RichtextFacet(features: [RichtextFacetFeatures(type: "app.bsky.richtext.facet#mention", did: did.did)], index: RichtextFacetByteSlice(byteEnd: text.utf8.distance(from: text.startIndex, to: range.upperBound), byteStart: text.utf8.distance(from: text.startIndex, to: range.lowerBound) - 1))
+          facets.append(facet)
+        }
       }
-      let facet = RichtextFacet(features: [RichtextFacetFeatures(type: "app.bsky.richtext.facet#mention", did: did.did)], index: RichtextFacetByteSlice(byteEnd: text.utf8.distance(from: text.startIndex, to: match.3.endIndex), byteStart: text.utf8.distance(from: text.startIndex, to: match.3.startIndex) - 1))
-      facets.append(facet)
     }
     return facets
   }
