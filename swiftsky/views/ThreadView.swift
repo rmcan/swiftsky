@@ -46,7 +46,7 @@ struct ThreadView: View {
           .onTapGesture {
             path.append(parentpost)
           }
-        PostFooterView(bottompadding: false, post: parentpost)
+        PostFooterView(bottompadding: false, post: parentpost, path: $path)
       }
     }
   }
@@ -59,7 +59,7 @@ struct ThreadView: View {
               Color(NSColor.quaternaryLabelColor)
                 .frame(width: 4)
                 .offset(x: 35, y: 55)
-              VStack(spacing: 0) {
+              VStack(alignment: .leading, spacing: 0) {
                 parentPosts
               }
             }
@@ -67,7 +67,8 @@ struct ThreadView: View {
               post: viewpost, reply: threadviewpost?.parent?.post?.author.handle, path: $path,
               load: load
             )
-            .padding([.top, .horizontal])
+            .padding(.horizontal)
+            .padding(.top, parents.isEmpty ? 0 : 5)
             .background(alignment: .topLeading) {
               if !parents.isEmpty {
                 Color(NSColor.quaternaryLabelColor)
@@ -75,7 +76,7 @@ struct ThreadView: View {
                   .padding(.leading, 35)
               }
             }
-            PostFooterView(leadingpadding: 0, post: viewpost)
+            PostFooterView(leadingpadding: 15, post: viewpost, path: $path)
             Divider()
             HStack {
               AvatarView(url:globalmodel.profile.avatar,size: 40)
@@ -102,7 +103,7 @@ struct ThreadView: View {
                     .onTapGesture {
                       path.append(post)
                     }
-                  PostFooterView(post: post)
+                  PostFooterView(post: post, path: $path)
                   Divider()
                 }
                 

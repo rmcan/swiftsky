@@ -81,6 +81,10 @@ struct SidebarView: View {
           ProfileView(did: actorref.did, path: $path)
             .frame(minWidth: 800)
         }
+        .navigationDestination(for: ActorDefsProfileView.self) { actorref in
+          ProfileView(did: actorref.did, path: $path)
+            .frame(minWidth: 800)
+        }
         .navigationDestination(for: ProfileRouter.self) { router in
           switch router {
           case let .followers(handle):

@@ -30,6 +30,7 @@
 		36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D1F29ED348C00D9CF8B /* repolistRecords.swift */; };
 		36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D2129ED3B6900D9CF8B /* repogetRecord.swift */; };
 		3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CE9429F3AF0D00B9288A /* gtranslate.swift */; };
+		36A7B1EA29F7F1CC00EB94E1 /* feedgetLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -92,6 +93,7 @@
 		36953D1F29ED348C00D9CF8B /* repolistRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repolistRecords.swift; sourceTree = "<group>"; };
 		36953D2129ED3B6900D9CF8B /* repogetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repogetRecord.swift; sourceTree = "<group>"; };
 		3698CE9429F3AF0D00B9288A /* gtranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gtranslate.swift; sourceTree = "<group>"; };
+		36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetLikes.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				36E1EB3229DB493F00469CFE /* richtextfacet.swift */,
 				36E393CB29ED9F1200005097 /* actorsearchActorsTypeahead.swift */,
 				36EB223529F7A71E007DF9DF /* feedgetPosts.swift */,
+				36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */,
 			);
 			path = bsky;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				36AEF5B929C4920E00B68B24 /* systemdeclRef.swift in Sources */,
 				365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */,
 				36AEF5B329C4919100B68B24 /* feedgetTimeline.swift in Sources */,
+				36A7B1EA29F7F1CC00EB94E1 /* feedgetLikes.swift in Sources */,
 				36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */,
 				36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */,
 				365C57A529D9E67300665E65 /* feeddefs.swift in Sources */,

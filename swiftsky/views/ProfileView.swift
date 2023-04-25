@@ -237,7 +237,7 @@ private struct ProfileViewFeed: View {
             await loadMorePosts()
           }
         }
-        PostFooterView(post: post.post)
+        PostFooterView(post: post.post, path: $path)
         Divider()
       }
       .listRowInsets(EdgeInsets())

@@ -6,9 +6,6 @@
 struct feedgetPostsOutput: Decodable {
   let posts: [FeedDefsPostView]
 }
-struct feedgetPostsInput: Encodable {
-  let uris: [String]
-}
 func feedgetPosts(uris: [String]) async throws -> feedgetPostsOutput {
   return try await NetworkManager.shared.fetch(
     endpoint: "app.bsky.feed.getPosts", authorization: NetworkManager.shared.user.accessJwt,

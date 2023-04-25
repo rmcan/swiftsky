@@ -19,7 +19,7 @@ struct NewPostView: View {
         var replyref: FeedPostReplyRef? = nil
         if let replypost {
           let parent = RepoStrongRef(cid: replypost.cid, uri: replypost.uri)
-          let root = replypost.record.reply != nil ? RepoStrongRef(cid: replypost.record.reply!.root.uri, uri: replypost.record.reply!.root.uri) : parent
+          let root = replypost.record.reply != nil ? RepoStrongRef(cid: replypost.record.reply!.root.cid, uri: replypost.record.reply!.root.uri) : parent
           replyref = FeedPostReplyRef(parent: parent, root: root)
         }
         let rt = RichText(text: text, facets: nil)
