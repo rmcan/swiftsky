@@ -25,7 +25,7 @@ struct HomeView: View {
           let reply = $0.reply?.parent.author
           let following = reply?.viewer?.following
           let repost = $0.reason
-          return ((reply == nil || following != nil) || repost != nil)
+          return ((reply == nil || following != nil || reply?.did == NetworkManager().did) || repost != nil)
         }
         if self.loading && !filteredfeed.isEmpty {
           ProgressView().frame(maxWidth: .infinity, alignment: .center)
