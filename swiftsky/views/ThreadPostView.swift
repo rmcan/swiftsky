@@ -136,7 +136,7 @@ struct ThreadPostview: View {
               } label: {
                 let imagewidth = 600.0 / Double(images.count)
                 let imageheight = 600.0 / Double(images.count)
-                CachedAsyncImage(url: URL(string: image.thumb)) { image in
+                AsyncImage(url: URL(string: image.thumb)) { image in
                   image
                     .resizable()
                     .aspectRatio(contentMode: .fill)

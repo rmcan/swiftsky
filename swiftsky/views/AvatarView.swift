@@ -10,7 +10,7 @@ struct AvatarView: View {
   let size: CGFloat
   var body: some View {
     if let url {
-      CachedAsyncImage(url: URL(string: url)) { image in
+      AsyncImage(url: URL(string: url)) { image in
         image
           .resizable()
           .aspectRatio(contentMode: .fill)

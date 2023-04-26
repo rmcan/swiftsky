@@ -22,7 +22,7 @@ struct EmbedExternalView: View {
 
         VStack(alignment: .leading) {
           if let thumb = record.thumb {
-            CachedAsyncImage(url: URL(string: thumb)) {
+            AsyncImage(url: URL(string: thumb)) {
               $0
                 .resizable()
                 .aspectRatio(contentMode: .fill)

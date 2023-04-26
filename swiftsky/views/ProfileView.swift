@@ -17,7 +17,7 @@ private struct ProfileViewHeader: View {
   var body: some View {
     ZStack(alignment: .bottomLeading) {
       if let banner = banner {
-        CachedAsyncImage(url: URL(string: banner)) { image in
+        AsyncImage(url: URL(string: banner)) { image in
           image
             .resizable()
             .frame(height: 200)
