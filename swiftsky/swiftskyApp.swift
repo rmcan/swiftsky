@@ -9,7 +9,6 @@ import SwiftUI
 struct swiftskyApp: App {
   @StateObject private var auth = Auth.shared
   init() {
-    URLCache.shared.removeAllCachedResponses()
     NetworkManager.shared.postInit()
     GlobalViewModel.shared.systemLanguageCode = Locale.preferredLanguageCodes[0]
     GlobalViewModel.shared.systemLanguage = Locale.current.localizedString(forLanguageCode: GlobalViewModel.shared.systemLanguageCode) ?? "en"
