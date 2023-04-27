@@ -14,10 +14,7 @@ struct EmbedRecordViewRecord: Decodable, Hashable {
   let value: FeedPost
 }
 struct EmbedRecordViewRecordEmbeds: Decodable, Identifiable, Hashable {
-  var id: UUID {
-    UUID()
-  }
-  
+  let id = UUID()
   let type: String?
   let images: [EmbedImagesViewImage]?
   let external: EmbedExternalViewExternal?
