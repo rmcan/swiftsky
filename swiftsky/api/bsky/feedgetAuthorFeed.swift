@@ -7,7 +7,7 @@ import Foundation
 
 struct FeedGetAuthorFeedInput: Encodable {
   let actor: String
-  let limit: Int = 30
+  let limit: Int = 100
   let cursor: String?
 }
 
