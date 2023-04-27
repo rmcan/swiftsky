@@ -30,6 +30,7 @@ struct EmbedExternalView: View {
                 .clipped()
             } placeholder: {
               ProgressView()
+                .frame(width: 400, height: 200)
             }
           }
           if !record.title.isEmpty {

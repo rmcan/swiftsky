@@ -23,6 +23,7 @@ private struct ProfileViewHeader: View {
             .frame(height: 200)
         } placeholder: {
           ProgressView()
+            .frame(height: 200)
             .frame(maxWidth: .infinity, alignment: .center)
         }
         .onTapGesture {

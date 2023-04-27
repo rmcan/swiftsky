@@ -14,11 +14,12 @@ struct AvatarView: View {
         image
           .resizable()
           .aspectRatio(contentMode: .fill)
+          .frame(width: size, height: size)
           .clipped()
       } placeholder: {
         ProgressView()
+          .frame(width: size, height: size)
       }
-      .frame(width: size, height: size)
       .cornerRadius(size / 2)
     }
     else {

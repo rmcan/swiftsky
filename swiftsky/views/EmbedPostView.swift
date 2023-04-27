@@ -79,10 +79,10 @@ struct EmbedPostView: View {
 
                     } placeholder: {
                       ProgressView()
-                        .frame(maxWidth: .infinity, alignment: .center)
+                        .frame(width: imagewidth, height: imageheight)
                     }
                     .frame(width: imagewidth, height: imageheight)
-                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
+                    .padding(.init(top: 5, leading: 0, bottom: 0, trailing: 0))
                     .cornerRadius(15)
                   }
                   .buttonStyle(.plain)
