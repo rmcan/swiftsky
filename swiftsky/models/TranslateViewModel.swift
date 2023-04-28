@@ -28,6 +28,9 @@ class TranslateViewModel: ObservableObject {
         }
       }
     }
+    else {
+      self.showtranslated.toggle()
+    }
   }
   @Published var translatedtext = ""
   @Published var showtranslated = false
