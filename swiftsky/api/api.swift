@@ -180,8 +180,6 @@ class NetworkManager {
 }
 
 struct AuthData: Codable {
-  var username: String = ""
-  var password: String = ""
   var accessJwt: String = ""
   var refreshJwt: String = ""
   static func load() -> AuthData? {

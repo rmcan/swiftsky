@@ -16,7 +16,7 @@ struct swiftskyApp: App {
   var body: some Scene {
     WindowGroup {
       SidebarView().sheet(isPresented: $auth.needAuthorization) {
-        LoginView().frame(width: 300, height: 200)
+        LoginView()
       }
     }
     .defaultSize(width: 1100, height: 650)

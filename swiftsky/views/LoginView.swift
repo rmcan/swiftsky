@@ -4,60 +4,65 @@
 //
 
 import SwiftUI
-
 struct LoginView: View {
-  @State private var username: String = ""
+  @State private var handle: String = ""
   @State private var password: String = ""
-  @State private var error: String? = nil
-  @State private var disablebutton: Bool = false
+  @State private var error: String = ""
+  @State private var isButtonDisabled: Bool = false
   @StateObject private var auth = Auth.shared
-  var body: some View {
-    VStack {
-      Text("Please sign in to continue.")
-      TextField("Handle or email address", text: $username)
-        .textFieldStyle(.roundedBorder)
-        .padding(.horizontal)
-      SecureField("App Password", text: $password)
-        .textFieldStyle(.roundedBorder)
-        .padding(.horizontal)
-      Button {
-        disablebutton = true
-        Task {
-          do {
-            let result = try await ServerCreateSession(identifier: username, password: password)
-            NetworkManager.shared.user.username = username
-            NetworkManager.shared.user.password = password
-            NetworkManager.shared.user.refreshJwt = result.refreshJwt
-            NetworkManager.shared.user.accessJwt = result.accessJwt
-            NetworkManager.shared.handle = result.handle
-            NetworkManager.shared.did = result.did
-            NetworkManager.shared.user.save()
-            DispatchQueue.main.async {
-              auth.needAuthorization = false
-            }
-          } catch {
-            if let error = error as? xrpcErrorDescription {
-              self.error = error.message
-              return
-            }
-            self.error = error.localizedDescription
-          }
-          disablebutton = false
+  private func signin() {
+    Task {
+      isButtonDisabled = true
+      do {
+        let result = try await ServerCreateSession(identifier: handle, password: password)
+        NetworkManager.shared.user.refreshJwt = result.refreshJwt
+        NetworkManager.shared.user.accessJwt = result.accessJwt
+        NetworkManager.shared.handle = result.handle
+        NetworkManager.shared.did = result.did
+        NetworkManager.shared.user.save()
+        DispatchQueue.main.async {
+          auth.needAuthorization = false
         }
-      } label: {
-        Text("Sign in").frame(minWidth: 0, maxWidth: 50)
+      } catch {
+        self.error = error.localizedDescription
       }
-      .disabled(disablebutton)
-      .keyboardShortcut(.defaultAction)
-      if let error = self.error {
-        Text(error)
-          .foregroundColor(.red)
-      }
-      Button {
-        exit(0)
-      } label: {
-        Text("Quit").frame(minWidth: 0, maxWidth: 50)
+      isButtonDisabled = false
+    }
+  }
+  var body: some View {
+    Form {
+      Section {
+        LabeledContent("Handle or email address") {
+          TextField("Handle", text: $handle)
+            .textContentType(.username)
+            .multilineTextAlignment(.trailing)
+            .labelsHidden()
+        }
+        LabeledContent("App password") {
+          SecureField("Password", text: $password)
+            .textContentType(.oneTimeCode)
+            .multilineTextAlignment(.trailing)
+            .labelsHidden()
+        }
+      } header: {
+        error.isEmpty ? Text("Please sign in to continue.") : Text(error).foregroundColor(.red)
       }
     }
+    .formStyle(.grouped)
+    .navigationTitle("Sign in")
+    .toolbar {
+      ToolbarItem(placement: .confirmationAction) {
+        Button("Sign in") {
+          signin()
+        }
+        .disabled(isButtonDisabled || (handle.isEmpty || password.isEmpty))
+      }
+      ToolbarItem(placement: .cancellationAction) {
+        Button("Cancel", role: .cancel) {
+          exit(0)
+        }
+      }
+    }
+
   }
 }
