@@ -53,7 +53,12 @@ struct LoginView: View {
     .toolbar {
       ToolbarItem(placement: .confirmationAction) {
         Button("Sign in") {
-          signin()
+          if password.count == 19 {
+            signin()
+          }
+          else {
+            self.error = "Signing in with main password is not allowed"
+          }
         }
         .disabled(isButtonDisabled || (handle.isEmpty || password.isEmpty))
       }
