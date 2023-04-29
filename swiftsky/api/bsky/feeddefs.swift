@@ -31,7 +31,11 @@ struct FeedDefsPostViewEmbed: Decodable, Hashable {
     self.type = try container.decodeIfPresent(String.self, forKey: .type)
     switch type {
     case "app.bsky.embed.record#view":
-      self.record = try container.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)
+      let recordcontainer = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .record)
+      let type = try recordcontainer.decodeIfPresent(String.self, forKey: .type)
+      if type == "app.bsky.embed.record#viewRecord" {
+        self.record = try container.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)
+      }
     case "app.bsky.embed.recordWithMedia#view":
       let recordcontainer = try container.nestedContainer(keyedBy: CodingKeys.recordWithMedia.self, forKey: .record)
       self.record = try recordcontainer.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)

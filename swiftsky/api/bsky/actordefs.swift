@@ -31,6 +31,7 @@ struct ActorDefsViewerState: Decodable, Hashable {
   let followedBy: String?
   var following: String?
   let muted: Bool?
+  var blocking: String?
 }
 struct ActorDefsProfileViewDetailed: Decodable, Hashable {
   let avatar: String?

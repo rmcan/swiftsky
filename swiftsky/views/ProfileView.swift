@@ -46,6 +46,8 @@ struct ProfileView: View {
   @State private var error = ""
   @State private var preview: URL? = nil
   @State private var disablefollowbutton = false
+  @State private var disableblockbutton = false
+  @State private var blocksheetpresented = false
   @Binding var path: NavigationPath
   let tablist: [String] = ["Posts", "Posts & Replies", "Likes"]
   private func getProfile() async {
@@ -109,6 +111,38 @@ struct ProfileView: View {
       disablefollowbutton = false
     }
   }
+  private func unblock() {
+    disableblockbutton = true
+    Task {
+      do {
+        let result = try await repoDeleteRecord(
+          uri: profile!.viewer!.blocking!, collection: "app.bsky.graph.block")
+        blocksheetpresented = false
+        if result {
+          await load()
+        }
+      } catch {
+        blocksheetpresented = false
+        self.error = error.localizedDescription
+      }
+      disableblockbutton = false
+    }
+  }
+  private func block() {
+    disableblockbutton = true
+    Task {
+      do {
+        let _ = try await blockUser(
+          did: did)
+        blocksheetpresented = false
+        await load()
+      } catch {
+        blocksheetpresented = false
+        self.error = error.localizedDescription
+      }
+      disableblockbutton = false
+    }
+  }
   private func follow() {
     disablefollowbutton = true
     Task {
@@ -148,7 +182,21 @@ struct ProfileView: View {
     .tint(isfollowing ? Color(.controlColor) : Color.accentColor)
     .disabled(disablefollowbutton)
   }
-  
+  var unblockbutton: some View {
+    Button("Unblock") {
+      blocksheetpresented = true
+    }
+    .disabled(disableblockbutton)
+  }
+  private func load() async {
+    loading = true
+    await getProfile()
+    if profile?.viewer?.blocking == nil {
+      await getFeed()
+      await getLikes()
+    }
+    loading = false
+  }
   var header: some View {
     Group {
       if let banner = profile?.banner {
@@ -166,6 +214,7 @@ struct ProfileView: View {
               .frame(height: 200)
               .frame(maxWidth: .infinity, alignment: .center)
           }
+          .blur(radius: profile!.viewer?.blocking == nil ? 0 : 30, opaque: true)
         }
         .buttonStyle(.plain)
         
@@ -180,7 +229,7 @@ struct ProfileView: View {
         Button {
           self.preview = URL(string: profile?.avatar ?? "")
         } label: {
-          AvatarView(url: profile?.avatar, size: 80)
+          AvatarView(url: profile?.avatar, size: 80, blur: profile!.viewer?.blocking != nil)
             .overlay(
               Circle()
                 .stroke(Color.white, lineWidth: 4)
@@ -189,14 +238,25 @@ struct ProfileView: View {
             .padding(.leading)
         }
         .buttonStyle(.plain)
-       
+        
         Spacer()
         Group {
           if profile!.did != NetworkManager.shared.did {
-            followbutton
+            if profile!.viewer?.blocking == nil {
+              followbutton
+            }
+            else {
+              unblockbutton
+            }
           }
           Menu {
             ShareLink(item: URL(string: "https://staging.bsky.app/profile/\(profile!.handle)")!)
+            if profile!.viewer?.blocking == nil {
+              Button("Block") {
+                blocksheetpresented = true
+              }
+            }
+          
           } label: {
             Label("Details", systemImage: "ellipsis")
                 .labelStyle(.iconOnly)
@@ -214,6 +274,33 @@ struct ProfileView: View {
     }
     .padding(.bottom, 2)
   }
+  var blockedDescription: some View {
+    ZStack(alignment: .leading) {
+      RoundedRectangle(cornerRadius: 10)
+        .opacity(0.05)
+      Text("\(Image(systemName: "exclamationmark.triangle")) Account Blocked")
+        .padding(3)
+    }
+    .padding(.trailing, 10)
+    .padding(.bottom, 2)
+  }
+  var blocksheetcontent: some View {
+    Group {
+      Text(profile?.viewer?.blocking == nil ? "Block Account" : "Unblock Account")
+        .foregroundColor(.primary)
+        .font(.system(size: 20))
+      Text(profile?.viewer?.blocking == nil ? "Blocked accounts cannot reply in your threads, mention you, or otherwise interact with you. You will not see their content and they will be prevented from seeing yours." : "The account will be able to interact with you after unblocking. (You can always block again in the future.)")
+        .foregroundColor(.secondary)
+        .multilineTextAlignment(.center)
+      Button("Confirm") {
+        profile?.viewer?.blocking == nil ? block() : unblock()
+      }
+      .controlSize(.large)
+      .buttonStyle(.borderedProminent)
+      .disabled(disableblockbutton)
+    }
+    .frame(width: 400, height: 150)
+  }
   var description: some View {
     Group {
       Text(profile!.displayName ?? profile!.handle)
@@ -230,27 +317,33 @@ struct ProfileView: View {
       Text("@\(profile!.handle)")
         .foregroundColor(.secondary)
         .padding(.bottom, 2)
-      HStack {
-        Button {
-          path.append(ProfileRouter.followers(profile!.handle))
-        } label: {
-          Text("\(profile!.followersCount) \(Text("followers").foregroundColor(.secondary))")
+      if profile!.viewer?.blocking != nil {
+        blockedDescription
+      }
+      else {
+        HStack {
+          Button {
+            path.append(ProfileRouter.followers(profile!.handle))
+          } label: {
+            Text("\(profile!.followersCount) \(Text("followers").foregroundColor(.secondary))")
+          }
+          .buttonStyle(.plain)
+          Button {
+            path.append(ProfileRouter.following(profile!.handle))
+          } label: {
+            Text("\(profile!.followsCount) \(Text("following").foregroundColor(.secondary))")
+          }
+          .buttonStyle(.plain)
+          Text("\(profile!.postsCount) \(Text("posts").foregroundColor(.secondary))")
         }
-        .buttonStyle(.plain)
-        Button {
-          path.append(ProfileRouter.following(profile!.handle))
-        } label: {
-          Text("\(profile!.followsCount) \(Text("following").foregroundColor(.secondary))")
+        if let description = profile!.description, !description.isEmpty {
+          Text(description)
         }
-        .buttonStyle(.plain)
-        Text("\(profile!.postsCount) \(Text("posts").foregroundColor(.secondary))")
+        HStack{
+          ProfileViewTabs(selectedtab: $selectedtab, tabs: tablist)
+        }
       }
-      if let description = profile!.description, !description.isEmpty {
-        Text(description)
-      }
-      HStack{
-        ProfileViewTabs(selectedtab: $selectedtab, tabs: tablist)
-      }
+     
     }
   }
   
@@ -308,15 +401,18 @@ struct ProfileView: View {
             description
           }
           .padding(.leading, 10)
-          Divider().frame(height: 2)
-            .padding(.top, 2)
-          feed
-          if loading {
-            ProgressView().frame(maxWidth: .infinity, alignment: .center)
+          if profile!.viewer?.blocking == nil {
+            Divider().frame(height: 2)
+              .padding(.top, 2)
+            feed
+            if loading {
+              ProgressView().frame(maxWidth: .infinity, alignment: .center)
+            }
+            else if feedarray.isEmpty {
+              emptyfeed
+            }
           }
-          else if feedarray.isEmpty {
-            emptyfeed
-          }
+      
         }
       }
       .listRowInsets(.init())
@@ -329,11 +425,7 @@ struct ProfileView: View {
       ToolbarItem(placement: .primaryAction) {
         Button {
           Task {
-            loading = true
-            await getProfile()
-            await getFeed()
-            await getLikes()
-            loading = false
+            await load()
           }
         } label: {
           Image(systemName: "arrow.clockwise")
@@ -344,13 +436,12 @@ struct ProfileView: View {
     .alert(error, isPresented: .constant(!error.isEmpty)) {
       Button("OK") {self.error = ""}
     }
+    .sheet(isPresented: $blocksheetpresented) {
+      blocksheetcontent
+    }
     .quickLookPreview($preview)
     .task {
-      loading = true
-      await getProfile()
-      await getFeed()
-      await getLikes()
-      loading = false
+      await load()
     }
   }
 }

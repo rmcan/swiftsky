@@ -52,6 +52,13 @@ func followUser(did: String) async throws -> RepoCreateRecordOutput {
         subject: did,
         createdAt: Date().iso8601withFractionalSeconds)))
 }
+func blockUser(did: String) async throws -> RepoCreateRecordOutput {
+  return try await repoCreateRecord(
+    input: RepoCreateRecordInput(
+      type: "app.bsky.graph.block", collection: "app.bsky.graph.block",
+      repo: NetworkManager.shared.did,
+      record: ["subject": did, "createdAt" : Date().iso8601withFractionalSeconds, "$type" : "app.bsky.graph.block"]))
+}
 func makePost(text: String, reply: FeedPostReplyRef? = nil, facets: [RichtextFacet]? = nil) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
