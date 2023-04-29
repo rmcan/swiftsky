@@ -19,11 +19,20 @@ class FeedGetPostThreadThreadViewPost: Decodable, Hashable, Identifiable {
   let post: FeedDefsPostView?
   let parent: FeedGetPostThreadThreadViewPost?
   let replies: [FeedGetPostThreadThreadViewPost]?
+  let notfound: Bool
   enum CodingKeys: CodingKey {
     case type
     case post
     case parent
     case replies
+  }
+  required init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.type = try container.decodeIfPresent(String.self, forKey: .type)
+    self.post = try container.decodeIfPresent(FeedDefsPostView.self, forKey: .post)
+    self.parent = try container.decodeIfPresent(FeedGetPostThreadThreadViewPost.self, forKey: .parent)
+    self.replies = try container.decodeIfPresent([FeedGetPostThreadThreadViewPost].self, forKey: .replies)
+    self.notfound = self.type == "app.bsky.feed.defs#notFoundPost"
   }
 }
 struct FeedGetPostThreadInput: Encodable, Hashable {

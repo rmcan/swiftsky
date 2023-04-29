@@ -22,9 +22,7 @@ struct ThreadView: View {
         self.threadviewpost = thread
         var currentparent = thread.parent
         while let parent = currentparent {
-          if parent.type == "app.bsky.feed.defs#threadViewPost" {
-            parents.append(parent)
-          }
+          parents.append(parent)
           currentparent = parent.parent
         }
         parents.reverse()
@@ -55,14 +53,12 @@ struct ThreadView: View {
       List {
         Group {
           if let viewpost = threadviewpost?.post {
-            ZStack(alignment: .topLeading) {
-              Color(NSColor.quaternaryLabelColor)
-                .frame(width: 4)
-                .offset(x: 35, y: 55)
-              VStack(alignment: .leading, spacing: 0) {
-                parentPosts
+            parentPosts
+              .background(alignment: .topLeading) {
+                Color(NSColor.quaternaryLabelColor)
+                  .frame(width: 4)
+                  .padding(.leading, 35)
               }
-            }
             ThreadPostview(
               post: viewpost, reply: threadviewpost?.parent?.post?.author.handle, path: $path,
               load: load
@@ -82,7 +78,7 @@ struct ThreadView: View {
               AvatarView(url:globalmodel.profile.avatar,size: 40)
                 .padding(.leading)
                 .padding([.vertical, .trailing], 5)
-  
+              
               Text("Reply to @\(viewpost.author.handle)")
                 .font(.system(size: 15))
                 .opacity(0.9)
@@ -93,7 +89,7 @@ struct ThreadView: View {
               replypresented = true
             }
             Divider()
-              .id(1)
+              .id(viewpost.cid)
             if let replies = threadviewpost?.replies {
               ForEach(replies, id: \.self) { post in
                 if let post = post.post {
@@ -133,7 +129,11 @@ struct ThreadView: View {
       )
       .task {
         await load()
-        proxy.scrollTo(1)
+        if let post = threadviewpost?.post {
+          DispatchQueue.main.async {
+            proxy.scrollTo(post.cid)
+          }
+        }
       }
       .toolbar {
         ToolbarItem(placement: .primaryAction) {
