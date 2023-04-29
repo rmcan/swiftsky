@@ -251,7 +251,7 @@ struct ProfileView: View {
           }
           Menu {
             ShareLink(item: URL(string: "https://staging.bsky.app/profile/\(profile!.handle)")!)
-            if profile!.viewer?.blocking == nil {
+            if profile!.did != NetworkManager.shared.did && profile!.viewer?.blocking == nil {
               Button("Block") {
                 blocksheetpresented = true
               }
