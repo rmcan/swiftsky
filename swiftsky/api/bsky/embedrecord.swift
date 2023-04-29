@@ -18,7 +18,7 @@ struct EmbedRecordViewRecordEmbeds: Decodable, Identifiable, Hashable {
   let type: String?
   let images: [EmbedImagesViewImage]?
   let external: EmbedExternalViewExternal?
-  let record: EmbedRecordViewRecord?
+  var record: EmbedRecordViewRecord? = nil
   enum CodingKeys: CodingKey {
     case type
     case images
@@ -34,7 +34,13 @@ struct EmbedRecordViewRecordEmbeds: Decodable, Identifiable, Hashable {
     self.type = try container.decodeIfPresent(String.self, forKey: .type)
     switch type {
     case "app.bsky.embed.record#view":
-      self.record = try container.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)
+      let nestedcontainer = try? container.nestedContainer(keyedBy: CodingKeys.self, forKey: .record)
+      if let nestedcontainer {
+        let type = try nestedcontainer.decodeIfPresent(String.self, forKey: .type)
+        if type == "app.bsky.embed.record#viewRecord" {
+          self.record = try container.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)
+        }
+      }
     case "app.bsky.embed.recordWithMedia#view":
       let ncontainer = try container.nestedContainer(keyedBy: CodingKeys.recordWithMedia.self, forKey: .record)
       self.record = try ncontainer.decodeIfPresent(EmbedRecordViewRecord.self, forKey: .record)
