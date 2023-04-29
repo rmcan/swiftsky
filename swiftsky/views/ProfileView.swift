@@ -300,6 +300,15 @@ struct ProfileView: View {
       .disabled(disableblockbutton)
     }
     .frame(width: 400, height: 150)
+    .overlay(alignment: .topTrailing) {
+      Button {
+           blocksheetpresented = false
+      } label: {
+          Image(systemName: "xmark")
+      }
+      .buttonStyle(.borderless)
+      .padding()
+    }
   }
   var description: some View {
     Group {
