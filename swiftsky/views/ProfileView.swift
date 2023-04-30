@@ -164,7 +164,7 @@ struct ProfileView: View {
       return likedposts.feed
     default:
       return self.authorfeed.feed.filter {
-        return $0.reply == nil
+        return $0.post.record.reply == nil || $0.reason != nil
       }
     }
   }
