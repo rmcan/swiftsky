@@ -17,7 +17,7 @@ struct SidebarView: View {
   @State var searchpresented = false
   func loadProfile() async {
     do {
-      self.globalmodel.profile = try await actorgetProfile(actor: NetworkManager.shared.handle)
+      self.globalmodel.profile = try await actorgetProfile(actor: Client.shared.handle)
     } catch {
       
     }
@@ -26,14 +26,20 @@ struct SidebarView: View {
     NavigationSplitView {
       List(selection: $selection) {
         HStack(spacing: 5) {
-          AvatarView(url: self.globalmodel.profile.avatar, size: 40)
+          AvatarView(url: self.globalmodel.profile?.avatar, size: 40)
           VStack(alignment: .leading, spacing: 0) {
-            if let displayname = self.globalmodel.profile.displayName {
-              Text(displayname)
+            if auth.needAuthorization || self.globalmodel.profile == nil {
+              Text("Sign in")
             }
-            Text(self.globalmodel.profile.handle)
-              .font(.footnote)
-              .opacity(0.6)
+            else {
+              if let displayname = self.globalmodel.profile!.displayName {
+                Text(displayname)
+              }
+              Text(self.globalmodel.profile!.handle)
+                .font(.footnote)
+                .opacity(0.6)
+            }
+            
           }
         }.tag(0)
         Section {
@@ -50,9 +56,15 @@ struct SidebarView: View {
         Group {
           switch selection {
           case 0:
-            ProfileView(did: self.globalmodel.profile.did, profile: self.globalmodel.profile, path: $path)
-              .frame(minWidth: 800)
-              .navigationTitle(self.globalmodel.profile.handle)
+            if let profile = self.globalmodel.profile {
+              ProfileView(did: profile.did, profile: profile, path: $path)
+                .frame(minWidth: 800)
+                .navigationTitle(profile.handle)
+            }
+            else {
+              EmptyView()
+            }
+         
           case 1:
             HomeView(path: $path)
               .frame(minWidth: 800)

@@ -24,7 +24,7 @@ struct RepoListRecordsInput: Encodable {
 }
 
 func RepoListRecords(collection: String, cursor: String? = nil, limit: Int? = nil, repo: String) async throws -> RepoListRecordsOutput {
-  return try await NetworkManager.shared.fetch(
+  return try await Client.shared.fetch(
     endpoint: "com.atproto.repo.listRecords", httpMethod: .get,
     params: RepoListRecordsInput(collection: collection, cursor: cursor, limit: limit, repo: repo))
 }

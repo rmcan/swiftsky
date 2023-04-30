@@ -28,8 +28,8 @@ struct xrpcErrorDescription: Error, LocalizedError, Decodable {
   }
 }
 
-class NetworkManager {
-  static let shared = NetworkManager()
+class Client {
+  static let shared = Client()
   private let baseURL = "https://bsky.social/xrpc/"
   private let decoder: JSONDecoder
   public var user = AuthData()
@@ -183,7 +183,7 @@ struct AuthData: Codable {
   var accessJwt: String = ""
   var refreshJwt: String = ""
   static func load() -> AuthData? {
-    if let userdata = readkeychain(service: "app.swiftsky.userData", account: "userData"),
+    if let userdata = Keychain.get("app.swiftsky.userData"),
       let user = try? JSONDecoder().decode(AuthData.self, from: userdata)
     {
       return user
@@ -193,7 +193,7 @@ struct AuthData: Codable {
   func save() {
     Task {
       if let userdata = try? JSONEncoder().encode(self) {
-        savekeychain(userdata, service: "app.swiftsky.userData", account: "userData")
+        Keychain.set(userdata, "app.swiftsky.userData")
       }
     }
   }
@@ -202,4 +202,14 @@ struct AuthData: Codable {
 class Auth: ObservableObject {
   static let shared = Auth()
   @Published var needAuthorization: Bool = true
+  public func signout() {
+    GlobalViewModel.shared.profile = nil
+    Client.shared.handle = ""
+    Client.shared.did = ""
+    Client.shared.user = .init()
+    self.needAuthorization = true
+    Task {
+      Keychain.delete("app.swiftsky.userData")
+    }
+  }
 }

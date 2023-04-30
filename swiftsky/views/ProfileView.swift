@@ -241,7 +241,7 @@ struct ProfileView: View {
         
         Spacer()
         Group {
-          if profile!.did != NetworkManager.shared.did {
+          if profile!.did != Client.shared.did {
             if profile!.viewer?.blocking == nil {
               followbutton
             }
@@ -251,7 +251,7 @@ struct ProfileView: View {
           }
           Menu {
             ShareLink(item: URL(string: "https://staging.bsky.app/profile/\(profile!.handle)")!)
-            if profile!.did != NetworkManager.shared.did && profile!.viewer?.blocking == nil {
+            if profile!.did != Client.shared.did && profile!.viewer?.blocking == nil {
               Button("Block") {
                 blocksheetpresented = true
               }

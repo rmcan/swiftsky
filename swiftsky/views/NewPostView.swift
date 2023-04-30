@@ -67,7 +67,7 @@ struct NewPostView: View {
       Divider()
         .padding(.vertical, 5)
       HStack(alignment: .top) {
-        AvatarView(url: globalmodel.profile.avatar, size: 50)
+        AvatarView(url: globalmodel.profile?.avatar, size: 50)
         let placeholder = replypost != nil ? "Reply to @\(replypost!.author.handle)" : "What's up?"
         TextViewWrapper(text: $text, placeholder: placeholder)
         Spacer()

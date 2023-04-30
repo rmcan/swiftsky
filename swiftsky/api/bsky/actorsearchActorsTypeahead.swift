@@ -14,7 +14,7 @@ struct ActorSearchActorsTypeaheadInput: Encodable {
   let term: String
 }
 func ActorSearchActorsTypeahead(limit: Int = 10, term: String) async throws -> ActorSearchActorsTypeaheadOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.actor.searchActorsTypeahead", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.actor.searchActorsTypeahead", authorization: Client.shared.user.accessJwt,
     params: ActorSearchActorsTypeaheadInput(limit: limit, term: term))
 }

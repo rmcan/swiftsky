@@ -62,7 +62,7 @@ private struct FollowersRowView: View {
         }
       }
       Spacer()
-      if user.did != NetworkManager.shared.did {
+      if user.did != Client.shared.did {
         let following = user.viewer?.following != nil
         Button {
           following ? unfollow() : follow()

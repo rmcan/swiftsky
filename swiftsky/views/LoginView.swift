@@ -15,11 +15,11 @@ struct LoginView: View {
       isButtonDisabled = true
       do {
         let result = try await ServerCreateSession(identifier: handle, password: password)
-        NetworkManager.shared.user.refreshJwt = result.refreshJwt
-        NetworkManager.shared.user.accessJwt = result.accessJwt
-        NetworkManager.shared.handle = result.handle
-        NetworkManager.shared.did = result.did
-        NetworkManager.shared.user.save()
+        Client.shared.user.refreshJwt = result.refreshJwt
+        Client.shared.user.accessJwt = result.accessJwt
+        Client.shared.handle = result.handle
+        Client.shared.did = result.did
+        Client.shared.user.save()
         DispatchQueue.main.async {
           auth.needAuthorization = false
         }

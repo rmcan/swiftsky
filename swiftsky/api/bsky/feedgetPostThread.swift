@@ -43,7 +43,7 @@ struct FeedGetPostThreadOutput: Decodable, Hashable {
 }
 
 func getPostThread(uri: String) async throws -> FeedGetPostThreadOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.feed.getPostThread", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.feed.getPostThread", authorization: Client.shared.user.accessJwt,
     params: FeedGetPostThreadInput(uri: uri))
 }

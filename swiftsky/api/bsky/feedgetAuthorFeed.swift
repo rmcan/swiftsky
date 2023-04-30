@@ -24,7 +24,7 @@ struct FeedGetAuthorFeedOutput: Decodable, Identifiable {
 func getAuthorFeed(actor: String, cursor: String? = nil) async throws
   -> FeedGetAuthorFeedOutput
 {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.feed.getAuthorFeed", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.feed.getAuthorFeed", authorization: Client.shared.user.accessJwt,
     params: FeedGetAuthorFeedInput(actor: actor, cursor: cursor))
 }

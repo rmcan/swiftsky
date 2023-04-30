@@ -16,7 +16,7 @@ struct RepoGetRecordInput: Encodable {
 }
 
 func RepoGetRecord(cid: String? = nil, collection: String, repo: String, rkey: String) async throws -> RepoGetRecordOutput {
-  return try await NetworkManager.shared.fetch(
+  return try await Client.shared.fetch(
     endpoint: "com.atproto.repo.getRecord", httpMethod: .get,
     params: RepoGetRecordInput(cid: cid, collection: collection, repo: repo, rkey: rkey))
 }

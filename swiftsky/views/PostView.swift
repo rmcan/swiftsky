@@ -86,7 +86,7 @@ struct PostView: View {
                 MenuItem(title: "Report") {
                   print("Report")
                 })
-              if post.author.did == NetworkManager.shared.did {
+              if post.author.did == Client.shared.did {
                 items.append(
                   MenuItem(title: "Delete") {
                     deletepost = true

@@ -16,7 +16,7 @@ struct ServerCreateSessionOutput: Decodable, Hashable {
 }
 
 func ServerCreateSession(identifier: String, password: String) async throws -> ServerCreateSessionOutput {
-  return try await NetworkManager.shared.fetch(
+  return try await Client.shared.fetch(
     endpoint: "com.atproto.server.createSession", httpMethod: .post,
     params: ServerCreateSessionInput(identifier: identifier, password: password))
 }

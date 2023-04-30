@@ -5,44 +5,32 @@
 
 import Foundation
 
-func updatekeychain(_ data: Data, service: String, account: String) {
-  let query: [CFString: Any] =
+struct Keychain {
+  public static func get(_ key: String) -> Data? {
+    let query: [CFString: Any] =
     [
-      kSecClass: kSecClassGenericPassword,
-      kSecAttrService: service,
-      kSecAttrAccount: account,
+      kSecClass      : kSecClassGenericPassword,
+      kSecAttrAccount: key,
+      kSecReturnData : true,
     ]
-
-  let updatedData = [kSecValueData: data] as CFDictionary
-  SecItemUpdate(query as CFDictionary, updatedData)
-}
-
-func savekeychain(_ data: Data, service: String, account: String) {
-  let query: [CFString: Any] =
-    [
-      kSecValueData: data,
-      kSecClass: kSecClassGenericPassword,
-      kSecAttrService: service,
-      kSecAttrAccount: account,
-    ]
-
-  let saveStatus = SecItemAdd(query as CFDictionary, nil)
-
-  if saveStatus == errSecDuplicateItem {
-    updatekeychain(data, service: service, account: account)
+    var data: AnyObject?
+    SecItemCopyMatching(query as CFDictionary, &data)
+    return data as? Data
   }
-}
-
-func readkeychain(service: String, account: String) -> Data? {
-  let query: [CFString: Any] =
-    [
-      kSecClass: kSecClassGenericPassword,
-      kSecAttrService: service,
-      kSecAttrAccount: account,
-      kSecReturnData: true,
+  public static func set(_ value: Data, _ key: String) {
+    let query: [CFString : Any] = [
+      kSecClass       : kSecClassGenericPassword,
+      kSecAttrAccount : key,
+      kSecValueData   : value
     ]
-
-  var result: AnyObject?
-  SecItemCopyMatching(query as CFDictionary, &result)
-  return result as? Data
+    delete(key)
+    SecItemAdd(query as CFDictionary, nil)
+  }
+  public static func delete(_ key: String) {
+    let query: [CFString : Any] = [
+      kSecClass       : kSecClassGenericPassword,
+      kSecAttrAccount : key,
+    ]
+    SecItemDelete(query as CFDictionary)
+  }
 }

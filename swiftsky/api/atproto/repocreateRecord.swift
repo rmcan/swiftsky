@@ -39,15 +39,15 @@ struct RepoCreateRecordInput<T: Encodable>: Encodable {
 func repoCreateRecord<T: Encodable>(input: RepoCreateRecordInput<T>) async throws
   -> RepoCreateRecordOutput
 {
-  return try await NetworkManager.shared.fetch(
+  return try await Client.shared.fetch(
     endpoint: "com.atproto.repo.createRecord", httpMethod: .post,
-    authorization: NetworkManager.shared.user.accessJwt, params: input)
+    authorization: Client.shared.user.accessJwt, params: input)
 }
 func followUser(did: String) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
       type: "app.bsky.graph.follow", collection: "app.bsky.graph.follow",
-      repo: NetworkManager.shared.did,
+      repo: Client.shared.did,
       record: FollowUserInput(
         subject: did,
         createdAt: Date().iso8601withFractionalSeconds)))
@@ -56,20 +56,20 @@ func blockUser(did: String) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
       type: "app.bsky.graph.block", collection: "app.bsky.graph.block",
-      repo: NetworkManager.shared.did,
+      repo: Client.shared.did,
       record: ["subject": did, "createdAt" : Date().iso8601withFractionalSeconds, "$type" : "app.bsky.graph.block"]))
 }
 func makePost(text: String, reply: FeedPostReplyRef? = nil, facets: [RichtextFacet]? = nil) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
-      type: "app.bsky.feed.post", collection: "app.bsky.feed.post", repo: NetworkManager.shared.did,
+      type: "app.bsky.feed.post", collection: "app.bsky.feed.post", repo: Client.shared.did,
       record: CreatePostInput(
         text: text, createdAt: Date().iso8601withFractionalSeconds, reply: reply,facets: facets)))
 }
 func likePost(uri: String, cid: String) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
-      type: "app.bsky.feed.like", collection: "app.bsky.feed.like", repo: NetworkManager.shared.did,
+      type: "app.bsky.feed.like", collection: "app.bsky.feed.like", repo: Client.shared.did,
       record: LikePostInput(
         subject: RepoStrongRef(cid: cid, uri: uri), createdAt: Date().iso8601withFractionalSeconds)))
 }

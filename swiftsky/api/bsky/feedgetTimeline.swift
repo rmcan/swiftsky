@@ -24,7 +24,7 @@ struct FeedGetTimelineOutput: Decodable, Identifiable {
 }
 
 func getTimeline(cursor: String? = nil) async throws -> FeedGetTimelineOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.feed.getTimeline", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.feed.getTimeline", authorization: Client.shared.user.accessJwt,
     params: FeedGetTimelineInput(cursor: cursor))
 }

@@ -8,7 +8,7 @@ struct getProfileInput: Encodable {
 }
 
 func actorgetProfile(actor: String) async throws -> ActorDefsProfileViewDetailed {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.actor.getProfile", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.actor.getProfile", authorization: Client.shared.user.accessJwt,
     params: getProfileInput(actor: actor))
 }

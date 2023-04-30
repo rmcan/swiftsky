@@ -11,7 +11,7 @@ struct SessionGetOutput: Decodable, Hashable {
 }
 
 func xrpcSessionGet() async throws -> SessionGetOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "com.atproto.server.getSession", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "com.atproto.server.getSession", authorization: Client.shared.user.accessJwt,
     params: Optional<Bool>.none)
 }

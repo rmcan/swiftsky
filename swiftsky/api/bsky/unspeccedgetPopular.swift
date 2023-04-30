@@ -24,7 +24,7 @@ struct UnspeccedGetPopularOutput: Decodable, Identifiable {
 }
 
 func getPopular(cursor: String? = nil, limit: Int = 100) async throws -> UnspeccedGetPopularOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.unspecced.getPopular", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.unspecced.getPopular", authorization: Client.shared.user.accessJwt,
     params: UnspeccedGetPopularInput(limit: limit, cursor: cursor))
 }

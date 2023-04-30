@@ -7,7 +7,7 @@ struct IdentityResolveHandleOutput: Decodable, Hashable {
   let did: String
 }
 func IdentityResolveHandle(handle: String) async throws -> IdentityResolveHandleOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "com.atproto.identity.resolveHandle", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "com.atproto.identity.resolveHandle", authorization: Client.shared.user.accessJwt,
     params: ["handle" : handle])
 }

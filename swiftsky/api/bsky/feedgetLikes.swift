@@ -29,7 +29,7 @@ struct feedgetLikesOutput: Decodable {
   }
 }
 func feedgetLikes(cid: String, cursor: String? = nil, limit: Int = 30, uri: String) async throws -> feedgetLikesOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.feed.getLikes", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.feed.getLikes", authorization: Client.shared.user.accessJwt,
     params: ["cid" : cid, "cursor" : cursor, "limit": "\(limit)", "uri": uri].compactMapValues{$0})
 }

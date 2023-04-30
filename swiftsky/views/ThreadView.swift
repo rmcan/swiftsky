@@ -75,7 +75,7 @@ struct ThreadView: View {
             PostFooterView(leadingpadding: 15, post: viewpost, path: $path)
             Divider()
             HStack {
-              AvatarView(url:globalmodel.profile.avatar,size: 40)
+              AvatarView(url:globalmodel.profile?.avatar,size: 40)
                 .padding(.leading)
                 .padding([.vertical, .trailing], 5)
               

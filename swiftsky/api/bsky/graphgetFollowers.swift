@@ -16,7 +16,7 @@ struct graphGetFollowersOutput: Decodable {
 }
 
 func graphGetFollowers(actor: String, limit: Int = 30, cursor: String? = nil) async throws -> graphGetFollowersOutput {
-  return try await NetworkManager.shared.fetch(
-    endpoint: "app.bsky.graph.getFollowers", authorization: NetworkManager.shared.user.accessJwt,
+  return try await Client.shared.fetch(
+    endpoint: "app.bsky.graph.getFollowers", authorization: Client.shared.user.accessJwt,
     params: graphGetFollowersInput(cursor: cursor, limit: limit, actor: actor))
 }
