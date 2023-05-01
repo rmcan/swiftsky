@@ -136,11 +136,19 @@ struct ThreadView: View {
         }
       }
       .toolbar {
-        ToolbarItem(placement: .primaryAction) {
+        ToolbarItemGroup(placement: .primaryAction) {
+          if let post = threadviewpost?.post {
+            let uri = AtUri(uri: post.uri)
+            ShareLink(item: URL(string: "https://staging.bsky.app/profile/\(post.author.handle)/post/\(uri.rkey)")!)
+          }
           Button {
             Task {
               await load()
-              proxy.scrollTo(1)
+              if let post = threadviewpost?.post {
+                DispatchQueue.main.async {
+                  proxy.scrollTo(post.cid)
+                }
+              }
             }
           } label: {
             Image(systemName: "arrow.clockwise")
