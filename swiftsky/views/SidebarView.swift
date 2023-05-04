@@ -8,6 +8,7 @@ import SwiftUI
 struct SidebarView: View {
   @StateObject private var auth = Auth.shared
   @StateObject private var globalmodel = GlobalViewModel.shared
+  @StateObject private var pushnotifications = PushNotificatios.shared
   @State private var selection: Int = -1
   @State private var path = NavigationPath()
   @State var compose: Bool = false
@@ -47,6 +48,20 @@ struct SidebarView: View {
             .tag(1)
           Label("Popular", systemImage: "arrow.up.right.circle.fill")
             .tag(2)
+          Label("Notifications", systemImage: "bell.badge")
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(alignment: .trailing) {
+              let unreadcount = pushnotifications.unreadcount
+              if unreadcount > 0 {
+                Circle().fill(.red)
+                  .overlay {
+                    Text("\(unreadcount < 10 ? "\(unreadcount)" : "9+")")
+                      .font(.system(size: 11))
+                  }
+              }
+             
+            }
+            .tag(3)
         }
       }
       .frame(minWidth: 230)
@@ -73,6 +88,10 @@ struct SidebarView: View {
             PopularView(path: $path)
               .frame(minWidth: 800)
               .navigationTitle("Popular")
+          case 3:
+            NotificationsView()
+              .frame(minWidth: 800)
+              .navigationTitle("Notifications")
           default:
             EmptyView()
           }

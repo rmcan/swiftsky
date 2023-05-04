@@ -25,6 +25,9 @@
 		3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DE29C99F0700ED7B27 /* PopularView.swift */; };
 		3631A4E129C9B65E00ED7B27 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4E029C9B65E00ED7B27 /* SettingsView.swift */; };
 		3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */; };
+		36548D442A01201A006AEDD8 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36548D432A01201A006AEDD8 /* NotificationsView.swift */; };
+		36548D462A01240C006AEDD8 /* notificationlistNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36548D452A01240C006AEDD8 /* notificationlistNotifications.swift */; };
+		36548D482A013350006AEDD8 /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36548D472A013350006AEDD8 /* PushNotifications.swift */; };
 		365C57A529D9E67300665E65 /* feeddefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A429D9E67300665E65 /* feeddefs.swift */; };
 		365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A629D9F5FC00665E65 /* actordefs.swift */; };
 		36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D1F29ED348C00D9CF8B /* repolistRecords.swift */; };
@@ -87,6 +90,9 @@
 		3631A4DE29C99F0700ED7B27 /* PopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularView.swift; sourceTree = "<group>"; };
 		3631A4E029C9B65E00ED7B27 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		36548D432A01201A006AEDD8 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		36548D452A01240C006AEDD8 /* notificationlistNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationlistNotifications.swift; sourceTree = "<group>"; };
+		36548D472A013350006AEDD8 /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		365C57A429D9E67300665E65 /* feeddefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feeddefs.swift; sourceTree = "<group>"; };
 		365C57A629D9F5FC00665E65 /* actordefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actordefs.swift; sourceTree = "<group>"; };
 		36953D1F29ED348C00D9CF8B /* repolistRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repolistRecords.swift; sourceTree = "<group>"; };
@@ -149,6 +155,7 @@
 			children = (
 				3629C9EC29F2AEFA00352001 /* GlobalViewModel.swift */,
 				36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */,
+				36548D472A013350006AEDD8 /* PushNotifications.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -244,6 +251,7 @@
 				36E393CB29ED9F1200005097 /* actorsearchActorsTypeahead.swift */,
 				36EB223529F7A71E007DF9DF /* feedgetPosts.swift */,
 				36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */,
+				36548D452A01240C006AEDD8 /* notificationlistNotifications.swift */,
 			);
 			path = bsky;
 			sourceTree = "<group>";
@@ -273,6 +281,7 @@
 				36314C5929EE777C002AF3F5 /* SearchField.swift */,
 				3629C9E729F2809700352001 /* TextViewWrapper.swift */,
 				36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */,
+				36548D432A01201A006AEDD8 /* NotificationsView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -373,6 +382,7 @@
 				36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */,
 				36E07D1329CA2FCD00A315C5 /* EmbedPostView.swift in Sources */,
 				36AEF5BB29C4923200B68B24 /* keychain.swift in Sources */,
+				36548D442A01201A006AEDD8 /* NotificationsView.swift in Sources */,
 				36280D5D29CC8F5A003A1CE7 /* MenuButton.swift in Sources */,
 				36AEF5A629C490A000B68B24 /* sessionget.swift in Sources */,
 				3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */,
@@ -399,11 +409,13 @@
 				36AEF5C429C4931B00B68B24 /* LoginView.swift in Sources */,
 				36AEF5B929C4920E00B68B24 /* systemdeclRef.swift in Sources */,
 				365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */,
+				36548D482A013350006AEDD8 /* PushNotifications.swift in Sources */,
 				36AEF5B329C4919100B68B24 /* feedgetTimeline.swift in Sources */,
 				36A7B1EA29F7F1CC00EB94E1 /* feedgetLikes.swift in Sources */,
 				36EA506929D02B5200FFE7DE /* FollowsView.swift in Sources */,
 				36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */,
 				365C57A529D9E67300665E65 /* feeddefs.swift in Sources */,
+				36548D462A01240C006AEDD8 /* notificationlistNotifications.swift in Sources */,
 				36E82F4D29F6A05200EAD7B5 /* TranslateView.swift in Sources */,
 				36AEF5A829C490BB00B68B24 /* sessionrefresh.swift in Sources */,
 				3629C9E829F2809700352001 /* TextViewWrapper.swift in Sources */,
