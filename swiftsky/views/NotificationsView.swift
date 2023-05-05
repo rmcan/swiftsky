@@ -121,10 +121,12 @@ struct NotificationsView: View {
               if notification.reason == "follow" {
                 NotificationsViewFollow(notification: notification)
                   .padding(.bottom, 5)
+                  .frame(maxWidth: .infinity, alignment: .topLeading)
               }
               else if notification.reason == "like" {
                 NotificationsViewLike(notification: notification)
                   .padding(.bottom, 5)
+                  .frame(maxWidth: .infinity, alignment: .topLeading)
               }
               if let post = notification.post {
                 PostView(post: post, path: .constant(NavigationPath()))
