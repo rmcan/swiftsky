@@ -20,12 +20,7 @@ class PushNotificatios: ObservableObject {
           let unreadnotifications = notifications.filter {
             !$0.isRead
           }
-          if self.unreadcount != unreadnotifications.count {
-            self.unreadcount = unreadnotifications.count
-            DispatchQueue.main.async {
-              self.objectWillChange.send()
-            }
-          }
+          self.setunreadCount(unreadnotifications.count)
         }
         try? await Task.sleep(nanoseconds: 30 * 1_000_000_000)
       }
@@ -33,6 +28,20 @@ class PushNotificatios: ObservableObject {
   }
   public func cancelRefreshTask() {
     self.backgroundtask?.cancel()
+  }
+  public func setunreadCount(_ value: Int) {
+    if self.unreadcount != value {
+      self.unreadcount = value
+      DispatchQueue.main.async {
+        self.objectWillChange.send()
+      }
+    }
+  }
+  public func markasRead() {
+    self.setunreadCount(0)
+    Task {
+      try? await notificationUpdateSeen()
+    }
   }
   init() {
     if !Auth.shared.needAuthorization {

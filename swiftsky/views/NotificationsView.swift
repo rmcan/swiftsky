@@ -38,7 +38,6 @@ private struct NotificationsViewFollow: View {
             .foregroundColor(.secondary)
           }
         }
-        Divider()
       }
     }
   }
@@ -78,7 +77,6 @@ private struct NotificationsViewLike: View {
             .foregroundColor(.secondary)
           }
         }
-        Divider()
       }
     }
   }
@@ -89,7 +87,6 @@ struct NotificationsView: View {
     do {
       let notifications = try await NotificationListNotifications(cursor: cursor)
       if cursor != nil {
-        
         self.notifications?.notifications.append(contentsOf: notifications.notifications)
         self.notifications?.cursor = notifications.cursor
       }
@@ -108,10 +105,11 @@ struct NotificationsView: View {
           $0.uri == post.uri
         }) {
           self.notifications?.notifications[notif].post = post
+          
         }
       }
-    } catch {
       
+    } catch {
     }
   }
   var body: some View {
@@ -130,17 +128,27 @@ struct NotificationsView: View {
               }
               if let post = notification.post {
                 PostView(post: post, path: .constant(NavigationPath()))
-                  .padding(.horizontal)
+                  .padding([.horizontal, .top])
                 PostFooterView(post: post, path: .constant(NavigationPath()))
-                Divider()
-                  .padding(.bottom, 5)
+                  .frame(maxWidth: .infinity, alignment: .topLeading)
               }
             }
-            .task {
-              if let cursor = notifications.cursor, notification.cid == notifications.notifications.last?.cid {
-                await getNotifications(cursor: cursor)
+            .background {
+              if !notification.isRead {
+                Color.blue
+                  .opacity(0.5)
               }
             }
+            .onAppear {
+              Task {
+                if let cursor = notifications.cursor, notification.cid == notifications.notifications.last?.cid {
+                  await getNotifications(cursor: cursor)
+                }
+              }
+              
+            }
+            Divider()
+              .padding(.bottom, 5)
           }
         }
       }
@@ -151,6 +159,7 @@ struct NotificationsView: View {
     .scrollContentBackground(.hidden)
     .task {
       await getNotifications()
+      PushNotificatios.shared.markasRead()
     }
   }
 }
