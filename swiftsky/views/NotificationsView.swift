@@ -130,7 +130,8 @@ struct NotificationsView: View {
               }
               if let post = notification.post {
                 PostView(post: post, path: .constant(NavigationPath()))
-                  .padding([.horizontal, .top])
+                  .padding(.horizontal)
+                  .padding(.top, notification.cid == notifications.notifications.first?.cid ? 5 : 0)
                 PostFooterView(post: post, path: .constant(NavigationPath()))
                   .frame(maxWidth: .infinity, alignment: .topLeading)
               }
@@ -152,9 +153,10 @@ struct NotificationsView: View {
             Divider()
               .padding(.bottom, 5)
           }
+          
         }
       }
-      .listRowInsets(EdgeInsets())
+      .listRowInsets(.init())
     }
     .listStyle(.plain)
     .environment(\.defaultMinListRowHeight, 0.1)
