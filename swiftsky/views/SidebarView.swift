@@ -6,9 +6,9 @@
 import SwiftUI
 
 struct SidebarView: View {
-  @StateObject private var auth = Auth.shared
-  @StateObject private var globalmodel = GlobalViewModel.shared
-  @StateObject private var pushnotifications = PushNotificatios.shared
+  @EnvironmentObject private var auth: Auth
+  @EnvironmentObject private var globalviewmodel: GlobalViewModel
+  @EnvironmentObject private var pushnotifications: PushNotificatios
   @State private var selection: Int = -1
   @State private var path = NavigationPath()
   @State var compose: Bool = false
@@ -16,27 +16,20 @@ struct SidebarView: View {
   @State private var post: FeedDefsPostView? = nil
   @State var searchactors = ActorSearchActorsTypeaheadOutput()
   @State var searchpresented = false
-  func loadProfile() async {
-    do {
-      self.globalmodel.profile = try await actorgetProfile(actor: Client.shared.handle)
-    } catch {
-      
-    }
-  }
   var body: some View {
     NavigationSplitView {
       List(selection: $selection) {
         HStack(spacing: 5) {
-          AvatarView(url: self.globalmodel.profile?.avatar, size: 40)
+          AvatarView(url: self.globalviewmodel.profile?.avatar, size: 40)
           VStack(alignment: .leading, spacing: 0) {
-            if auth.needAuthorization || self.globalmodel.profile == nil {
+            if auth.needAuthorization || self.globalviewmodel.profile == nil {
               Text("Sign in")
             }
             else {
-              if let displayname = self.globalmodel.profile!.displayName {
+              if let displayname = self.globalviewmodel.profile!.displayName {
                 Text(displayname)
               }
-              Text(self.globalmodel.profile!.handle)
+              Text(self.globalviewmodel.profile!.handle)
                 .font(.footnote)
                 .opacity(0.6)
             }
@@ -71,7 +64,7 @@ struct SidebarView: View {
         Group {
           switch selection {
           case 0:
-            if let profile = self.globalmodel.profile {
+            if let profile = self.globalviewmodel.profile {
               ProfileView(did: profile.did, profile: profile, path: $path)
                 .frame(minWidth: 800)
                 .navigationTitle(profile.handle)
@@ -176,17 +169,10 @@ struct SidebarView: View {
    
       path.append(ActorDefsProfileViewBasic(avatar: nil, did: did, displayName: "", handle: ""))
     })
-    .onChange(of: auth.needAuthorization) { newValue in
-      if !newValue {
-        Task {
-          await loadProfile()
-        }
-      }
-    }
     .task {
       selection = 1
       if !auth.needAuthorization {
-        await loadProfile()
+        self.globalviewmodel.profile = try? await actorgetProfile(actor: Client.shared.handle)
       }
     }
   }

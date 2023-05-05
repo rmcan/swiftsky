@@ -8,9 +8,14 @@ import Foundation
 class PushNotificatios: ObservableObject {
   static let shared = PushNotificatios()
   var unreadcount: Int = 0
-  init() {
-    Task {
-      while true {
+  private var backgroundtask: Task<Void, Never>?
+  public func resumeRefreshTask() {
+    self.backgroundtask?.cancel()
+    self.backgroundtask = Task {
+      while !Task.isCancelled {
+        if Auth.shared.needAuthorization {
+          break
+        }
         if let notifications = try? await NotificationListNotifications().notifications {
           let unreadnotifications = notifications.filter {
             !$0.isRead
@@ -22,8 +27,16 @@ class PushNotificatios: ObservableObject {
             }
           }
         }
-        try! await Task.sleep(nanoseconds: 30 * 1_000_000_000)
+        try? await Task.sleep(nanoseconds: 30 * 1_000_000_000)
       }
+    }
+  }
+  public func cancelRefreshTask() {
+    self.backgroundtask?.cancel()
+  }
+  init() {
+    if !Auth.shared.needAuthorization {
+      resumeRefreshTask()
     }
   }
 }

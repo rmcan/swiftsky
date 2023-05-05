@@ -9,6 +9,7 @@ import SwiftUI
 struct swiftskyApp: App {
   @StateObject private var auth = Auth.shared
   @StateObject private var globalviewmodel = GlobalViewModel.shared
+  @StateObject private var pushnotifications = PushNotificatios.shared
   init() {
     Client.shared.postInit()
     GlobalViewModel.shared.systemLanguageCode = Locale.preferredLanguageCodes[0]
@@ -19,6 +20,9 @@ struct swiftskyApp: App {
       SidebarView().sheet(isPresented: $auth.needAuthorization) {
         LoginView()
       }
+      .environmentObject(auth)
+      .environmentObject(globalviewmodel)
+      .environmentObject(pushnotifications)
     }
     .defaultSize(width: 1100, height: 650)
     .commands {
@@ -29,6 +33,17 @@ struct swiftskyApp: App {
             auth.signout()
           }
         }
+      }
+    }
+    .onChange(of: auth.needAuthorization) {
+      if $0 {
+        pushnotifications.resumeRefreshTask()
+        Task {
+          self.globalviewmodel.profile = try? await actorgetProfile(actor: Client.shared.handle)
+        }
+      }
+      else {
+        pushnotifications.cancelRefreshTask()
       }
     }
     Settings {
