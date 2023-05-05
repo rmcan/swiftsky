@@ -37,11 +37,11 @@ struct SidebarView: View {
           }
         }.tag(0)
         Section {
-          Label("Home", systemImage: "house")
+          Label("Home", systemImage: "house.fill")
             .tag(1)
           Label("Popular", systemImage: "arrow.up.right.circle.fill")
             .tag(2)
-          Label("Notifications", systemImage: "bell.badge")
+          Label("Notifications", systemImage: "bell.badge.fill")
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(alignment: .trailing) {
               let unreadcount = pushnotifications.unreadcount
