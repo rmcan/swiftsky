@@ -13,13 +13,29 @@ struct LikePostInput: Encodable {
   let subject: RepoStrongRef
   let createdAt: String
 }
+struct RepostPostInput: Encodable {
+  let subject: RepoStrongRef
+  let createdAt: String
+}
 struct FollowUserInput: Encodable {
   let subject: String
   let createdAt: String
 }
+struct EmbedRef: Encodable {
+  let type = "app.bsky.embed.record"
+  let record: RepoStrongRef
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
+    case record
+  }
+  init(cid: String, uri: String) {
+    self.record = RepoStrongRef(cid: cid, uri: uri)
+  }
+}
 struct CreatePostInput: Encodable {
   let text: String
   let createdAt: String
+  let embed: EmbedRef?
   let reply: FeedPostReplyRef?
   let facets: [RichtextFacet]?
 }
@@ -59,17 +75,24 @@ func blockUser(did: String) async throws -> RepoCreateRecordOutput {
       repo: Client.shared.did,
       record: ["subject": did, "createdAt" : Date().iso8601withFractionalSeconds, "$type" : "app.bsky.graph.block"]))
 }
-func makePost(text: String, reply: FeedPostReplyRef? = nil, facets: [RichtextFacet]? = nil) async throws -> RepoCreateRecordOutput {
+func makePost(text: String, reply: FeedPostReplyRef? = nil, facets: [RichtextFacet]? = nil, embed: EmbedRef? = nil) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
       type: "app.bsky.feed.post", collection: "app.bsky.feed.post", repo: Client.shared.did,
       record: CreatePostInput(
-        text: text, createdAt: Date().iso8601withFractionalSeconds, reply: reply,facets: facets)))
+        text: text, createdAt: Date().iso8601withFractionalSeconds, embed: embed, reply: reply, facets: facets)))
 }
 func likePost(uri: String, cid: String) async throws -> RepoCreateRecordOutput {
   return try await repoCreateRecord(
     input: RepoCreateRecordInput(
       type: "app.bsky.feed.like", collection: "app.bsky.feed.like", repo: Client.shared.did,
       record: LikePostInput(
+        subject: RepoStrongRef(cid: cid, uri: uri), createdAt: Date().iso8601withFractionalSeconds)))
+}
+func RepostPost(uri: String, cid: String) async throws -> RepoCreateRecordOutput {
+  return try await repoCreateRecord(
+    input: RepoCreateRecordInput(
+      type: "app.bsky.feed.repost", collection: "app.bsky.feed.repost", repo: Client.shared.did,
+      record: RepostPostInput(
         subject: RepoStrongRef(cid: cid, uri: uri), createdAt: Date().iso8601withFractionalSeconds)))
 }
