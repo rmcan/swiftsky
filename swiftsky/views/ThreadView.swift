@@ -11,7 +11,7 @@ struct ThreadView: View {
   @State var threadviewpost: FeedGetPostThreadThreadViewPost? = nil
   @State var parents: [FeedGetPostThreadThreadViewPost] = []
   @State var replypresented: Bool = false
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   @StateObject private var globalmodel = GlobalViewModel.shared
   func load() async {
     threadviewpost = nil
@@ -42,7 +42,7 @@ struct ThreadView: View {
           .padding([.top, .horizontal])
           .contentShape(Rectangle())
           .onTapGesture {
-            path.append(parentpost)
+            path.append(.thread(parentpost.uri))
           }
         PostFooterView(bottompadding: false, post: parentpost, path: $path)
       }
@@ -97,7 +97,7 @@ struct ThreadView: View {
                     .padding([.top, .horizontal])
                     .contentShape(Rectangle())
                     .onTapGesture {
-                      path.append(post)
+                      path.append(.thread(post.uri))
                     }
                   PostFooterView(post: post, path: $path)
                   Divider()

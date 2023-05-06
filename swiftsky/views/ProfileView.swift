@@ -6,10 +6,6 @@
 import QuickLook
 import SwiftUI
 
-enum ProfileRouter: Hashable {
-  case followers(String)
-  case following(String)
-}
 private struct ProfileViewTabs: View {
   @Namespace var namespace
   @Binding var selectedtab: Int
@@ -48,7 +44,7 @@ struct ProfileView: View {
   @State private var disablefollowbutton = false
   @State private var disableblockbutton = false
   @State private var blocksheetpresented = false
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   let tablist: [String] = ["Posts", "Posts & Replies", "Likes"]
   private func getProfile() async {
     do {
@@ -332,13 +328,13 @@ struct ProfileView: View {
       else {
         HStack {
           Button {
-            path.append(ProfileRouter.followers(profile!.handle))
+           path.append(.followers(profile!.handle))
           } label: {
             Text("\(profile!.followersCount) \(Text("followers").foregroundColor(.secondary))")
           }
           .buttonStyle(.plain)
           Button {
-            path.append(ProfileRouter.following(profile!.handle))
+            path.append(.following(profile!.handle))
           } label: {
             Text("\(profile!.followsCount) \(Text("following").foregroundColor(.secondary))")
           }
@@ -367,7 +363,7 @@ struct ProfileView: View {
       .padding(.top)
       .contentShape(Rectangle())
       .onTapGesture {
-        path.append(post)
+        path.append(.thread(post.post.uri))
       }
       .task {
         if post == feed.last {

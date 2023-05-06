@@ -10,7 +10,6 @@ struct PostLikesSubview: View {
   let displayname: String
   let handle: String
   @State var usernamehover = false
-  @Binding var path: NavigationPath
   var body: some View {
     HStack(alignment: .top) {
       AvatarView(url: avatar, size: 40)
@@ -32,10 +31,10 @@ struct PostLikesSubview: View {
 struct PostLikesView: View {
   @State var post: FeedDefsPostView
   @State var likes = feedgetLikesOutput()
-  @Binding var path: NavigationPath
   @State var loading = true
   @State var error = ""
   @State var listheight = 40.0
+  @Binding var path: [Navigation]
   private func getLikes() {
     Task {
       self.loading = true
@@ -71,9 +70,9 @@ struct PostLikesView: View {
         }
         ForEach(likes.likes) { user in
           Button {
-            path.append(user.actor)
+            path.append(.profile(user.actor.did))
           } label: {
-            PostLikesSubview(avatar: user.actor.avatar, displayname: user.actor.displayName ?? user.actor.handle, handle: user.actor.handle, path: $path)
+            PostLikesSubview(avatar: user.actor.avatar, displayname: user.actor.displayName ?? user.actor.handle, handle: user.actor.handle)
               .frame(maxWidth: .infinity, alignment: .leading)
               .contentShape(Rectangle())
           }
@@ -118,7 +117,7 @@ struct PostFooterView: View {
   @State var locklike: Bool = false
   @State var likesunderline: Bool = false
   @State var likespopover: Bool = false
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   func like() {
     post.viewer.like = ""
     post.likeCount += 1

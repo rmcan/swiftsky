@@ -8,6 +8,7 @@ import SwiftUI
 private struct NotificationsViewFollow: View {
   @State var notification: NotificationListNotificationsNotification
   @State var underline = false
+  @Binding var path: [Navigation]
   var body: some View {
     Group {
       if let author = notification.author {
@@ -21,12 +22,16 @@ private struct NotificationsViewFollow: View {
             .foregroundColor(.accentColor)
           AvatarView(url: author.avatar, size: 40)
           HStack(spacing: 3) {
-            Text("@\(author.handle)")
-              .foregroundColor(.primary)
-              .underline(underline)
-              .hoverHand {
-                underline = $0
-              }
+            Button {
+              path.append(.profile(author.did))
+            } label: {
+              Text("@\(author.handle)")
+                .foregroundColor(.primary)
+                .underline(underline)
+                .hoverHand {
+                  underline = $0
+                }
+            }.buttonStyle(.plain)
             Text("followed you")
               .opacity(0.8)
             
@@ -46,6 +51,7 @@ private struct NotificationsViewFollow: View {
 private struct NotificationsViewLike: View {
   @State var notification: NotificationListNotificationsNotification
   @State var underline = false
+  @Binding var path: [Navigation]
   var body: some View {
     Group {
       if let author = notification.author {
@@ -60,12 +66,17 @@ private struct NotificationsViewLike: View {
             .foregroundColor(.pink)
           AvatarView(url: author.avatar, size: 40)
           HStack(spacing: 3) {
-            Text("@\(author.handle)")
-              .foregroundColor(.primary)
-              .underline(underline)
-              .hoverHand {
-                underline = $0
-              }
+            Button {
+              path.append(.profile(author.did))
+            } label: {
+              Text("@\(author.handle)")
+                .foregroundColor(.primary)
+                .underline(underline)
+                .hoverHand {
+                  underline = $0
+                }
+            }.buttonStyle(.plain)
+          
             Text("liked your post")
               .opacity(0.8)
             
@@ -83,6 +94,7 @@ private struct NotificationsViewLike: View {
 }
 struct NotificationsView: View {
   @State var notifications: NotificationListNotificationsOutput?
+  @Binding var path: [Navigation]
   func getNotifications(cursor: String? = nil) async {
     do {
       let notifications = try await NotificationListNotifications(cursor: cursor)
@@ -119,20 +131,20 @@ struct NotificationsView: View {
           ForEach(notifications.notifications) { notification in
             Group {
               if notification.reason == "follow" {
-                NotificationsViewFollow(notification: notification)
+                NotificationsViewFollow(notification: notification, path: $path)
                   .padding(.bottom, 5)
                   .frame(maxWidth: .infinity, alignment: .topLeading)
               }
               else if notification.reason == "like" {
-                NotificationsViewLike(notification: notification)
+                NotificationsViewLike(notification: notification, path: $path)
                   .padding(.bottom, 5)
                   .frame(maxWidth: .infinity, alignment: .topLeading)
               }
               if let post = notification.post {
-                PostView(post: post, path: .constant(NavigationPath()))
+                PostView(post: post, path: $path)
                   .padding(.horizontal)
                   .padding(.top, notification.cid == notifications.notifications.first?.cid ? 5 : 0)
-                PostFooterView(post: post, path: .constant(NavigationPath()))
+                PostFooterView(post: post, path: $path)
                   .frame(maxWidth: .infinity, alignment: .topLeading)
               }
             }

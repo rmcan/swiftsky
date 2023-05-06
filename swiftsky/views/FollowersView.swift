@@ -9,7 +9,7 @@ private struct FollowersRowView: View {
   @State var user: ActorDefsProfileViewBasic
   @State var usernamehover: Bool = false
   @State var followingdisabled: Bool = false
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   func follow() {
     followingdisabled = true
     Task {
@@ -50,7 +50,7 @@ private struct FollowersRowView: View {
           Text("@\(user.handle)").foregroundColor(.secondary)
         }
         .onTapGesture {
-          path.append(user)
+          path.append(.profile(user.did))
         }
         if user.viewer?.followedBy != nil {
           ZStack {
@@ -88,7 +88,7 @@ private struct FollowersRowView: View {
 struct FollowersView: View {
   let handle: String
   @State var followers: graphGetFollowersOutput? = nil
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   func getFollowers() async {
     do {
       self.followers = try await graphGetFollowers(actor: handle)

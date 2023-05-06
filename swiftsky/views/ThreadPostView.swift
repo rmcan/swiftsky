@@ -15,7 +15,7 @@ struct ThreadPostview: View {
   @State var deletepostfailed = false
   @State var deletepost = false
   @State var translateavailable = false
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   @StateObject var translateviewmodel = TranslateViewModel()
   var load: () async -> ()
   func delete() {
@@ -55,7 +55,7 @@ struct ThreadPostview: View {
           let displayname = post.author.displayName ?? post.author.handle
           VStack(alignment: .leading) {
             Button {
-              path.append(post.author)
+              path.append(.profile(post.author.did))
             } label: {
               Text(displayname)
                 .fontWeight(.semibold)
@@ -64,7 +64,7 @@ struct ThreadPostview: View {
             .buttonStyle(.plain)
             .hoverHand {usernamehover = $0}
             Button {
-              path.append(post.author)
+              path.append(.profile(post.author.did))
             } label: {
               Text("@\(post.author.handle)")
                 .foregroundColor(.secondary)
@@ -157,7 +157,7 @@ struct ThreadPostview: View {
         }
         if let record: EmbedRecordViewRecord = embed.record {
           Button {
-            path.append(record)
+            path.append(.thread(record.uri))
           } label: {
             EmbedPostView(embedrecord: record, path: $path)
           }

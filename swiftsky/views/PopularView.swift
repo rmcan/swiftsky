@@ -8,8 +8,8 @@ import SwiftUI
 struct PopularView: View {
   @AppStorage("disablelanguageFilter") private var disablelanguageFilter = false
   @State var timeline: UnspeccedGetPopularOutput = UnspeccedGetPopularOutput()
-  @Binding var path: NavigationPath
   @State var loading = false
+  @Binding var path: [Navigation]
   func loadContent() async {
     loading = true
       do {
@@ -41,7 +41,7 @@ struct PopularView: View {
           .padding([.top, .horizontal])
           .contentShape(Rectangle())
           .onTapGesture {
-            path.append(post)
+            path.append(.thread(post.post.uri))
           }
           .task {
             if post == filteredfeed.last {

@@ -8,7 +8,7 @@ import SwiftUI
 struct EmbedPostView: View {
   @State var embedrecord: EmbedRecordViewRecord
   @State var usernamehover: Bool = false
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   var markdown: String {
     var markdown = String()
     let rt = RichText(text: embedrecord.value.text, facets: embedrecord.value.facets)
@@ -38,7 +38,7 @@ struct EmbedPostView: View {
           let displayname = embedrecord.author.displayName ?? embedrecord.author.handle
 
           Button {
-            path.append(embedrecord.author)
+            path.append(.profile(embedrecord.author.did))
           } label: {
             Text("\(displayname) \(Text(embedrecord.author.handle).foregroundColor(.secondary))")
               .fontWeight(.semibold)
