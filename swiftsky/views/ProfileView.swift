@@ -43,7 +43,7 @@ struct ProfileView: View {
   @State private var preview: URL? = nil
   @State private var disablefollowbutton = false
   @State private var disableblockbutton = false
-  @State private var blocksheetpresented = false
+  @State private var isblockalertPresented = false
   @Binding var path: [Navigation]
   let tablist: [String] = ["Posts", "Posts & Replies", "Likes"]
   private func getProfile() async {
@@ -113,12 +113,10 @@ struct ProfileView: View {
       do {
         let result = try await repoDeleteRecord(
           uri: profile!.viewer!.blocking!, collection: "app.bsky.graph.block")
-        blocksheetpresented = false
         if result {
           await load()
         }
       } catch {
-        blocksheetpresented = false
         self.error = error.localizedDescription
       }
       disableblockbutton = false
@@ -130,10 +128,8 @@ struct ProfileView: View {
       do {
         let _ = try await blockUser(
           did: did)
-        blocksheetpresented = false
         await load()
       } catch {
-        blocksheetpresented = false
         self.error = error.localizedDescription
       }
       disableblockbutton = false
@@ -180,7 +176,7 @@ struct ProfileView: View {
   }
   var unblockbutton: some View {
     Button("Unblock") {
-      blocksheetpresented = true
+      isblockalertPresented = true
     }
     .disabled(disableblockbutton)
   }
@@ -249,7 +245,7 @@ struct ProfileView: View {
             ShareLink(item: URL(string: "https://staging.bsky.app/profile/\(profile!.handle)")!)
             if profile!.did != Client.shared.did && profile!.viewer?.blocking == nil {
               Button("Block") {
-                blocksheetpresented = true
+                isblockalertPresented = true
               }
             }
           
@@ -279,32 +275,6 @@ struct ProfileView: View {
     }
     .padding(.trailing, 10)
     .padding(.bottom, 2)
-  }
-  var blocksheetcontent: some View {
-    Group {
-      Text(profile?.viewer?.blocking == nil ? "Block Account" : "Unblock Account")
-        .foregroundColor(.primary)
-        .font(.system(size: 20))
-      Text(profile?.viewer?.blocking == nil ? "Blocked accounts cannot reply in your threads, mention you, or otherwise interact with you. You will not see their content and they will be prevented from seeing yours." : "The account will be able to interact with you after unblocking. (You can always block again in the future.)")
-        .foregroundColor(.secondary)
-        .multilineTextAlignment(.center)
-      Button("Confirm") {
-        profile?.viewer?.blocking == nil ? block() : unblock()
-      }
-      .controlSize(.large)
-      .buttonStyle(.borderedProminent)
-      .disabled(disableblockbutton)
-    }
-    .frame(width: 400, height: 150)
-    .overlay(alignment: .topTrailing) {
-      Button {
-           blocksheetpresented = false
-      } label: {
-          Image(systemName: "xmark")
-      }
-      .buttonStyle(.borderless)
-      .padding()
-    }
   }
   var description: some View {
     Group {
@@ -441,8 +411,11 @@ struct ProfileView: View {
     .alert(error, isPresented: .constant(!error.isEmpty)) {
       Button("OK") {self.error = ""}
     }
-    .sheet(isPresented: $blocksheetpresented) {
-      blocksheetcontent
+    .alert(profile?.viewer?.blocking == nil ? "Blocked accounts cannot reply in your threads, mention you, or otherwise interact with you. You will not see their content and they will be prevented from seeing yours." : "The account will be able to interact with you after unblocking. (You can always block again in the future.)", isPresented: $isblockalertPresented) {
+      Button(profile?.viewer?.blocking == nil ? "Block" : "Unblock", role: .destructive) {
+        profile?.viewer?.blocking == nil ? block() : unblock()
+      }
+
     }
     .quickLookPreview($preview)
     .task {
