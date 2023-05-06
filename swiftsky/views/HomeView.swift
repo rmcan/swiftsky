@@ -7,8 +7,8 @@ import SwiftUI
 
 struct HomeView: View {
   @State var timeline: FeedGetTimelineOutput = FeedGetTimelineOutput()
-  @Binding var path: NavigationPath
   @State var loading = false
+  @Binding var path: [Navigation]
   func loadContent() async {
     loading = true
     do {
@@ -38,7 +38,7 @@ struct HomeView: View {
           .padding([.top, .horizontal])
           .contentShape(Rectangle())
           .onTapGesture {
-            path.append(post)
+            path.append(.thread(post.post.uri))
           }
           .task {
             if post == filteredfeed.last {

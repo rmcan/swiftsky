@@ -16,7 +16,7 @@ struct PostView: View {
   @State var deletepost = false
   @State var translateavailable = false
   @StateObject var translateviewmodel = TranslateViewModel()
-  @Binding var path: NavigationPath
+  @Binding var path: [Navigation]
   func delete() {
     Task {
       do {
@@ -58,7 +58,7 @@ struct PostView: View {
           let displayname = post.author.displayName ?? post.author.handle
 
           Button {
-            path.append(post.author)
+            path.append(.profile(post.author.did))
           } label: {
             Text("\(displayname) \(Text(post.author.handle).foregroundColor(.secondary))")
               .fontWeight(.semibold)
@@ -142,7 +142,7 @@ struct PostView: View {
           }
           if let record: EmbedRecordViewRecord = embed.record {
             Button {
-              path.append(record)
+              path.append(.thread(record.uri))
             } label: {
               EmbedPostView(embedrecord: record, path: $path)
             }

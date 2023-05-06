@@ -10,7 +10,7 @@ struct SidebarView: View {
   @EnvironmentObject private var globalviewmodel: GlobalViewModel
   @EnvironmentObject private var pushnotifications: PushNotificatios
   @State private var selection: Int = -1
-  @State private var path = NavigationPath()
+  @State private var path: [Navigation] = []
   @State var compose: Bool = false
   @State var replypost: Bool = false
   @State private var post: FeedDefsPostView? = nil
@@ -82,40 +82,26 @@ struct SidebarView: View {
               .frame(minWidth: 800)
               .navigationTitle("Popular")
           case 3:
-            NotificationsView()
+            NotificationsView(path: $path)
               .frame(minWidth: 800)
               .navigationTitle("Notifications")
           default:
             EmptyView()
           }
         }
-        .navigationDestination(for: FeedDefsFeedViewPost.self) { post in
-          ThreadView(uri: post.post.uri, path: $path)
-            .frame(minWidth: 800)
-        }
-        .navigationDestination(for: FeedDefsPostView.self) { post in
-          ThreadView(uri: post.uri, path: $path)
-            .frame(minWidth: 800)
-        }
-        .navigationDestination(for: EmbedRecordViewRecord.self) { post in
-          ThreadView(uri: post.uri, path: $path)
-            .frame(minWidth: 800)
-        }
-        .navigationDestination(for: ActorDefsProfileViewBasic.self) { actorref in
-          ProfileView(did: actorref.did, path: $path)
-            .frame(minWidth: 800)
-        }
-        .navigationDestination(for: ActorDefsProfileView.self) { actorref in
-          ProfileView(did: actorref.did, path: $path)
-            .frame(minWidth: 800)
-        }
-        .navigationDestination(for: ProfileRouter.self) { router in
-          switch router {
-          case let .followers(handle):
+        .navigationDestination(for: Navigation.self) {
+          switch $0 {
+          case .profile(let did):
+            ProfileView(did: did, path: $path)
+              .frame(minWidth: 800)
+          case .thread(let uri):
+            ThreadView(uri: uri, path: $path)
+              .frame(minWidth: 800)
+          case .followers(let handle):
             FollowersView(handle: handle, path: $path)
               .frame(minWidth: 800)
               .navigationTitle("People following @\(handle)")
-          case let .following(handle):
+          case .following(let handle):
             FollowsView(handle: handle, path: $path)
               .frame(minWidth: 800)
               .navigationTitle("People followed by @\(handle)")
@@ -152,7 +138,7 @@ struct SidebarView: View {
             .frame(width: 150)
             .popover(isPresented: $searchpresented, arrowEdge: .bottom) {
               SearchActorView(actorstypeahead: self.$searchactors) { user in
-                path.append(user)
+                path.append(.profile(user.did))
               }
             }
           }
@@ -167,7 +153,7 @@ struct SidebarView: View {
           return
       }
    
-      path.append(ActorDefsProfileViewBasic(avatar: nil, did: did, displayName: "", handle: ""))
+      path.append(.profile(did))
     })
     .task {
       selection = 1

@@ -35,6 +35,7 @@
 		36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D2129ED3B6900D9CF8B /* repogetRecord.swift */; };
 		3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CE9429F3AF0D00B9288A /* gtranslate.swift */; };
 		36A7B1EA29F7F1CC00EB94E1 /* feedgetLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */; };
+		36AA95C02A063BAC003DADC9 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA95BF2A063BAC003DADC9 /* Navigation.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
 		36AEF59329C48F0900B68B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59229C48F0900B68B24 /* Assets.xcassets */; };
 		36AEF59629C48F0900B68B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36AEF59529C48F0900B68B24 /* Preview Assets.xcassets */; };
@@ -101,6 +102,7 @@
 		36953D2129ED3B6900D9CF8B /* repogetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repogetRecord.swift; sourceTree = "<group>"; };
 		3698CE9429F3AF0D00B9288A /* gtranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gtranslate.swift; sourceTree = "<group>"; };
 		36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetLikes.swift; sourceTree = "<group>"; };
+		36AA95BF2A063BAC003DADC9 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftskyApp.swift; sourceTree = "<group>"; };
 		36AEF59229C48F0900B68B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				3629C9EC29F2AEFA00352001 /* GlobalViewModel.swift */,
 				36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */,
 				36548D472A013350006AEDD8 /* PushNotifications.swift */,
+				36AA95BF2A063BAC003DADC9 /* Navigation.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				3629C9E829F2809700352001 /* TextViewWrapper.swift in Sources */,
 				36AEF5C229C492EB00B68B24 /* HomeView.swift in Sources */,
 				36E07D1529CA310E00A315C5 /* embedrecord.swift in Sources */,
+				36AA95C02A063BAC003DADC9 /* Navigation.swift in Sources */,
 				36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */,
 				36AEF5C029C492C500B68B24 /* AvatarView.swift in Sources */,
 				36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */,
