@@ -113,7 +113,7 @@ struct ThreadView: View {
         }.listRowInsets(EdgeInsets())
       }
       .sheet(isPresented: $replypresented) {
-        NewPostView(replypost: threadviewpost?.post)
+        NewPostView(post: threadviewpost?.post)
           .frame(minWidth: 600, maxWidth: 600, minHeight: 400, maxHeight: 800)
       }
       .alert(error ?? "", isPresented: .constant(error != nil)) {

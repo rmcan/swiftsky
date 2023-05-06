@@ -7,7 +7,7 @@ import Foundation
 
 struct FeedDefsViewerState: Decodable, Hashable {
   var like: String?
-  let repost: String?
+  var repost: String?
 }
 struct FeedDefsPostViewEmbed: Decodable, Hashable {
   let type: String?
@@ -57,7 +57,7 @@ struct FeedDefsPostView: Decodable, Hashable {
   var likeCount: Int
   let record: FeedPost
   let replyCount: Int
-  let repostCount: Int
+  var repostCount: Int
   let uri: String
   var viewer: FeedDefsViewerState
 }

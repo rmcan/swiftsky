@@ -114,9 +114,12 @@ struct PostFooterView: View {
   var bottompadding = true
   var leadingpadding = 68.0
   @State var post: FeedDefsPostView
-  @State var locklike: Bool = false
-  @State var likesunderline: Bool = false
-  @State var likespopover: Bool = false
+  @State private var likedisabled: Bool = false
+  @State private var repostdisabled: Bool = false
+  @State private var likesunderline: Bool = false
+  @State private var likespopover: Bool = false
+  @State private var isrepostPresented: Bool = false
+  @State private var isquotepostPresented: Bool = false
   @Binding var path: [Navigation]
   func like() {
     post.viewer.like = ""
@@ -129,7 +132,7 @@ struct PostFooterView: View {
         post.viewer.like = nil
         post.likeCount -= 1
       }
-      locklike = false
+      likedisabled = false
     }
   }
   func unlike() {
@@ -145,7 +148,37 @@ struct PostFooterView: View {
         post.viewer.like = like
         post.likeCount += 1
       }
-      locklike = false
+      likedisabled = false
+    }
+  }
+  func repost() {
+    post.viewer.repost = ""
+    post.repostCount += 1
+    Task {
+      do {
+        let result = try await RepostPost(uri: post.uri, cid: post.cid)
+        post.viewer.repost = result.uri
+      } catch {
+        post.viewer.repost = nil
+        post.repostCount -= 1
+      }
+      repostdisabled = false
+    }
+  }
+  func undorepost() {
+    let repost = post.viewer.repost
+    post.viewer.repost = nil
+    post.repostCount -= 1
+    Task {
+      do {
+        if try await repoDeleteRecord(uri: repost!, collection: "app.bsky.feed.repost") {
+          post.viewer.repost = nil
+        }
+      } catch {
+        post.viewer.repost = repost
+        post.repostCount += 1
+      }
+      repostdisabled = false
     }
   }
   var body: some View {
@@ -158,17 +191,49 @@ struct PostFooterView: View {
       .buttonStyle(.plain)
       .frame(width: 70, alignment: .leading)
       Button {
-        
+        isrepostPresented.toggle()
       } label: {
         Text("\(Image(systemName: "arrow.triangle.2.circlepath")) \(post.repostCount)")
           .foregroundColor(post.viewer.repost != nil ? .cyan : .secondary)
+          .popover(isPresented: $isrepostPresented, arrowEdge: .bottom) {
+            VStack(alignment: .leading) {
+              Button {
+                isrepostPresented = false
+                repostdisabled = true
+                post.viewer.repost == nil ? repost() : undorepost()
+              } label : {
+                Image(systemName: "arrowshape.turn.up.backward.fill")
+                Text(post.viewer.repost == nil ? "Repost" : "Undo repost")
+                  .font(.system(size: 15))
+                  .frame(maxWidth: .infinity, alignment: .topLeading)
+                  .contentShape(Rectangle())
+              }
+              .buttonStyle(.plain)
+              .padding([.top, .leading], 10)
+              .padding(.bottom, 2)
+              .disabled(repostdisabled)
+              Button {
+                isquotepostPresented.toggle()
+              } label : {
+                Image(systemName: "quote.opening")
+                Text("Quote Post")
+                  .font(.system(size: 15))
+                  .frame(maxWidth: .infinity, alignment: .topLeading)
+                  .contentShape(Rectangle())
+              }
+              .buttonStyle(.plain)
+              .padding(.leading, 10)
+            }
+            .frame(width: 150, height: 70, alignment: .topLeading)
+          
+          }
       }
       .buttonStyle(.plain)
       .frame(width: 70, alignment: .leading)
       Group {
         Button {
-          if !locklike {
-            locklike = true
+          if !likedisabled {
+            likedisabled = true
             if post.viewer.like == nil {
               like()
             } else {
@@ -178,7 +243,7 @@ struct PostFooterView: View {
         } label: {
           Text("\(Image(systemName: "heart")) ")
         }
-        .disabled(locklike)
+        .disabled(likedisabled)
         .buttonStyle(.plain)
         .frame(alignment: .leading)
         Text("\(post.likeCount)")
@@ -199,5 +264,9 @@ struct PostFooterView: View {
     .padding(.bottom, bottompadding ? 10 : 0)
     .padding(.leading, leadingpadding)
     .foregroundColor(.secondary)
+    .sheet(isPresented: $isquotepostPresented) {
+      NewPostView(post: post, isquote: true)
+        .frame(minWidth: 600, maxWidth: 600, minHeight: 350, maxHeight: 800)
+    }
   }
 }
