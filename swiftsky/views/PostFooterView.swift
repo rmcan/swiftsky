@@ -120,6 +120,7 @@ struct PostFooterView: View {
   @State private var likespopover: Bool = false
   @State private var isrepostPresented: Bool = false
   @State private var isquotepostPresented: Bool = false
+  @State private var isreplypostPresented: Bool = false
   @Binding var path: [Navigation]
   func like() {
     post.viewer.like = ""
@@ -184,7 +185,7 @@ struct PostFooterView: View {
   var body: some View {
     HStack(alignment: .top, spacing: 0) {
       Button {
-        
+        isreplypostPresented.toggle()
       } label: {
         Text("\(Image(systemName: "bubble.right")) \(post.replyCount)")
       }
@@ -266,6 +267,10 @@ struct PostFooterView: View {
     .foregroundColor(.secondary)
     .sheet(isPresented: $isquotepostPresented) {
       NewPostView(post: post, isquote: true)
+        .frame(minWidth: 600, maxWidth: 600, minHeight: 350, maxHeight: 800)
+    }
+    .sheet(isPresented: $isreplypostPresented) {
+      NewPostView(post: post)
         .frame(minWidth: 600, maxWidth: 600, minHeight: 350, maxHeight: 800)
     }
   }
