@@ -50,6 +50,7 @@ struct SidebarView: View {
                   .overlay {
                     Text("\(unreadcount < 10 ? "\(unreadcount)" : "9+")")
                       .font(.system(size: 11))
+                      .foregroundColor(.white)
                   }
               }
              
