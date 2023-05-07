@@ -31,6 +31,10 @@ private struct NotificationsViewFollow: View {
                 .hoverHand {
                   underline = $0
                 }
+                .tooltip {
+                  ProfilePreview(did: author.did, path: $path)
+                }
+              
             }.buttonStyle(.plain)
             Text("followed you")
               .opacity(0.8)
@@ -74,6 +78,9 @@ private struct NotificationsViewLike: View {
                 .underline(underline)
                 .hoverHand {
                   underline = $0
+                }
+                .tooltip {
+                  ProfilePreview(did: author.did, path: $path)
                 }
             }.buttonStyle(.plain)
           

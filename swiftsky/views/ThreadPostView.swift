@@ -63,6 +63,9 @@ struct ThreadPostview: View {
             }
             .buttonStyle(.plain)
             .hoverHand {usernamehover = $0}
+            .tooltip {
+              ProfilePreview(did: post.author.did, path: $path)
+            }
             Button {
               path.append(.profile(post.author.did))
             } label: {

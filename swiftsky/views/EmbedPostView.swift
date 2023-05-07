@@ -46,6 +46,9 @@ struct EmbedPostView: View {
           }
           .buttonStyle(.plain)
           .hoverHand {usernamehover = $0}
+          .tooltip {
+            ProfilePreview(did: embedrecord.author.did, path: $path)
+          }
           Text(
             Formatter.relativeDateNamed.localizedString(
               fromTimeInterval: embedrecord.indexedAt.timeIntervalSinceNow)

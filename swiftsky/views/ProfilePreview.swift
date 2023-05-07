@@ -112,13 +112,19 @@ struct ProfilePreview: View {
             Button {
               path.append(.followers(profile.handle))
             } label: {
-              Text("\(profile.followersCount) \(Text("followers").foregroundColor(.secondary))")
+              HStack(spacing: 0) {
+                Text("\(profile.followersCount) ")
+                Text("followers").opacity(0.5)
+              }
             }
             .buttonStyle(.plain)
             Button {
               path.append(.following(profile.handle))
             } label: {
-              Text("\(profile.followsCount) \(Text("following").foregroundColor(.secondary))")
+              HStack(spacing: 0) {
+                Text("\(profile.followsCount) ")
+                Text("following").opacity(0.5)
+              }
             }
             .buttonStyle(.plain)
           }
