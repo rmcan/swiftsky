@@ -73,6 +73,7 @@ struct PostView: View {
           )
           .font(.body)
           .foregroundColor(.secondary)
+          .help(post.indexedAt.formatted(date: .complete, time: .standard))
 
           Spacer()
           Group {
