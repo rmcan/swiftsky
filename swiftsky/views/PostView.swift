@@ -66,7 +66,10 @@ struct PostView: View {
           }
           .buttonStyle(.plain)
           .hoverHand {usernamehover = $0}
-
+//          .tooltip {
+//            ProfilePreview(profile: post.author)
+//              .frame(width: 230, height: 180, alignment: .topLeading)
+//          }
           Text(
             Formatter.relativeDateNamed.localizedString(
               fromTimeInterval: post.indexedAt.timeIntervalSinceNow)

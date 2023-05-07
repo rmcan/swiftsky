@@ -71,6 +71,8 @@
 		36EA506B29D02C1200FFE7DE /* graphgetFollows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */; };
 		36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */; };
 		36EB223629F7A71E007DF9DF /* feedgetPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EB223529F7A71E007DF9DF /* feedgetPosts.swift */; };
+		36F4423F2A07DEE2009D2F0C /* ToolTipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F4423E2A07DEE2009D2F0C /* ToolTipView.swift */; };
+		36F442412A07E3C7009D2F0C /* ProfilePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F442402A07E3C7009D2F0C /* ProfilePreview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -141,6 +143,8 @@
 		36EA506A29D02C1200FFE7DE /* graphgetFollows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = graphgetFollows.swift; sourceTree = "<group>"; };
 		36EA529029C5ECF7006D5F10 /* feedgetAuthorFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetAuthorFeed.swift; sourceTree = "<group>"; };
 		36EB223529F7A71E007DF9DF /* feedgetPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetPosts.swift; sourceTree = "<group>"; };
+		36F4423E2A07DEE2009D2F0C /* ToolTipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTipView.swift; sourceTree = "<group>"; };
+		36F442402A07E3C7009D2F0C /* ProfilePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePreview.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +292,8 @@
 				3629C9E729F2809700352001 /* TextViewWrapper.swift */,
 				36E82F4C29F6A05200EAD7B5 /* TranslateView.swift */,
 				36548D432A01201A006AEDD8 /* NotificationsView.swift */,
+				36F4423E2A07DEE2009D2F0C /* ToolTipView.swift */,
+				36F442402A07E3C7009D2F0C /* ProfilePreview.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -395,6 +401,7 @@
 				3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */,
 				3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */,
 				36E82F4B29F69FA000EAD7B5 /* TranslateViewModel.swift in Sources */,
+				36F4423F2A07DEE2009D2F0C /* ToolTipView.swift in Sources */,
 				36AEF5B129C4917300B68B24 /* feedgetPostThread.swift in Sources */,
 				36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */,
 				3613731A29EC058000002F3D /* EmbedExternalView.swift in Sources */,
@@ -404,6 +411,7 @@
 				36AEF5C829C4935E00B68B24 /* PostView.swift in Sources */,
 				36AEF5C629C4934400B68B24 /* PostFooterView.swift in Sources */,
 				3631A4DD29C99DB900ED7B27 /* unspeccedgetPopular.swift in Sources */,
+				36F442412A07E3C7009D2F0C /* ProfilePreview.swift in Sources */,
 				36EA506729CF5C9E00FFE7DE /* graphgetFollowers.swift in Sources */,
 				3631A4D929C994AD00ED7B27 /* repodeleteRecord.swift in Sources */,
 				36AEF5CE29C493C600B68B24 /* ThreadView.swift in Sources */,
