@@ -16,7 +16,7 @@ struct NotificationListNotificationsNotification: Decodable, Identifiable {
   var record: FeedPost? = nil
   var post: FeedDefsPostView? = nil
   let uri: String
-  enum CodingKeys: CodingKey {
+  enum CodingKeys:String, CodingKey {
     case author
     case cid
     case indexedAt
@@ -25,7 +25,7 @@ struct NotificationListNotificationsNotification: Decodable, Identifiable {
     case reasonSubject
     case uri
     case record
-    case type
+    case type = "$type"
   }
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)

@@ -267,11 +267,13 @@ struct PostFooterView: View {
     .foregroundColor(.secondary)
     .sheet(isPresented: $isquotepostPresented) {
       NewPostView(post: post, isquote: true)
-        .frame(minWidth: 600, maxWidth: 600, minHeight: 350, maxHeight: 800)
+        .frame(width: 600)
+        .fixedSize()
     }
     .sheet(isPresented: $isreplypostPresented) {
       NewPostView(post: post)
-        .frame(minWidth: 600, maxWidth: 600, minHeight: 350, maxHeight: 800)
+        .frame(width: 600)
+        .fixedSize()
     }
   }
 }

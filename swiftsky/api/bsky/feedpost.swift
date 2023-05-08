@@ -20,12 +20,6 @@ struct FeedPostTextSlice: Decodable, Hashable {
   let start: Int
 }
 
-struct FeedPostEntity: Decodable, Hashable {
-  let index: FeedPostTextSlice
-  let type: String
-  let value: String
-}
-
 struct FeedPost: Decodable, Hashable {
   let createdAt: String
   let embed: FeedPostEmbed?

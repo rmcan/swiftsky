@@ -14,8 +14,8 @@ struct FeedDefsPostViewEmbed: Decodable, Hashable {
   var images: [EmbedImagesViewImage]? = nil
   var external: EmbedExternalViewExternal? = nil
   var record: EmbedRecordViewRecord? = nil
-  enum CodingKeys: CodingKey {
-    case type
+  enum CodingKeys:String, CodingKey {
+    case type = "$type"
     case images
     case external
     case record

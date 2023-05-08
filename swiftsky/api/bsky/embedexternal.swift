@@ -5,7 +5,7 @@
 
 struct EmbedExternalExternal: Decodable, Hashable {
   let description: String
-  let thumb: blob?
+  let thumb: LexBlob?
   let title: String
   let uri: String
 }

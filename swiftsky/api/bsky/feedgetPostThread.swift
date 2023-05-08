@@ -20,8 +20,8 @@ class FeedGetPostThreadThreadViewPost: Decodable, Hashable, Identifiable {
   let parent: FeedGetPostThreadThreadViewPost?
   let replies: [FeedGetPostThreadThreadViewPost]?
   let notfound: Bool
-  enum CodingKeys: CodingKey {
-    case type
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
     case post
     case parent
     case replies

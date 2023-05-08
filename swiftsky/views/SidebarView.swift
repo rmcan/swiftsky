@@ -117,7 +117,8 @@ struct SidebarView: View {
             }
             .sheet(isPresented: $compose) {
               NewPostView()
-                .frame(minWidth: 600, maxWidth: 600, minHeight: 300, maxHeight: 300)
+                .frame(width: 600)
+                .fixedSize()
             }
           }
           ToolbarItem {
