@@ -7,7 +7,7 @@ import SwiftUI
 
 struct ImageAttachment: Identifiable {
   let id = UUID()
-  let image: NSImage
+  let image: Image
   let data: Data
 }
 struct NewPostView: View {
@@ -61,7 +61,7 @@ struct NewPostView: View {
         }
         .buttonStyle(.borderedProminent)
         .tint(.accentColor)
-        .disabled(text.count > 300 || disablebuttons)
+        .disabled(text.count > 300 || disablebuttons || (text.isEmpty && images.isEmpty))
         .padding([.trailing, .top], 20)
       }
       if let post {
@@ -91,7 +91,7 @@ struct NewPostView: View {
             if let imgData {
               DispatchQueue.main.async {
                 if let image = NSImage(data: imgData) {
-                  images.append(.init(image: image, data: imgData))
+                  images.append(.init(image: Image(nsImage: image), data: imgData))
                 }
               }
             }
@@ -100,7 +100,7 @@ struct NewPostView: View {
           ScrollView(.horizontal) {
             HStack {
               ForEach(Array(images.enumerated()), id: \.element.id) { index, image in
-                Image(nsImage: image.image)
+                image.image
                   .resizable()
                   .scaledToFill()
                   .frame(width: 150, height: 150)
@@ -130,6 +130,29 @@ struct NewPostView: View {
       Divider()
         .padding(.vertical, 5)
       HStack {
+        Button("\(Image(systemName: "photo"))") {
+          let panel = NSOpenPanel();
+          panel.allowsMultipleSelection = true;
+          panel.canChooseDirectories = false;
+          panel.allowedContentTypes = [.image]
+          if (panel.runModal() == .OK) {
+            for url in panel.urls {
+              if images.count >= 4 {
+                break
+              }
+              if let data = try? Data(contentsOf: url) {
+                if let image = NSImage(data: data) {
+                  images.append(.init(image: Image(nsImage: image), data: data))
+                }
+              }
+            }
+          }
+        }
+        .buttonStyle(.plain)
+        .foregroundColor(.accentColor)
+        .disabled(images.count >= 4)
+        .font(.title)
+        .padding(.leading)
         Spacer()
         let replycount = 300 - text.count
         Text("\(replycount)")
