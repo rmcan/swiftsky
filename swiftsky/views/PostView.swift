@@ -14,6 +14,7 @@ struct PostView: View {
   @State var previewurl: URL? = nil
   @State var deletepostfailed = false
   @State var deletepost = false
+  @State var underlinereply = false
   @State var translateavailable = false
   @StateObject var translateviewmodel = TranslateViewModel()
   @Binding var path: [Navigation]
@@ -104,7 +105,19 @@ struct PostView: View {
           .frame(height: 0)
         }
         if let reply = reply {
-          Text("Reply to @\(reply)").foregroundColor(.secondary)
+          HStack(spacing: 0) {
+            Text("Reply to ").foregroundColor(.secondary)
+            Button {
+              path.append(.profile(reply))
+            } label: {
+              Text("@\(reply)").foregroundColor(Color(.linkColor))
+                .underline(underlinereply)
+                .hoverHand {
+                  underlinereply = $0
+                }
+            }
+            .buttonStyle(.plain)
+          }
         }
         if !post.record.text.isEmpty {
           Text(.init(markdown))

@@ -10,10 +10,10 @@ struct LexLink: Codable, Hashable {
   }
 }
 struct LexBlob: Codable, Hashable {
-  let type: String
-  let ref: LexLink
-  let mimeType: String
-  let size: Int
+  let type: String?
+  let ref: LexLink?
+  let mimeType: String?
+  let size: Int?
   enum CodingKeys: String, CodingKey {
     case type = "$type"
     case ref
