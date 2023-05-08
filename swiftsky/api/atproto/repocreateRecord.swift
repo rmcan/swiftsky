@@ -21,7 +21,7 @@ struct FollowUserInput: Encodable {
   let subject: String
   let createdAt: String
 }
-struct EmbedRef: Encodable {
+struct EmbedRefRecord: Encodable {
   let type = "app.bsky.embed.record"
   let record: RepoStrongRef
   enum CodingKeys: String, CodingKey {
@@ -30,6 +30,47 @@ struct EmbedRef: Encodable {
   }
   init(cid: String, uri: String) {
     self.record = RepoStrongRef(cid: cid, uri: uri)
+  }
+}
+struct EmbedRefImage: Encodable {
+  let type = "app.bsky.embed.images"
+  let images: [EmbedImagesImage]
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
+    case images
+  }
+}
+struct EmbedRefRecordWithMedia: Encodable {
+  let type = "app.bsky.embed.recordWithMedia"
+  let record: EmbedRefRecord
+  let media: EmbedRefImage
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
+    case record
+    case media
+  }
+}
+struct EmbedRef: Encodable {
+  let record: EmbedRefRecord?
+  let images: EmbedRefImage?
+  init(record: EmbedRefRecord? = nil, images: EmbedRefImage? = nil) {
+    self.record = record
+    self.images = images
+  }
+  func isValid() -> Bool {
+    record != nil || images != nil
+  }
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    if let record, let images {
+      try container.encode(EmbedRefRecordWithMedia(record: record, media: images))
+    }
+    else if let record {
+      try container.encode(record)
+    }
+    else if let images {
+      try container.encode(images)
+    }
   }
 }
 struct CreatePostInput: Encodable {

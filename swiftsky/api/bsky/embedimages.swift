@@ -3,14 +3,27 @@
 //  swiftsky
 //
 
-struct blob: Decodable, Hashable {
- // let ref: String
-  let mimeType: String
- // let size: Int
+struct LexLink: Codable, Hashable {
+  let link: String
+  enum CodingKeys: String, CodingKey {
+    case link = "$link"
+  }
 }
-struct EmbedImagesImage: Decodable, Hashable {
+struct LexBlob: Codable, Hashable {
+  let type: String
+  let ref: LexLink
+  let mimeType: String
+  let size: Int
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
+    case ref
+    case mimeType
+    case size
+  }
+}
+struct EmbedImagesImage: Codable, Hashable {
   let alt: String
-  let image: blob?
+  let image: LexBlob?
 }
 struct EmbedImagesViewImage: Decodable, Hashable {
   let alt: String

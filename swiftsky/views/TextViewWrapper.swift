@@ -5,11 +5,38 @@
 
 import SwiftUI
 
+class NSTextViewSubclass: NSTextView{
+  var onPaste: (() -> Void)? = nil
+  func setPasteAction(action: (() -> Void)?) {
+    onPaste = action
+  }
+  override func readSelection(from pboard: NSPasteboard) -> Bool {
+    if let types = pboard.types {
+      for type in types {
+        if type == .png || type == .tiff {
+          onPaste?()
+          return false
+        }
+      }
+    }
+    return super.readSelection(from: pboard)
+  }
+  override var readablePasteboardTypes: [NSPasteboard.PasteboardType]  {
+    [.png, .tiff, .string]
+  }
+}
 struct TextViewWrapper: NSViewRepresentable {
   @Binding var text: String
   var placeholder: String? = nil
+  var onPaste: (() -> Void)?
+  init(text: Binding<String>, placeholder: String? = nil, onPaste: (() -> Void)? = nil) {
+    self._text = text
+    self.placeholder = placeholder
+    self.onPaste = onPaste
+  }
   func makeNSView(context: Context) -> NSScrollView {
-    let textView = NSTextView()
+    let textView = NSTextViewSubclass()
+    textView.setPasteAction(action: onPaste)
     textView.autoresizingMask = [.width, .height]
     textView.isEditable = true
     textView.allowsUndo = true

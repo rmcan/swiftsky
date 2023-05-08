@@ -19,8 +19,8 @@ struct EmbedRecordViewRecordEmbeds: Decodable, Identifiable, Hashable {
   let images: [EmbedImagesViewImage]?
   let external: EmbedExternalViewExternal?
   var record: EmbedRecordViewRecord? = nil
-  enum CodingKeys: CodingKey {
-    case type
+  enum CodingKeys:String, CodingKey {
+    case type = "$type"
     case images
     case external
     case record

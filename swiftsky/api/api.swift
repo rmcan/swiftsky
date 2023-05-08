@@ -41,13 +41,6 @@ class Client {
   }
   init() {
     self.decoder = JSONDecoder()
-    self.decoder.keyDecodingStrategy = .custom({keys in
-      var last = keys.last!.stringValue
-      if last.first == "$" {
-        last.removeFirst()
-      }
-      return AnyKey(stringValue: last)!
-    })
     self.decoder.dateDecodingStrategy = .custom({ decoder in
       let container = try decoder.singleValueContainer()
       let dateString = try container.decode(String.self)
@@ -98,6 +91,21 @@ class Client {
       }
     }
     return false
+  }
+  func upload<T: Decodable>(endpoint: String, data: Data, authorization: String? = nil) async throws -> T {
+    var request = URLRequest(url: URL(string: baseURL + endpoint)!)
+    request.httpMethod = "POST"
+    if let authorization {
+      request.addValue("Bearer \(authorization)", forHTTPHeaderField: "Authorization")
+    }
+    let (data, response) = try await URLSession.shared.upload(for: request, from: data)
+    guard let httpResponse = response as? HTTPURLResponse else {
+      throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "Server error: 0"])
+    }
+    if httpResponse.statusCode != 200 {
+      throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "Server error: \(httpResponse.statusCode)"])
+    }
+    return try self.decoder.decode(T.self, from: data)
   }
   func fetch<T: Decodable, U: Encodable>(
     endpoint: String, httpMethod: httpMethod = .get, authorization: String? = nil, params: U? = nil,

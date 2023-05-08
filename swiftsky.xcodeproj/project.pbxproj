@@ -34,6 +34,7 @@
 		36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D1F29ED348C00D9CF8B /* repolistRecords.swift */; };
 		36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D2129ED3B6900D9CF8B /* repogetRecord.swift */; };
 		3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CE9429F3AF0D00B9288A /* gtranslate.swift */; };
+		369D49C32A08F7130067060A /* repouploadBlob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369D49C22A08F7130067060A /* repouploadBlob.swift */; };
 		36A7B1EA29F7F1CC00EB94E1 /* feedgetLikes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */; };
 		36AA95C02A063BAC003DADC9 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AA95BF2A063BAC003DADC9 /* Navigation.swift */; };
 		36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AEF58E29C48F0800B68B24 /* swiftskyApp.swift */; };
@@ -103,6 +104,7 @@
 		36953D1F29ED348C00D9CF8B /* repolistRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repolistRecords.swift; sourceTree = "<group>"; };
 		36953D2129ED3B6900D9CF8B /* repogetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repogetRecord.swift; sourceTree = "<group>"; };
 		3698CE9429F3AF0D00B9288A /* gtranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gtranslate.swift; sourceTree = "<group>"; };
+		369D49C22A08F7130067060A /* repouploadBlob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repouploadBlob.swift; sourceTree = "<group>"; };
 		36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetLikes.swift; sourceTree = "<group>"; };
 		36AA95BF2A063BAC003DADC9 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		36AEF58B29C48F0800B68B24 /* swiftsky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftsky.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -235,6 +237,7 @@
 				36953D1F29ED348C00D9CF8B /* repolistRecords.swift */,
 				36953D2129ED3B6900D9CF8B /* repogetRecord.swift */,
 				3629C9E929F2947900352001 /* identityresolveHandle.swift */,
+				369D49C22A08F7130067060A /* repouploadBlob.swift */,
 			);
 			path = atproto;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				36AEF5CA29C4938200B68B24 /* ProfileView.swift in Sources */,
 				3629C9ED29F2AEFA00352001 /* GlobalViewModel.swift in Sources */,
 				36AEF5C429C4931B00B68B24 /* LoginView.swift in Sources */,
+				369D49C32A08F7130067060A /* repouploadBlob.swift in Sources */,
 				36AEF5B929C4920E00B68B24 /* systemdeclRef.swift in Sources */,
 				365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */,
 				36548D482A013350006AEDD8 /* PushNotifications.swift in Sources */,

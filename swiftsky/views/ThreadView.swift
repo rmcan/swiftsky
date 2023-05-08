@@ -114,7 +114,8 @@ struct ThreadView: View {
       }
       .sheet(isPresented: $replypresented) {
         NewPostView(post: threadviewpost?.post)
-          .frame(minWidth: 600, maxWidth: 600, minHeight: 400, maxHeight: 800)
+          .frame(width: 600)
+          .fixedSize()
       }
       .alert(error ?? "", isPresented: .constant(error != nil)) {
         Button("OK") {
