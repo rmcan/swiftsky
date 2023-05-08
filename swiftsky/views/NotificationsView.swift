@@ -12,7 +12,6 @@ private struct NotificationsViewFollow: View {
   var body: some View {
     Group {
       if let author = notification.author {
-        
         HStack {
           Image(systemName: "person.crop.circle.badge.plus")
             .resizable()
@@ -46,6 +45,7 @@ private struct NotificationsViewFollow: View {
             )
             .font(.body)
             .foregroundColor(.secondary)
+            .help(notification.indexedAt.formatted(date: .complete, time: .standard))
           }
         }
       }
@@ -53,6 +53,53 @@ private struct NotificationsViewFollow: View {
   }
 }
 
+private struct NotificationsViewRepost: View {
+  @State var notification: NotificationListNotificationsNotification
+  @State var underline = false
+  @Binding var path: [Navigation]
+  var body: some View {
+    Group {
+      if let author = notification.author {
+        HStack {
+          Image(systemName: "arrow.triangle.2.circlepath")
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 25, height: 25)
+            .padding(5)
+            .clipped()
+            .foregroundColor(.accentColor)
+          AvatarView(url: author.avatar, size: 40)
+          HStack(spacing: 3) {
+            Button {
+              path.append(.profile(author.did))
+            } label: {
+              Text("@\(author.handle)")
+                .foregroundColor(.primary)
+                .underline(underline)
+                .hoverHand {
+                  underline = $0
+                }
+                .tooltip {
+                  ProfilePreview(did: author.did, path: $path)
+                }
+              
+            }.buttonStyle(.plain)
+            Text("reposted your post")
+              .opacity(0.8)
+            
+            Text(
+              Formatter.relativeDateNamed.localizedString(
+                fromTimeInterval: notification.indexedAt.timeIntervalSinceNow)
+            )
+            .font(.body)
+            .foregroundColor(.secondary)
+            .help(notification.indexedAt.formatted(date: .complete, time: .standard))
+          }
+        }
+      }
+    }
+  }
+}
 private struct NotificationsViewLike: View {
   @State var notification: NotificationListNotificationsNotification
   @State var underline = false
@@ -60,7 +107,6 @@ private struct NotificationsViewLike: View {
   var body: some View {
     Group {
       if let author = notification.author {
-        
         HStack {
           Image(systemName: "heart.fill")
             .resizable()
@@ -94,6 +140,7 @@ private struct NotificationsViewLike: View {
             )
             .font(.body)
             .foregroundColor(.secondary)
+            .help(notification.indexedAt.formatted(date: .complete, time: .standard))
           }
         }
       }
@@ -138,16 +185,23 @@ struct NotificationsView: View {
         if let notifications {
           ForEach(notifications.notifications) { notification in
             Group {
-              if notification.reason == "follow" {
+              switch notification.reason {
+              case "follow":
                 NotificationsViewFollow(notification: notification, path: $path)
                   .padding(.bottom, 5)
                   .frame(maxWidth: .infinity, alignment: .topLeading)
-              }
-              else if notification.reason == "like" {
+              case "repost":
+                NotificationsViewRepost(notification: notification, path: $path)
+                  .padding(.bottom, 5)
+                  .frame(maxWidth: .infinity, alignment: .topLeading)
+              case "like":
                 NotificationsViewLike(notification: notification, path: $path)
                   .padding(.bottom, 5)
                   .frame(maxWidth: .infinity, alignment: .topLeading)
+              default:
+                  EmptyView()
               }
+            
               if let post = notification.post {
                 PostView(post: post, path: $path)
                   .padding(.horizontal)
