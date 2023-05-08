@@ -16,8 +16,9 @@ private struct NotificationsViewFollow: View {
         HStack {
           Image(systemName: "person.crop.circle.badge.plus")
             .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 30, height: 30)
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 25, height: 25)
+            .padding(5)
             .clipped()
             .foregroundColor(.accentColor)
           AvatarView(url: author.avatar, size: 40)
@@ -63,7 +64,7 @@ private struct NotificationsViewLike: View {
         HStack {
           Image(systemName: "heart.fill")
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
             .frame(width: 25, height: 25)
             .padding(5)
             .clipped()
