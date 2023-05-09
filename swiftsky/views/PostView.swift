@@ -115,6 +115,9 @@ struct PostView: View {
                 .hoverHand {
                   underlinereply = $0
                 }
+                .tooltip {
+                  ProfilePreview(did: reply, path: $path)
+                }
             }
             .buttonStyle(.plain)
           }
