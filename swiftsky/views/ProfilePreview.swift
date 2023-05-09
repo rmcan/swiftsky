@@ -84,7 +84,7 @@ struct ProfilePreview: View {
           Button {
             path.append(.profile(did))
           } label: {
-            Text(profile.displayName!)
+            Text(profile.displayName ?? profile.handle)
               .lineLimit(1)
               .underline(usernamehover)
               .hoverHand {
