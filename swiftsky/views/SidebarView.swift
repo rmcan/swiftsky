@@ -147,6 +147,7 @@ struct SidebarView: View {
         }
       }
     }
+    .quickLookPreview($globalviewmodel.preview)
     .handlesExternalEvents(preferring: ["*"], allowing: ["*"])
     .onOpenURL(perform: { url in
       let components = URLComponents(url: url, resolvingAgainstBaseURL: false)

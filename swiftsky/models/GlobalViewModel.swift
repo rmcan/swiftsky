@@ -10,4 +10,5 @@ class GlobalViewModel: ObservableObject {
   var systemLanguageCode = ""
   var systemLanguage = ""
   @Published var profile: ActorDefsProfileViewDetailed? = nil
+  @Published var preview: URL? = nil
 }

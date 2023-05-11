@@ -11,7 +11,6 @@ struct ThreadPostview: View {
   @State var reply: String?
   @State var usernamehover: Bool = false
   @State var displaynamehover: Bool = false
-  @State var previewurl: URL? = nil
   @State var deletepostfailed = false
   @State var deletepost = false
   @State var translateavailable = false
@@ -132,9 +131,9 @@ struct ThreadPostview: View {
       if let embed = post.embed {
         if let images = embed.images {
           HStack {
-            ForEach(images, id: \.self) { image in
+            ForEach(images) { image in
               Button {
-                previewurl = URL(string: image.fullsize)
+                GlobalViewModel.shared.preview = URL(string: image.fullsize)
 
               } label: {
                 let imagewidth = 600.0 / Double(images.count)
@@ -159,13 +158,10 @@ struct ThreadPostview: View {
           }
         }
         if let record: EmbedRecordViewRecord = embed.record {
-          Button {
-            path.append(.thread(record.uri))
-          } label: {
-            EmbedPostView(embedrecord: record, path: $path)
-          }
-          .buttonStyle(.plain)
-          .contentShape(Rectangle())
+          EmbedPostView(embedrecord: record, path: $path)
+            .onTapGesture {
+              path.append(.thread(record.uri))
+            }
         }
         if let external = embed.external {
           EmbedExternalView(record: external)
@@ -185,7 +181,6 @@ struct ThreadPostview: View {
         translateviewmodel.text = post.record.text
       }
     }
-    .quickLookPreview($previewurl)
     .alert("Failed to delete post, please try again.", isPresented: $deletepostfailed, actions: {})
     .alert("Are you sure?", isPresented: $deletepost) {
       Button("Cancel", role: .cancel) {}

@@ -91,7 +91,7 @@ struct ThreadView: View {
             Divider()
               .id(viewpost.cid)
             if let replies = threadviewpost?.replies {
-              ForEach(replies, id: \.self) { post in
+              ForEach(replies) { post in
                 if let post = post.post {
                   PostView(post: post, reply: viewpost.author.handle, path: $path)
                     .padding([.top, .horizontal])

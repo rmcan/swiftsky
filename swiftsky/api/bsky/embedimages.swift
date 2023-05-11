@@ -3,6 +3,8 @@
 //  swiftsky
 //
 
+import Foundation
+
 struct LexLink: Codable, Hashable {
   let link: String
   enum CodingKeys: String, CodingKey {
@@ -25,8 +27,14 @@ struct EmbedImagesImage: Codable, Hashable {
   let alt: String
   let image: LexBlob?
 }
-struct EmbedImagesViewImage: Decodable, Hashable {
+struct EmbedImagesViewImage: Decodable, Hashable, Identifiable {
+  let id = UUID()
   let alt: String
   let fullsize: String
   let thumb: String
+  enum CodingKeys: CodingKey {
+    case alt
+    case fullsize
+    case thumb
+  }
 }

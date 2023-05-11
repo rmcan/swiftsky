@@ -40,7 +40,6 @@ struct ProfileView: View {
   @State private var selectedtab = 0
   @State private var loading = false
   @State private var error = ""
-  @State private var preview: URL? = nil
   @State private var disablefollowbutton = false
   @State private var disableblockbutton = false
   @State private var isblockalertPresented = false
@@ -193,7 +192,7 @@ struct ProfileView: View {
     Group {
       if let banner = profile?.banner {
         Button {
-          preview = URL(string: banner)
+          GlobalViewModel.shared.preview = URL(string: banner)
         } label: {
           AsyncImage(url: URL(string: banner)) { image in
             image
@@ -219,7 +218,7 @@ struct ProfileView: View {
     .overlay(alignment: .bottomLeading) {
       HStack(spacing: 0) {
         Button {
-          self.preview = URL(string: profile?.avatar ?? "")
+          GlobalViewModel.shared.preview = URL(string: profile?.avatar ?? "")
         } label: {
           AvatarView(url: profile?.avatar, size: 80, blur: profile!.viewer?.blocking != nil)
             .overlay(
@@ -417,7 +416,6 @@ struct ProfileView: View {
       }
 
     }
-    .quickLookPreview($preview)
     .task {
       await load()
     }

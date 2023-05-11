@@ -65,10 +65,9 @@ struct EmbedPostView: View {
             }
             if let images = embed.images {
               HStack {
-                ForEach(images, id: \.self) { image in
+                ForEach(images) { image in
                   Button {
-                    //previewurl = URL(string: image.fullsize)
-
+                    GlobalViewModel.shared.preview = URL(string: image.fullsize)
                   } label: {
                     let imagewidth = 600.0 / Double(images.count)
                     let imageheight = 600.0 / Double(images.count)
