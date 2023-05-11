@@ -36,7 +36,7 @@ struct swiftskyApp: App {
       }
     }
     .onChange(of: auth.needAuthorization) {
-      if $0 {
+      if !$0 {
         pushnotifications.resumeRefreshTask()
         Task {
           self.globalviewmodel.profile = try? await actorgetProfile(actor: Client.shared.handle)
