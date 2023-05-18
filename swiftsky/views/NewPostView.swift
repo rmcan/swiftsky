@@ -14,6 +14,7 @@ struct NewPostView: View {
   @Environment(\.dismiss) private var dismiss
   @State private var text = ""
   @State private var disablebuttons: Bool = false
+  @State private var isFilePickerPresented: Bool = false
   @State private var error: String?
   @State private var images: [ImageAttachment] = []
   @StateObject private var globalmodel = GlobalViewModel.shared
@@ -131,22 +132,7 @@ struct NewPostView: View {
         .padding(.vertical, 5)
       HStack {
         Button("\(Image(systemName: "photo"))") {
-          let panel = NSOpenPanel();
-          panel.allowsMultipleSelection = true;
-          panel.canChooseDirectories = false;
-          panel.allowedContentTypes = [.image]
-          if (panel.runModal() == .OK) {
-            for url in panel.urls {
-              if images.count >= 4 {
-                break
-              }
-              if let data = try? Data(contentsOf: url) {
-                if let image = NSImage(data: data) {
-                  images.append(.init(image: Image(nsImage: image), data: data))
-                }
-              }
-            }
-          }
+          isFilePickerPresented.toggle()
         }
         .buttonStyle(.plain)
         .foregroundColor(.accentColor)
@@ -161,6 +147,23 @@ struct NewPostView: View {
       }
       Spacer()
     }
+    .fileImporter(isPresented: $isFilePickerPresented, allowedContentTypes: [.image], allowsMultipleSelection: true) { result in
+      if let urls = try? result.get() {
+        for url in urls {
+          if images.count >= 4 {
+            break
+          }
+          guard url.startAccessingSecurityScopedResource() else {continue}
+          if let data = try? Data(contentsOf: url) {
+            if let image = NSImage(data: data) {
+              images.append(.init(image: Image(nsImage: image), data: data))
+            }
+          }
+          url.stopAccessingSecurityScopedResource()
+        }
+      }
+    }
+    
     .alert("Error: \(self.error ?? "Unknown")", isPresented: .constant(error != nil)) {
       Button("OK") {
         error = nil
