@@ -231,9 +231,10 @@ struct NotificationsView: View {
         }
       }
       .listRowInsets(.init())
+      .listRowSeparator(.hidden)
     }
     .listStyle(.plain)
-    .environment(\.defaultMinListRowHeight, 0.1)
+    .environment(\.defaultMinListRowHeight, 1)
     .scrollContentBackground(.hidden)
     .task {
       await getNotifications()

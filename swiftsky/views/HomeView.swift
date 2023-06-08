@@ -61,8 +61,9 @@ struct HomeView: View {
         }
       }
       .listRowInsets(EdgeInsets())
+      .listRowSeparator(.hidden)
     }
-    .environment(\.defaultMinListRowHeight, 0.1)
+    .environment(\.defaultMinListRowHeight, 1)
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
     .toolbar {

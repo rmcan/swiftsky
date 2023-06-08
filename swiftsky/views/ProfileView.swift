@@ -390,10 +390,11 @@ struct ProfileView: View {
         }
       }
       .listRowInsets(.init())
+      .listRowSeparator(.hidden)
     }
     .listStyle(.plain)
     .scrollContentBackground(.hidden)
-    .environment(\.defaultMinListRowHeight, 0.1)
+    .environment(\.defaultMinListRowHeight, 1)
     .navigationTitle(profile?.handle ?? "Profile")
     .toolbar {
       ToolbarItem(placement: .primaryAction) {

@@ -121,6 +121,7 @@ struct FollowsView: View {
           Divider()
         }
         .listRowInsets(EdgeInsets())
+        .listRowSeparator(.hidden)
         if follows.cursor != nil {
           ProgressView()
             .frame(maxWidth: .infinity, alignment: .center)
@@ -128,7 +129,7 @@ struct FollowsView: View {
   
       }
     }
-    .environment(\.defaultMinListRowHeight, 0.1)
+    .environment(\.defaultMinListRowHeight, 1)
     .scrollContentBackground(.hidden)
     .listStyle(.plain)
     .task {

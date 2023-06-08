@@ -110,7 +110,9 @@ struct ThreadView: View {
               ProgressView().frame(maxWidth: .infinity, alignment: .center)
             }
           }
-        }.listRowInsets(EdgeInsets())
+        }
+        .listRowInsets(EdgeInsets())
+        .listRowSeparator(.hidden)
       }
       .sheet(isPresented: $replypresented) {
         NewPostView(post: threadviewpost?.post)
@@ -123,7 +125,7 @@ struct ThreadView: View {
         }
       }
       .scrollContentBackground(.hidden)
-      .environment(\.defaultMinListRowHeight, 0.1)
+      .environment(\.defaultMinListRowHeight, 1)
       .listStyle(.plain)
       .navigationTitle(
         threadviewpost?.post != nil ? "\(threadviewpost!.post!.author.handle)'s post" : "Post"
