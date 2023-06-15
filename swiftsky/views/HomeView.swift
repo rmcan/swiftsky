@@ -78,7 +78,7 @@ struct HomeView: View {
         .disabled(loading)
       }
     }
-    .task {
+    .task() {
       await loadContent()
     }
   }

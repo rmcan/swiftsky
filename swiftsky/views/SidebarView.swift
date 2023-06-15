@@ -9,53 +9,117 @@ struct SidebarView: View {
   @EnvironmentObject private var auth: Auth
   @EnvironmentObject private var globalviewmodel: GlobalViewModel
   @EnvironmentObject private var pushnotifications: PushNotificatios
-  @State private var selection: Int = -1
+  @EnvironmentObject private var preferences: PreferencesModel
+  @State private var selection: Navigation.Sidebar? = nil
   @State private var path: [Navigation] = []
   @State var compose: Bool = false
   @State var replypost: Bool = false
   @State private var post: FeedDefsPostView? = nil
   @State var searchactors = ActorSearchActorsTypeaheadOutput()
   @State var searchpresented = false
+  @State var preferencesLoading = false
+  @State var preferencesLoadingError: String? = nil
+  func load() async {
+    preferencesLoadingError = nil
+    if !auth.needAuthorization {
+      Task {
+        self.globalviewmodel.profile = try? await actorgetProfile(actor: Client.shared.handle)
+      }
+      preferencesLoading = true
+      do
+      {
+        try await preferences.sync()
+        try await SavedFeedsModel.shared.updateCache()
+      } catch {
+        preferencesLoadingError = error.localizedDescription
+      }
+      preferencesLoading = false
+    }
+  }
   var body: some View {
     NavigationSplitView {
       List(selection: $selection) {
-        HStack(spacing: 5) {
-          AvatarView(url: self.globalviewmodel.profile?.avatar, size: 40)
-          VStack(alignment: .leading, spacing: 0) {
-            if auth.needAuthorization || self.globalviewmodel.profile == nil {
-              Text("Sign in")
-            }
-            else {
-              if let displayname = self.globalviewmodel.profile!.displayName {
-                Text(displayname)
+        NavigationLink(value: Navigation.Sidebar.profile("")) {
+          HStack(spacing: 5) {
+            AvatarView(url: self.globalviewmodel.profile?.avatar, size: 40)
+            VStack(alignment: .leading, spacing: 0) {
+              if auth.needAuthorization || self.globalviewmodel.profile == nil {
+                Text("Sign in")
               }
-              Text(self.globalviewmodel.profile!.handle)
-                .font(.footnote)
-                .opacity(0.6)
+              else {
+                if let displayname = self.globalviewmodel.profile!.displayName {
+                  Text(displayname)
+                }
+                Text(self.globalviewmodel.profile!.handle)
+                  .font(.footnote)
+                  .opacity(0.6)
+              }
+              
             }
-            
           }
-        }.tag(0)
+        }
+
         Section {
-          Label("Home", systemImage: "house.fill")
-            .tag(1)
-          Label("Popular", systemImage: "arrow.up.right.circle.fill")
-            .tag(2)
-          Label("Notifications", systemImage: "bell.badge.fill")
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(alignment: .trailing) {
-              let unreadcount = pushnotifications.unreadcount
-              if unreadcount > 0 {
-                Circle().fill(.red)
-                  .overlay {
-                    Text("\(unreadcount < 10 ? "\(unreadcount)" : "9+")")
-                      .font(.system(size: 11))
-                      .foregroundColor(.white)
-                  }
+          NavigationLink(value: Navigation.Sidebar.home) {
+            Label("Home", systemImage: "house")
+          }
+          NavigationLink(value: Navigation.Sidebar.notifications) {
+            Label("Notifications", systemImage: "bell.badge")
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .background(alignment: .trailing) {
+                let unreadcount = pushnotifications.unreadcount
+                if unreadcount > 0 {
+                  Circle().fill(.red)
+                    .overlay {
+                      Text("\(unreadcount < 10 ? "\(unreadcount)" : "9+")")
+                        .font(.system(size: 11))
+                        .foregroundColor(.white)
+                    }
+                }
               }
-             
+          }
+        }
+        Section("Feeds") {
+          NavigationLink(value: Navigation.Sidebar.discoverfeeds) {
+            Label("Discover", systemImage: "doc.text.magnifyingglass")
+          }
+          ForEach(SavedFeedsModel.shared.pinned) { feed in
+            NavigationLink(value: Navigation.Sidebar.feed(feed)) {
+              Label(
+                title: { Text(feed.displayName) },
+                icon: { AvatarView(url: feed.avatar, size: 20, isFeed: true) }
+              )
+              .contextMenu {
+                Button("Remove from sidebar") {
+                  Task {
+                    await preferences.unpinfeed(uri: feed.uri)
+                  }
+                }
+                Button("Delete") {
+                  Task {
+                    await preferences.deletefeed(uri: feed.uri)
+                  }
+                }
+              }
             }
-            .tag(3)
+          }
+          .onMove(perform: { indices, newOffset in
+            var temp = preferences.pinnedFeeds
+            temp.move(fromOffsets: indices, toOffset: newOffset)
+            Task {
+              await preferences.setSavedFeeds(saved: preferences.savedFeeds, pinned: temp)
+            }
+          })
+          if preferencesLoading {
+            ProgressView().frame(maxWidth: .infinity, alignment: .center)
+          }
+          if let preferencesLoadingError {
+            ErrorView(error: preferencesLoadingError) {
+              Task {
+                await load()
+              }
+            }
+          }
         }
       }
       .frame(minWidth: 230)
@@ -64,7 +128,7 @@ struct SidebarView: View {
       NavigationStack(path: $path) {
         Group {
           switch selection {
-          case 0:
+          case .profile:
             if let profile = self.globalviewmodel.profile {
               ProfileView(did: profile.did, profile: profile, path: $path)
                 .frame(minWidth: 800)
@@ -74,18 +138,22 @@ struct SidebarView: View {
               EmptyView()
             }
          
-          case 1:
+          case .home:
             HomeView(path: $path)
               .frame(minWidth: 800)
               .navigationTitle("Home")
-          case 2:
-            PopularView(path: $path)
-              .frame(minWidth: 800)
-              .navigationTitle("Popular")
-          case 3:
+          case .notifications:
             NotificationsView(path: $path)
               .frame(minWidth: 800)
               .navigationTitle("Notifications")
+          case .feed(let feed):
+            FeedView(model: feed, header: false, path: $path)
+              .frame(minWidth: 800)
+              .navigationTitle(feed.displayName)
+          case .discoverfeeds:
+            DiscoverFeedsView(path: $path)
+              .frame(minWidth: 800)
+              .navigationTitle("Discover Feeds")
           default:
             EmptyView()
           }
@@ -106,6 +174,10 @@ struct SidebarView: View {
             FollowsView(handle: handle, path: $path)
               .frame(minWidth: 800)
               .navigationTitle("People followed by @\(handle)")
+          case .feed(let feed):
+            FeedView(model: feed, header: true, path: $path)
+              .frame(minWidth: 800)
+              .navigationTitle(feed.displayName)
           }
         }
         .toolbar {
@@ -158,11 +230,12 @@ struct SidebarView: View {
    
       path.append(.profile(did))
     })
+    .onChange(of: selection) { _ in
+      path.removeLast(path.count)
+    }
     .task {
-      selection = 1
-      if !auth.needAuthorization {
-        self.globalviewmodel.profile = try? await actorgetProfile(actor: Client.shared.handle)
-      }
+      selection = .home
+      await load()
     }
   }
 }

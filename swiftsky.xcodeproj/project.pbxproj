@@ -23,14 +23,23 @@
 		3631A4D929C994AD00ED7B27 /* repodeleteRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4D829C994AD00ED7B27 /* repodeleteRecord.swift */; };
 		3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DA29C995F000ED7B27 /* extensions.swift */; };
 		3631A4DD29C99DB900ED7B27 /* unspeccedgetPopular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DC29C99DB900ED7B27 /* unspeccedgetPopular.swift */; };
-		3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4DE29C99F0700ED7B27 /* PopularView.swift */; };
 		3631A4E129C9B65E00ED7B27 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4E029C9B65E00ED7B27 /* SettingsView.swift */; };
 		3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */; };
+		363F74A32A384D91000114DC /* feedgetFeedGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F74A22A384D91000114DC /* feedgetFeedGenerators.swift */; };
+		363F74A52A384EBD000114DC /* actorgetPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F74A42A384EBD000114DC /* actorgetPreferences.swift */; };
+		363F74A72A3857E9000114DC /* PreferencesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 363F74A62A3857E9000114DC /* PreferencesModel.swift */; };
 		36548D442A01201A006AEDD8 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36548D432A01201A006AEDD8 /* NotificationsView.swift */; };
 		36548D462A01240C006AEDD8 /* notificationlistNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36548D452A01240C006AEDD8 /* notificationlistNotifications.swift */; };
 		36548D482A013350006AEDD8 /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36548D472A013350006AEDD8 /* PushNotifications.swift */; };
 		365C57A529D9E67300665E65 /* feeddefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A429D9E67300665E65 /* feeddefs.swift */; };
 		365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365C57A629D9F5FC00665E65 /* actordefs.swift */; };
+		3691F5692A38B88A003E47B0 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3691F5682A38B88A003E47B0 /* FeedView.swift */; };
+		3691F56B2A38B969003E47B0 /* feedgetFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3691F56A2A38B969003E47B0 /* feedgetFeed.swift */; };
+		3691F56D2A399497003E47B0 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3691F56C2A399497003E47B0 /* ErrorView.swift */; };
+		3691F56F2A39D6E2003E47B0 /* actorputPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3691F56E2A39D6E2003E47B0 /* actorputPreferences.swift */; };
+		3691F5712A3A3415003E47B0 /* DiscoverFeedsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3691F5702A3A3415003E47B0 /* DiscoverFeedsView.swift */; };
+		3691F5732A3A37C2003E47B0 /* getPopularFeedGenerators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3691F5722A3A37C2003E47B0 /* getPopularFeedGenerators.swift */; };
+		3691F5752A3B8323003E47B0 /* feedgetFeedGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3691F5742A3B8323003E47B0 /* feedgetFeedGenerator.swift */; };
 		36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D1F29ED348C00D9CF8B /* repolistRecords.swift */; };
 		36953D2229ED3B6900D9CF8B /* repogetRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36953D2129ED3B6900D9CF8B /* repogetRecord.swift */; };
 		3698CE9529F3AF0D00B9288A /* gtranslate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CE9429F3AF0D00B9288A /* gtranslate.swift */; };
@@ -93,14 +102,23 @@
 		3631A4D829C994AD00ED7B27 /* repodeleteRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repodeleteRecord.swift; sourceTree = "<group>"; };
 		3631A4DA29C995F000ED7B27 /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		3631A4DC29C99DB900ED7B27 /* unspeccedgetPopular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = unspeccedgetPopular.swift; sourceTree = "<group>"; };
-		3631A4DE29C99F0700ED7B27 /* PopularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularView.swift; sourceTree = "<group>"; };
 		3631A4E029C9B65E00ED7B27 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
+		363F74A22A384D91000114DC /* feedgetFeedGenerators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetFeedGenerators.swift; sourceTree = "<group>"; };
+		363F74A42A384EBD000114DC /* actorgetPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actorgetPreferences.swift; sourceTree = "<group>"; };
+		363F74A62A3857E9000114DC /* PreferencesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesModel.swift; sourceTree = "<group>"; };
 		36548D432A01201A006AEDD8 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		36548D452A01240C006AEDD8 /* notificationlistNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = notificationlistNotifications.swift; sourceTree = "<group>"; };
 		36548D472A013350006AEDD8 /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		365C57A429D9E67300665E65 /* feeddefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feeddefs.swift; sourceTree = "<group>"; };
 		365C57A629D9F5FC00665E65 /* actordefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actordefs.swift; sourceTree = "<group>"; };
+		3691F5682A38B88A003E47B0 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		3691F56A2A38B969003E47B0 /* feedgetFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetFeed.swift; sourceTree = "<group>"; };
+		3691F56C2A399497003E47B0 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		3691F56E2A39D6E2003E47B0 /* actorputPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = actorputPreferences.swift; sourceTree = "<group>"; };
+		3691F5702A3A3415003E47B0 /* DiscoverFeedsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverFeedsView.swift; sourceTree = "<group>"; };
+		3691F5722A3A37C2003E47B0 /* getPopularFeedGenerators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getPopularFeedGenerators.swift; sourceTree = "<group>"; };
+		3691F5742A3B8323003E47B0 /* feedgetFeedGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = feedgetFeedGenerator.swift; sourceTree = "<group>"; };
 		36953D1F29ED348C00D9CF8B /* repolistRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repolistRecords.swift; sourceTree = "<group>"; };
 		36953D2129ED3B6900D9CF8B /* repogetRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = repogetRecord.swift; sourceTree = "<group>"; };
 		3698CE9429F3AF0D00B9288A /* gtranslate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gtranslate.swift; sourceTree = "<group>"; };
@@ -167,6 +185,7 @@
 				36E82F4A29F69FA000EAD7B5 /* TranslateViewModel.swift */,
 				36548D472A013350006AEDD8 /* PushNotifications.swift */,
 				36AA95BF2A063BAC003DADC9 /* Navigation.swift */,
+				363F74A62A3857E9000114DC /* PreferencesModel.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -265,6 +284,12 @@
 				36A7B1E929F7F1CC00EB94E1 /* feedgetLikes.swift */,
 				36548D452A01240C006AEDD8 /* notificationlistNotifications.swift */,
 				3622323C2A04E4E30052F846 /* notificationupdateSeen.swift */,
+				363F74A22A384D91000114DC /* feedgetFeedGenerators.swift */,
+				363F74A42A384EBD000114DC /* actorgetPreferences.swift */,
+				3691F56A2A38B969003E47B0 /* feedgetFeed.swift */,
+				3691F56E2A39D6E2003E47B0 /* actorputPreferences.swift */,
+				3691F5722A3A37C2003E47B0 /* getPopularFeedGenerators.swift */,
+				3691F5742A3B8323003E47B0 /* feedgetFeedGenerator.swift */,
 			);
 			path = bsky;
 			sourceTree = "<group>";
@@ -280,7 +305,6 @@
 				36AEF5C929C4938200B68B24 /* ProfileView.swift */,
 				36AEF5CB29C4939F00B68B24 /* SidebarView.swift */,
 				36AEF5CD29C493C600B68B24 /* ThreadView.swift */,
-				3631A4DE29C99F0700ED7B27 /* PopularView.swift */,
 				3631A4E029C9B65E00ED7B27 /* SettingsView.swift */,
 				3631A4E229C9B6C700ED7B27 /* GeneralSettingsView.swift */,
 				36E07D1229CA2FCD00A315C5 /* EmbedPostView.swift */,
@@ -297,6 +321,9 @@
 				36548D432A01201A006AEDD8 /* NotificationsView.swift */,
 				36F4423E2A07DEE2009D2F0C /* ToolTipView.swift */,
 				36F442402A07E3C7009D2F0C /* ProfilePreview.swift */,
+				3691F5682A38B88A003E47B0 /* FeedView.swift */,
+				3691F56C2A399497003E47B0 /* ErrorView.swift */,
+				3691F5702A3A3415003E47B0 /* DiscoverFeedsView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -392,7 +419,9 @@
 				36E393CE29EDA99700005097 /* SearchActorView.swift in Sources */,
 				3631A4DB29C995F000ED7B27 /* extensions.swift in Sources */,
 				36AEF5B529C491AC00B68B24 /* feedpost.swift in Sources */,
+				363F74A72A3857E9000114DC /* PreferencesModel.swift in Sources */,
 				36E1EB3329DB493F00469CFE /* richtextfacet.swift in Sources */,
+				3691F56B2A38B969003E47B0 /* feedgetFeed.swift in Sources */,
 				3629C9EA29F2947900352001 /* identityresolveHandle.swift in Sources */,
 				36953D2029ED348C00D9CF8B /* repolistRecords.swift in Sources */,
 				3622323D2A04E4E30052F846 /* notificationupdateSeen.swift in Sources */,
@@ -402,12 +431,13 @@
 				36280D5D29CC8F5A003A1CE7 /* MenuButton.swift in Sources */,
 				36AEF5A629C490A000B68B24 /* sessionget.swift in Sources */,
 				3631A4E329C9B6C700ED7B27 /* GeneralSettingsView.swift in Sources */,
-				3631A4DF29C99F0700ED7B27 /* PopularView.swift in Sources */,
 				36E82F4B29F69FA000EAD7B5 /* TranslateViewModel.swift in Sources */,
+				3691F56D2A399497003E47B0 /* ErrorView.swift in Sources */,
 				36F4423F2A07DEE2009D2F0C /* ToolTipView.swift in Sources */,
 				36AEF5B129C4917300B68B24 /* feedgetPostThread.swift in Sources */,
 				36E1EB3529DBFE4A00469CFE /* richtext.swift in Sources */,
 				3613731A29EC058000002F3D /* EmbedExternalView.swift in Sources */,
+				3691F5752A3B8323003E47B0 /* feedgetFeedGenerator.swift in Sources */,
 				3631A4D729C9814A00ED7B27 /* uri.swift in Sources */,
 				36EB223629F7A71E007DF9DF /* feedgetPosts.swift in Sources */,
 				36314C5A29EE777C002AF3F5 /* SearchField.swift in Sources */,
@@ -421,10 +451,12 @@
 				3631A4E129C9B65E00ED7B27 /* SettingsView.swift in Sources */,
 				36EA506529CF4BAC00FFE7DE /* FollowersView.swift in Sources */,
 				3631A4D529C8CB9A00ED7B27 /* repocreateRecord.swift in Sources */,
+				3691F5712A3A3415003E47B0 /* DiscoverFeedsView.swift in Sources */,
 				36AEF5A429C4907600B68B24 /* sessioncreate.swift in Sources */,
 				36AEF5CA29C4938200B68B24 /* ProfileView.swift in Sources */,
 				3629C9ED29F2AEFA00352001 /* GlobalViewModel.swift in Sources */,
 				36AEF5C429C4931B00B68B24 /* LoginView.swift in Sources */,
+				3691F56F2A39D6E2003E47B0 /* actorputPreferences.swift in Sources */,
 				369D49C32A08F7130067060A /* repouploadBlob.swift in Sources */,
 				36AEF5B929C4920E00B68B24 /* systemdeclRef.swift in Sources */,
 				365C57A729D9F5FC00665E65 /* actordefs.swift in Sources */,
@@ -437,11 +469,15 @@
 				36548D462A01240C006AEDD8 /* notificationlistNotifications.swift in Sources */,
 				36E82F4D29F6A05200EAD7B5 /* TranslateView.swift in Sources */,
 				36AEF5A829C490BB00B68B24 /* sessionrefresh.swift in Sources */,
+				3691F5692A38B88A003E47B0 /* FeedView.swift in Sources */,
 				3629C9E829F2809700352001 /* TextViewWrapper.swift in Sources */,
 				36AEF5C229C492EB00B68B24 /* HomeView.swift in Sources */,
 				36E07D1529CA310E00A315C5 /* embedrecord.swift in Sources */,
 				36AA95C02A063BAC003DADC9 /* Navigation.swift in Sources */,
 				36EA529129C5ECF7006D5F10 /* feedgetAuthorFeed.swift in Sources */,
+				3691F5732A3A37C2003E47B0 /* getPopularFeedGenerators.swift in Sources */,
+				363F74A32A384D91000114DC /* feedgetFeedGenerators.swift in Sources */,
+				363F74A52A384EBD000114DC /* actorgetPreferences.swift in Sources */,
 				36AEF5C029C492C500B68B24 /* AvatarView.swift in Sources */,
 				36AEF58F29C48F0800B68B24 /* swiftskyApp.swift in Sources */,
 				36280D5F29CC9060003A1CE7 /* NewPostView.swift in Sources */,

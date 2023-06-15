@@ -5,6 +5,26 @@
 
 import Foundation
 
+struct FeedDefsGeneratorViewerState: Decodable, Hashable {
+  var like: String?
+}
+struct FeedDefsGeneratorView: Decodable, Hashable, Identifiable {
+  var id: String {
+    cid
+  }
+  let avatar: String?
+  let cid: String
+  let creator: ActorDefsProfileView
+  let description: String?
+  let descriptionFacets: [RichtextFacet]?
+  let did: String?
+  let displayName: String
+  let indexedAt: String
+  var likeCount: Int?
+  let uri: String
+  var viewer: FeedDefsGeneratorViewerState?
+}
+
 struct FeedDefsViewerState: Decodable, Hashable {
   var like: String?
   var repost: String?
