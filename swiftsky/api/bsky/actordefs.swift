@@ -3,6 +3,35 @@
 //  swiftsky
 //
 
+struct ActorDefsSavedFeedsPref: Codable {
+  let type = "app.bsky.actor.defs#savedFeedsPref"
+  var pinned: [String]
+  var saved: [String]
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
+    case pinned
+    case saved
+  }
+}
+struct ActorDefsAdultContentPref: Codable {
+  let type: String = "app.bsky.actor.defs#adultContentPref"
+  let enabled: Bool
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
+    case enabled
+  }
+}
+struct ActorDefsContentLabelPref: Codable {
+  let type = "app.bsky.actor.defs#contentLabelPref"
+  let label: String
+  let visibility: String
+  enum CodingKeys: String, CodingKey {
+    case type = "$type"
+    case label
+    case visibility
+  }
+}
+
 struct ActorDefsProfileView: Decodable, Hashable, Identifiable {
   var id: String {
     did

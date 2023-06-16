@@ -9,10 +9,12 @@ struct AvatarView: View {
   let url: String?
   let size: CGFloat
   let blur: Bool
-  init(url: String?, size: CGFloat, blur: Bool = false) {
+  let isFeed: Bool
+  init(url: String?, size: CGFloat, blur: Bool = false, isFeed: Bool = false) {
     self.url = url
     self.size = size
     self.blur = blur
+    self.isFeed = isFeed
   }
   var body: some View {
     if let url {
@@ -27,14 +29,28 @@ struct AvatarView: View {
         ProgressView()
           .frame(width: size, height: size)
       }
-      .cornerRadius(size / 2)
+      .cornerRadius(isFeed ? size / 4 : size / 2)
     }
     else {
-      Image(systemName: "person.crop.circle.fill")
-        .resizable()
-        .foregroundStyle(.white, Color.accentColor)
-        .frame(width: size, height: size)
-        .cornerRadius(size / 2)
+      if isFeed {
+        ZStack {
+          RoundedRectangle(cornerSize: CGSize(width: size / 4, height: size / 4))
+            .frame(width: size, height: size)
+            .foregroundStyle(Color(red: 0.0, green: 0.439, blue: 1.0))
+          Image("default-feed")
+            .resizable()
+            .foregroundStyle(.white)
+            .frame(width: size / 1.5, height: size / 1.5)
+        }
+      }
+      else {
+        Image(systemName: "person.crop.circle.fill")
+          .resizable()
+          .foregroundStyle(.white, Color.accentColor)
+          .frame(width: size, height: size)
+          .cornerRadius(isFeed ? size / 4 : size / 2)
+      }
+    
     }
   }
 }

@@ -10,6 +10,7 @@ struct swiftskyApp: App {
   @StateObject private var auth = Auth.shared
   @StateObject private var globalviewmodel = GlobalViewModel.shared
   @StateObject private var pushnotifications = PushNotificatios.shared
+  @StateObject private var preferences = PreferencesModel.shared
   init() {
     Client.shared.postInit()
     GlobalViewModel.shared.systemLanguageCode = Locale.preferredLanguageCodes[0]
@@ -23,6 +24,7 @@ struct swiftskyApp: App {
       .environmentObject(auth)
       .environmentObject(globalviewmodel)
       .environmentObject(pushnotifications)
+      .environmentObject(preferences)
     }
     .defaultSize(width: 1100, height: 650)
     .commands {
