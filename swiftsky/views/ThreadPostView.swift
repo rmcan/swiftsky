@@ -134,18 +134,15 @@ struct ThreadPostview: View {
             ForEach(images) { image in
               Button {
                 GlobalViewModel.shared.preview = URL(string: image.fullsize)
-
               } label: {
                 let imagewidth = 600.0 / Double(images.count)
                 let imageheight = 600.0 / Double(images.count)
                 AsyncImage(url: URL(string: image.thumb)) { image in
                   image
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: imagewidth, height: imageheight)
-                    .contentShape(Rectangle())
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: imagewidth, maxHeight: imageheight, alignment: .topLeading)
                     .clipped()
-
                 } placeholder: {
                   ProgressView()
                     .frame(width: imagewidth, height: imageheight)

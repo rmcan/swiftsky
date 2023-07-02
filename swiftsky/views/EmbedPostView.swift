@@ -57,7 +57,6 @@ struct EmbedPostView: View {
         }
 
         Text(.init(markdown))
-          .frame(maxHeight: 100)
         if let embed = embedrecord.embeds {
           ForEach(embed) { embed in
             if let external = embed.external {
@@ -74,16 +73,14 @@ struct EmbedPostView: View {
                     AsyncImage(url: URL(string: image.thumb)) { image in
                       image
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: imagewidth, height: imageheight)
-                        .contentShape(Rectangle())
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: imagewidth, maxHeight: imageheight, alignment: .topLeading)
                         .clipped()
 
                     } placeholder: {
                       ProgressView()
                         .frame(width: imagewidth, height: imageheight)
                     }
-                    .frame(width: imagewidth, height: imageheight)
                     .padding(.init(top: 5, leading: 0, bottom: 0, trailing: 0))
                     .cornerRadius(15)
                   }

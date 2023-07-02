@@ -141,11 +141,9 @@ struct PostView: View {
                   AsyncImage(url: URL(string: image.thumb)) { image in
                     image
                       .resizable()
-                      .aspectRatio(contentMode: .fill)
-                      .frame(width: imagewidth, height: imageheight)
-                      .contentShape(Rectangle())
+                      .aspectRatio(contentMode: .fit)
+                      .frame(maxWidth: imagewidth, maxHeight: imageheight, alignment: .topLeading)
                       .clipped()
-
                   } placeholder: {
                     ProgressView()
                       .frame(width: imagewidth, height: imageheight)
