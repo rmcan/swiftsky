@@ -8,7 +8,7 @@ import SwiftUI
 struct ProfilePreview: View {
   let did: String
   @State private var profile: ActorDefsProfileViewDetailed? = nil
-  @State private var height = 180.0
+  @State private var height = 50.0
   @State private var loading = false
   @State private var usernamehover = false
   @State private var handlehover = false
@@ -105,7 +105,8 @@ struct ProfilePreview: View {
           .buttonStyle(.plain)
             .lineLimit(1)
           if let description = profile.description {
-            Text(description.split(whereSeparator: \.isNewline).joined(separator: "\n"))
+            Text(description)
+              .fixedSize(horizontal: false, vertical: true)
               .lineLimit(3)
           }
           HStack {

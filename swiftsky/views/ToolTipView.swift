@@ -7,49 +7,29 @@ import SwiftUI
 
 struct TooltipModifier<TootipContent: View>: ViewModifier {
   var content: TootipContent
-  @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
-  @State private var lasthover: Date? = nil
-  @State private var hoverinterval: Double = 0
   @State private var contenthovered = false
-  @State private var tooltipPresented = false
+  @State private var isPresented = false
+  @State private var work: DispatchWorkItem?
   init(@ViewBuilder content: @escaping () -> TootipContent) {
     self.content = content()
   }
+  private func onHover(_ hovered: Bool) {
+    self.work?.cancel()
+    self.work = DispatchWorkItem(block: {
+      self.isPresented = self.contenthovered
+    })
+    contenthovered = hovered
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: work!)
+  }
   func body(content: Content) -> some View {
     content
-      .onReceive(timer) { _ in
-        if let date = lasthover {
-          hoverinterval = -date.timeIntervalSinceNow
-        }
-        else if (!contenthovered) {
-          if hoverinterval > 0 {
-            hoverinterval = 0
-            timer.connect().cancel()
-            tooltipPresented = false
-          }
-        }
-        if !tooltipPresented {
-          if hoverinterval >= 2 || contenthovered {
-            tooltipPresented = true
-          }
-        }
-      }
       .onHover {
-        if $0 {
-          lasthover = Date()
-          if hoverinterval <= 0 {
-            timer = Timer.publish(every: 1, on: .main, in: .common)
-            let _ = timer.connect()
-          }
-        }
-        else {
-          lasthover = nil
-        }
+        onHover($0)
       }
-      .popover(isPresented: .constant(tooltipPresented), arrowEdge: .bottom) {
+      .popover(isPresented: $isPresented, arrowEdge: .bottom) {
         self.content
           .onHover {
-            contenthovered = $0
+            onHover($0)
           }
       }
   }
