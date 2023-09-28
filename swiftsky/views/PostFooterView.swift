@@ -122,6 +122,8 @@ struct PostFooterView: View {
   @State private var isquotepostPresented: Bool = false
   @State private var isreplypostPresented: Bool = false
   @Binding var path: [Navigation]
+  @AppStorage("hidelikecount") private var hidelikecount = false
+  @AppStorage("hiderepostcount") private var hiderepostcount = false
   func like() {
     post.viewer.like = ""
     post.likeCount += 1
@@ -194,7 +196,7 @@ struct PostFooterView: View {
       Button {
         isrepostPresented.toggle()
       } label: {
-        Text("\(Image(systemName: "arrow.triangle.2.circlepath")) \(post.repostCount)")
+        Text("\(Image(systemName: "arrow.triangle.2.circlepath")) \(hiderepostcount ? "Hidden" : "\(post.repostCount)")")
           .foregroundColor(post.viewer.repost != nil ? .cyan : .secondary)
           .popover(isPresented: $isrepostPresented, arrowEdge: .bottom) {
             VStack(alignment: .leading) {
@@ -247,7 +249,7 @@ struct PostFooterView: View {
         .disabled(likedisabled)
         .buttonStyle(.plain)
         .frame(alignment: .leading)
-        Text("\(post.likeCount)")
+        Text(hidelikecount ? "Hidden" : "\(post.likeCount)")
           .underline(likesunderline)
           .hoverHand {
             likesunderline = $0
