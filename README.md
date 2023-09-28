@@ -1,5 +1,5 @@
 # swiftsky
-An unofficial Bluesky/ATProto client for macOS Ventura built in SwiftUI
+An unofficial Bluesky/ATProto client for macOS built in SwiftUI
 
 ![Image](images/image.png?)
 
