@@ -131,7 +131,6 @@ struct SidebarView: View {
           case .profile:
             if let profile = self.globalviewmodel.profile {
               ProfileView(did: profile.did, profile: profile, path: $path)
-                .frame(minWidth: 800)
                 .navigationTitle(profile.handle)
             }
             else {
@@ -140,45 +139,40 @@ struct SidebarView: View {
          
           case .home:
             HomeView(path: $path)
-              .frame(minWidth: 800)
               .navigationTitle("Home")
           case .notifications:
             NotificationsView(path: $path)
-              .frame(minWidth: 800)
               .navigationTitle("Notifications")
           case .feed(let feed):
             FeedView(model: feed, header: false, path: $path)
-              .frame(minWidth: 800)
               .navigationTitle(feed.displayName)
           case .discoverfeeds:
             DiscoverFeedsView(path: $path)
-              .frame(minWidth: 800)
               .navigationTitle("Discover Feeds")
           default:
             EmptyView()
           }
         }
-        .navigationDestination(for: Navigation.self) {
-          switch $0 {
-          case .profile(let did):
-            ProfileView(did: did, path: $path)
-              .frame(minWidth: 800)
-          case .thread(let uri):
-            ThreadView(uri: uri, path: $path)
-              .frame(minWidth: 800)
-          case .followers(let handle):
-            FollowersView(handle: handle, path: $path)
-              .frame(minWidth: 800)
-              .navigationTitle("People following @\(handle)")
-          case .following(let handle):
-            FollowsView(handle: handle, path: $path)
-              .frame(minWidth: 800)
-              .navigationTitle("People followed by @\(handle)")
-          case .feed(let feed):
-            FeedView(model: feed, header: true, path: $path)
-              .frame(minWidth: 800)
-              .navigationTitle(feed.displayName)
+        .frame(minWidth: 200)
+        .navigationDestination(for: Navigation.self) { destination in
+          Group {
+            switch destination {
+            case .profile(let did):
+              ProfileView(did: did, path: $path)
+            case .thread(let uri):
+              ThreadView(uri: uri, path: $path)
+            case .followers(let handle):
+              FollowersView(handle: handle, path: $path)
+                .navigationTitle("People following @\(handle)")
+            case .following(let handle):
+              FollowsView(handle: handle, path: $path)
+                .navigationTitle("People followed by @\(handle)")
+            case .feed(let feed):
+              FeedView(model: feed, header: true, path: $path)
+                .navigationTitle(feed.displayName)
+            }
           }
+          .frame(minWidth: 200)
         }
         .toolbar {
           ToolbarItem(placement: .primaryAction) {
