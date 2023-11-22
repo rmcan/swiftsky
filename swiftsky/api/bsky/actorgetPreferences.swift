@@ -9,7 +9,7 @@ enum ActorDefsPreferencesElem: Codable {
   case adultcontent(ActorDefsAdultContentPref)
   case contentlabel(ActorDefsContentLabelPref)
   case savedfeeds(ActorDefsSavedFeedsPref)
-
+  case none
   enum CodingKeys: String, CodingKey {
       case type = "$type"
   }
@@ -24,7 +24,7 @@ enum ActorDefsPreferencesElem: Codable {
     case "app.bsky.actor.defs#savedFeedsPref":
       self = try .savedfeeds(.init(from: decoder))
     default:
-      throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "ActorDefsPreferencesElem decode failed"])
+      self = .none
     }
   }
   func encode(to encoder: Encoder) throws {
@@ -36,6 +36,8 @@ enum ActorDefsPreferencesElem: Codable {
       try container.encode(value)
     case .savedfeeds(let value):
       try container.encode(value)
+    default:
+        break
     }
   }
   var feeds: ActorDefsSavedFeedsPref? {
